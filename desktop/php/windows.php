@@ -68,7 +68,7 @@ foreach ($eqLogics as $eqLogic) {
     <form class="form-horizontal">
         <fieldset>
             <div class="form-group">
-                <label class="col-sm-3 control-label">{{Nom de l'équipement template}}</label>
+                <label class="col-sm-3 control-label">{{Nom de l'équipement}}</label>
                 <div class="col-sm-3">
                     <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
                     <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement template}}"/>
@@ -106,12 +106,34 @@ foreach (object::all() as $object) {
 			<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
 		</div>
 	</div>
-       <div class="form-group">
-        <label class="col-sm-3 control-label">{{template param 1}}</label>
-        <div class="col-sm-3">
-            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city" placeholder="param1"/>
+       
+				<div class="form-group">
+					 <label class="col-sm-2 control-label">{{Température extérieure}}</label>
+					 <div class="col-sm-9">
+							 <div class="input-group">
+									 <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="external" data-concat="1"/>
+									 <span class="input-group-btn">
+											 <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
+									 </span>
+							 </div>
+					 </div>
+			 </div>
+
+
+				 <div class="form-group">
+            <label class="col-sm-2 control-label">{{Température intérieure}}</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="internal" data-concat="1"/>
+                    <span class="input-group-btn">
+                        <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
+                    </span>
+                </div>
+            </div>
         </div>
-    </div>
+
+
+
 </fieldset>
 </form>
 </div>
@@ -132,5 +154,5 @@ foreach (object::all() as $object) {
 </div>
 </div>
 
-<?php include_file('desktop', 'windows', 'js', 'template');?>
+<?php include_file('desktop', 'windows', 'js', 'windows');?>
 <?php include_file('core', 'plugin.template', 'js');?>

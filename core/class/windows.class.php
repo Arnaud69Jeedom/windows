@@ -65,6 +65,42 @@ class windows extends eqLogic {
     }
 
     public function postSave() {
+        // internal
+        $info = $this->getCmd(null, 'internal');
+      	if (!is_object($info)) {
+      		$info = new windowsCmd();
+      		$info->setName(__('Internal', __FILE__));
+      	}
+      	$info->setLogicalId('internal');
+      	$info->setEqLogic_id($this->getId());
+      	$info->setType('info');
+      	$info->setSubType('string');
+      	$info->save();
+
+        // external
+        $info = $this->getCmd(null, 'external');
+      	if (!is_object($info)) {
+      		$info = new windowsCmd();
+      		$info->setName(__('External', __FILE__));
+      	}
+      	$info->setLogicalId('external');
+      	$info->setEqLogic_id($this->getId());
+      	$info->setType('info');
+      	$info->setSubType('string');
+      	$info->save();
+
+        // refresh
+      	$refresh = $this->getCmd(null, 'refresh');
+      	if (!is_object($refresh)) {
+      		$refresh = new windowsCmd();
+      		$refresh->setName(__('Rafraichir', __FILE__));
+      	}
+      	$refresh->setEqLogic_id($this->getId());
+      	$refresh->setLogicalId('refresh');
+      	$refresh->setType('action');
+      	$refresh->setSubType('other');
+      	$refresh->save();
+
 
     }
 
