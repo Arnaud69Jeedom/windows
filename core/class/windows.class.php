@@ -19,7 +19,8 @@
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
-class windows extends eqLogic {
+class windows extends eqLogic
+{
     /*     * *************************Attributs****************************** */
 
 
@@ -52,72 +53,73 @@ class windows extends eqLogic {
 
     /*     * *********************Méthodes d'instance************************* */
 
-    public function preInsert() {
-
+    public function preInsert()
+    {
     }
 
-    public function postInsert() {
-
+    public function postInsert()
+    {
     }
 
-    public function preSave() {
-
+    public function preSave()
+    {
     }
 
-    public function postSave() {
+    public function postSave()
+    {
         // internal
         $info = $this->getCmd(null, 'internal');
-      	if (!is_object($info)) {
-      		$info = new windowsCmd();
-      		$info->setName(__('Internal', __FILE__));
-      	}
-      	$info->setLogicalId('internal');
-      	$info->setEqLogic_id($this->getId());
-      	$info->setType('info');
-      	$info->setSubType('string');
-      	$info->save();
+        if (!is_object($info)) {
+            $info = new windowsCmd();
+            $info->setName(__('Internal', __FILE__));
+        }
+        $info->setLogicalId('internal');
+        $info->setEqLogic_id($this->getId());
+        $info->setType('info');
+        $info->setSubType('numeric');
+        $info->setUnite('°C');
+        $info->save();
 
         // external
         $info = $this->getCmd(null, 'external');
-      	if (!is_object($info)) {
-      		$info = new windowsCmd();
-      		$info->setName(__('External', __FILE__));
-      	}
-      	$info->setLogicalId('external');
-      	$info->setEqLogic_id($this->getId());
-      	$info->setType('info');
-      	$info->setSubType('string');
-      	$info->save();
+        if (!is_object($info)) {
+            $info = new windowsCmd();
+            $info->setName(__('External', __FILE__));
+        }
+        $info->setLogicalId('external');
+        $info->setEqLogic_id($this->getId());
+        $info->setType('info');
+        $info->setSubType('numeric');
+        $info->setUnite('°C');
+        $info->save();
 
         // refresh
-      	$refresh = $this->getCmd(null, 'refresh');
-      	if (!is_object($refresh)) {
-      		$refresh = new windowsCmd();
-      		$refresh->setName(__('Rafraichir', __FILE__));
-      	}
-      	$refresh->setEqLogic_id($this->getId());
-      	$refresh->setLogicalId('refresh');
-      	$refresh->setType('action');
-      	$refresh->setSubType('other');
-      	$refresh->save();
-
-
+        $refresh = $this->getCmd(null, 'refresh');
+        if (!is_object($refresh)) {
+            $refresh = new windowsCmd();
+            $refresh->setName(__('Rafraichir', __FILE__));
+        }
+        $refresh->setEqLogic_id($this->getId());
+        $refresh->setLogicalId('refresh');
+        $refresh->setType('action');
+        $refresh->setSubType('other');
+        $refresh->save();
     }
 
-    public function preUpdate() {
-
+    public function preUpdate()
+    {
     }
 
-    public function postUpdate() {
-
+    public function postUpdate()
+    {
     }
 
-    public function preRemove() {
-
+    public function preRemove()
+    {
     }
 
-    public function postRemove() {
-
+    public function postRemove()
+    {
     }
 
     /*
@@ -142,7 +144,8 @@ class windows extends eqLogic {
     /*     * **********************Getteur Setteur*************************** */
 }
 
-class windowsCmd extends cmd {
+class windowsCmd extends cmd
+{
     /*     * *************************Attributs****************************** */
 
 
@@ -158,8 +161,8 @@ class windowsCmd extends cmd {
       }
      */
 
-    public function execute($_options = array()) {
-
+    public function execute($_options = array())
+    {
     }
 
     /*     * **********************Getteur Setteur*************************** */

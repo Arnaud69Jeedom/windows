@@ -1,20 +1,22 @@
 {
-	"id" : "windows",
-	"name" : "Windows",
-	"description" : "Plugin template pour la gestion des fenêtres",
-	"licence" : "AGPL",
-	"author" : "Jeedom SAS",
-	"require" : "3.2",
-	"category" : "wellness",
-	"hasDependency" : false,
-	"hasOwnDeamon" : false,
-	"maxDependancyInstallTime" : 0,
-	"changelog" : "https://jeedom.github.io/plugin-template/#language#/changelog",
-	"documentation" : "https://jeedom.github.io/plugin-template/#language#/",
-	"link" : {
-		"forum":"Lien vers le forum",
-		"video" : "Lien vers une video"
-	},
-	"language" : ["fr_FR","en_US","de_DE","sp_SP","ru_RU","id_ID","it_IT"],
-	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"]
+  "id": "windows",
+  "name": "Windows",
+  "author": "Arnaud_69",
+  "description": "Plugin template pour la gestion des fenêtres",
+  "licence": "AGPL",
+  "author": "Jeedom SAS",
+  "require": "3.2",
+  "version": "1.0",
+  "category": "wellness",
+  "hasDependency": false,
+  "hasOwnDeamon": false,
+  "maxDependancyInstallTime": 0,
+  "changelog": "https://jeedom.github.io/plugin-template/#language#/changelog",
+  "documentation": "https://jeedom.github.io/plugin-template/#language#/",
+  "link": {
+    "forum": "Lien vers le forum",
+    "video": "Lien vers une video"
+  },
+  "language": ["fr_FR", "en_US", "de_DE", "sp_SP", "ru_RU", "id_ID", "it_IT"],
+  "compatibility": ["miniplus", "smart", "rpi", "docker", "diy", "mobile"]
 }
