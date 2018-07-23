@@ -68,29 +68,60 @@ class windows extends eqLogic
     public function postSave()
     {
         // internal
-        $info = $this->getCmd(null, 'internal');
+        $info = $this->getCmd(null, 'temperature_indoor');
         if (!is_object($info)) {
             $info = new windowsCmd();
-            $info->setName(__('Internal', __FILE__));
+            $info->setName(__('Température', __FILE__));
+            $info->setIsVisible(1);
+            $info->setIsHistorized(1);
         }
-        $info->setLogicalId('internal');
+        $info->setLogicalId('temperature_indoor');
         $info->setEqLogic_id($this->getId());
         $info->setType('info');
         $info->setSubType('numeric');
         $info->setUnite('°C');
+        $value = '';
+        preg_match_all("/#([0-9]*)#/", $this->getConfiguration('temperature_indoor'), $matches);
+        foreach ($matches[1] as $cmd_id) {
+            if (is_numeric($cmd_id)) {
+                $cmd = cmd::byId($cmd_id);
+                if (is_object($cmd) && $cmd->getType() == 'info') {
+                    $value .= '#' . $cmd_id . '#';
+                    break;
+                }
+            }
+        }
+        $info->setValue($value);
         $info->save();
+        $info->event($info->execute());
+
 
         // external
-        $info = $this->getCmd(null, 'external');
+        $info = $this->getCmd(null, 'temperature_outdoor');
         if (!is_object($info)) {
             $info = new windowsCmd();
-            $info->setName(__('External', __FILE__));
+            $info->setIsVisible(1);
+            $info->setIsHistorized(1);
+            $info->setName(__('Temperature extérieure', __FILE__));
         }
-        $info->setLogicalId('external');
+        $info->setLogicalId('temperature_outdoor');
         $info->setEqLogic_id($this->getId());
         $info->setType('info');
         $info->setSubType('numeric');
         $info->setUnite('°C');
+        $value = '';
+        preg_match_all("/#([0-9]*)#/", $this->getConfiguration('temperature_outdoor'), $matches);
+        foreach ($matches[1] as $cmd_id) {
+            if (is_numeric($cmd_id)) {
+                $cmd = cmd::byId($cmd_id);
+                if (is_object($cmd) && $cmd->getType() == 'info') {
+                    $value .= '#' . $cmd_id . '#';
+                    break;
+                }
+            }
+        }
+        $info->setValue($value);
+        $info->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE_OUTDOOR');
         $info->save();
 
         // refresh
