@@ -67,15 +67,16 @@ class windows extends eqLogic
 
     public function postSave()
     {
-        // internal
+        // temperature_indoor
         $info = $this->getCmd(null, 'temperature_indoor');
         if (!is_object($info)) {
             $info = new windowsCmd();
+            $info->setLogicalId('temperature_indoor');
             $info->setName(__('Température', __FILE__));
             $info->setIsVisible(1);
             $info->setIsHistorized(1);
+            $info->setTemplate('dashboard', 'line');
         }
-        $info->setLogicalId('temperature_indoor');
         $info->setEqLogic_id($this->getId());
         $info->setType('info');
         $info->setSubType('numeric');
@@ -93,18 +94,17 @@ class windows extends eqLogic
         }
         $info->setValue($value);
         $info->save();
-        $info->event($info->execute());
 
 
-        // external
+        // temperature_indoor
         $info = $this->getCmd(null, 'temperature_outdoor');
         if (!is_object($info)) {
             $info = new windowsCmd();
+            $info->setLogicalId('temperature_outdoor');
             $info->setIsVisible(1);
             $info->setIsHistorized(1);
-            $info->setName(__('Temperature extérieure', __FILE__));
+            $info->setName(__('Température extérieure', __FILE__));
         }
-        $info->setLogicalId('temperature_outdoor');
         $info->setEqLogic_id($this->getId());
         $info->setType('info');
         $info->setSubType('numeric');
@@ -122,6 +122,33 @@ class windows extends eqLogic
         }
         $info->setValue($value);
         $info->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE_OUTDOOR');
+        $info->save();
+
+        // window
+        $info = $this->getCmd(null, 'window');
+        if (!is_object($info)) {
+            $info = new windowsCmd();
+            $info->setLogicalId('window');
+            $info->setIsVisible(1);
+            $info->setIsHistorized(1);
+            $info->setName(__('Sonde ouverture', __FILE__));
+        }
+        $info->setEqLogic_id($this->getId());
+        $info->setType('info');
+        $info->setSubType('binary');
+        $value = '';
+        preg_match_all("/#([0-9]*)#/", $this->getConfiguration('window'), $matches);
+        foreach ($matches[1] as $cmd_id) {
+            if (is_numeric($cmd_id)) {
+                $cmd = cmd::byId($cmd_id);
+                if (is_object($cmd) && $cmd->getType() == 'info') {
+                    $value .= '#' . $cmd_id . '#';
+                    break;
+                }
+            }
+        }
+        $info->setValue($value);
+        //  $info->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE_OUTDOOR');
         $info->save();
 
         // refresh

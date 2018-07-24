@@ -111,9 +111,8 @@ foreach (object::all() as $object) {
 
 <form class="form-horizontal">
     <fieldset>
-  <div class="form-group">
-  
       <legend><i class="fa fa-thermometer-empty" aria-hidden="true"></i> {{Sonde de température}}</legend>
+
       <div class="form-group">
          <label class="col-sm-2 control-label">{{Température extérieure}}</label>
          <div class="col-sm-9">
@@ -124,25 +123,55 @@ foreach (object::all() as $object) {
         				 </span>
         		 </div>
          </div>
-        </div>
+      </div>
 
+  		 <div class="form-group">
+          <label class="col-sm-2 control-label">{{Température intérieure}}</label>
+          <div class="col-sm-9">
+              <div class="input-group">
+                  <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="temperature_indoor" data-concat="1"/>
+                  <span class="input-group-btn">
+                      <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
+                  </span>
+              </div>
+          </div>
+      </div>
 
-				 <div class="form-group">
-            <label class="col-sm-2 control-label">{{Température intérieure}}</label>
-            <div class="col-sm-9">
-                <div class="input-group">
-                    <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="temperature_indoor" data-concat="1"/>
-                    <span class="input-group-btn">
-                        <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
-                    </span>
-                </div>
-            </div>
-        </div>
+      <div class="form-group">
+         <label class="col-sm-2 control-label">{{Sonde fenêtre}}</label>
+         <div class="col-sm-9">
+             <div class="input-group">
+                 <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="window" data-concat="1"/>
+                 <span class="input-group-btn">
+                     <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
+                 </span>
+             </div>
+         </div>
+      </div>
 
-</div>
-
-</fieldset>
+   </fieldset>
 </form>
+
+
+
+<legend><i class="fa fa-list-alt"></i>  {{Equipements}}<a class="btn btn-success btn-xs pull-right" id="bt_addEnergyEqLogic"><i class="fa fa-plus-circle"></i></a></legend>
+<form class="form-horizontal">
+    <div id="div_confEnergy"></div>
+</form>
+
+<form class="form-horizontal">
+    <fieldset>
+        <div class="form-actions">
+            <a class="btn btn-danger eqLogicAction" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
+            <a class="btn btn-success eqLogicAction" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+
+
+
 </div>
       <div role="tabpanel" class="tab-pane" id="commandtab">
 <a class="btn btn-success btn-sm cmdAction pull-right" data-action="add" style="margin-top:5px;"><i class="fa fa-plus-circle"></i> {{Commandes}}</a><br/><br/>

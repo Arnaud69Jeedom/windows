@@ -1,4 +1,3 @@
-
 /* This file is part of Jeedom.
  *
  * Jeedom is free software: you can redistribute it and/or modify
@@ -15,11 +14,18 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-$("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$("#table_cmd").sortable({
+  axis: "y",
+  cursor: "move",
+  items: ".cmd",
+  placeholder: "ui-state-highlight",
+  tolerance: "intersect",
+  forcePlaceholderSize: true
+});
 /*
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
  */
+/*
 function addCmdToTable(_cmd) {
     if (!isset(_cmd)) {
         var _cmd = {configuration: {}};
@@ -51,3 +57,19 @@ function addCmdToTable(_cmd) {
     }
     jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
+*/
+
+$(".eqLogic").delegate(".listCmdInfo", 'click', function() {
+  var el = $(this).closest('.form-group').find('.eqLogicAttr');
+  jeedom.cmd.getSelectModal({
+    cmd: {
+      type: 'info'
+    }
+  }, function(result) {
+    if (el.attr('data-concat') == 1) {
+      el.atCaret('insert', result.human);
+    } else {
+      el.value(result.human);
+    }
+  });
+});
