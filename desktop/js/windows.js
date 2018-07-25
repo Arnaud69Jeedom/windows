@@ -73,3 +73,46 @@ $(".eqLogic").delegate(".listCmdInfo", 'click', function() {
     }
   });
 });
+
+$('#bt_addWindowEqLogic').on('click', function() {
+  addConfWindow({});
+});
+
+$('#bt_addWindowCmd').on('click', function() {
+  addCmdToTable({
+    configuration: {
+      period: 1
+    }
+  });
+});
+
+$("#div_confWindow").delegate('.bt_removeConfWindow', 'click', function() {
+  $(this).closest('.confWindow').remove();
+});
+
+function addConfWindow(_window) {
+  if (!isset(window)) {
+    window = {};
+  }
+  var div = '<div class="confWindow ' + $('.eqLogicAttr[data-l1key=configuration][data-l2key=window]').value() + '">';
+
+  div += '<div class="form-group">';
+  div += '<label class="col-sm-2 control-label">{{Sonde fenêtre}}</label>';
+  div += '<div class="col-sm-9">';
+  div += '<div class="input-group">';
+  div += '<input type="text" class="eqLogicAttr form-control confWindowAttr tooltips" data-l1key="configuration" data-l2key="window"  data-concat="1"/>';
+  div += '<span class="input-group-btn">';
+  div += '<a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>';
+  div += '</span>';
+  div += '</div>';
+  div += '</div>';
+  div += '<div class="col-sm-1">';
+  div += '<i class="fa fa-minus-circle pull-right cursor bt_removeConfWindow"></i>';
+  div += '</div>';
+  div += '</div>';
+
+  div += '</div>';
+  $('#div_confWindow').append(div);
+  $('#div_confWindow').find('.confWindow:last').setValues(window, '.confWindowAttr');
+
+}

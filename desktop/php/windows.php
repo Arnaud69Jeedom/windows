@@ -137,39 +137,15 @@ foreach (object::all() as $object) {
           </div>
       </div>
 
-      <div class="form-group">
-         <label class="col-sm-2 control-label">{{Sonde fenêtre}}</label>
-         <div class="col-sm-9">
-             <div class="input-group">
-                 <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="window" data-concat="1"/>
-                 <span class="input-group-btn">
-                     <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
-                 </span>
-             </div>
-         </div>
-      </div>
-
    </fieldset>
 </form>
 
 
 
-<legend><i class="fa fa-list-alt"></i>  {{Equipements}}<a class="btn btn-success btn-xs pull-right" id="bt_addEnergyEqLogic"><i class="fa fa-plus-circle"></i></a></legend>
+<legend><i class="icon jeedom-fenetre-ferme"></i> {{Sonde fenêtre}}<a class="btn btn-success btn-xs pull-right" id="bt_addWindowEqLogic"><i class="fa fa-plus-circle"></i></a></legend>
 <form class="form-horizontal">
-    <div id="div_confEnergy"></div>
+    <div id="div_confWindow"></div>
 </form>
-
-<form class="form-horizontal">
-    <fieldset>
-        <div class="form-actions">
-            <a class="btn btn-danger eqLogicAction" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
-            <a class="btn btn-success eqLogicAction" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
-        </div>
-    </fieldset>
-</form>
-
-
-
 
 
 </div>
