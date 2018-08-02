@@ -144,7 +144,7 @@ foreach (object::all() as $object) {
 
 <legend><i class="icon jeedom-fenetre-ferme"></i> {{Sonde fenêtre}}<a class="btn btn-success btn-xs pull-right" id="bt_addWindowEqLogic"><i class="fa fa-plus-circle"></i></a></legend>
 <form class="form-horizontal">
-    <div id="div_confWindow"></div>
+    <div id="div_confWindows"></div>
 </form>
 
 

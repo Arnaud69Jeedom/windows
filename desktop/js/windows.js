@@ -75,7 +75,7 @@ $(".eqLogic").delegate(".listCmdInfo", 'click', function() {
 });
 
 $('#bt_addWindowEqLogic').on('click', function() {
-  addConfWindow({});
+  addConfWindows({});
 });
 
 $('#bt_addWindowCmd').on('click', function() {
@@ -86,14 +86,15 @@ $('#bt_addWindowCmd').on('click', function() {
   });
 });
 
-$("#div_confWindow").delegate('.bt_removeConfWindow', 'click', function() {
+$("#div_confWindows").delegate('.bt_removeConfWindow', 'click', function() {
   $(this).closest('.confWindow').remove();
 });
 
-function addConfWindow(_window) {
-  if (!isset(window)) {
-    window = {};
+function addConfWindows(_window) {
+  if (!isset(_window)) {
+    _window = {};
   }
+  console.log("addConfWindows", _window);
   var div = '<div class="confWindow ' + $('.eqLogicAttr[data-l1key=configuration][data-l2key=window]').value() + '">';
 
   div += '<div class="form-group">';
@@ -112,7 +113,30 @@ function addConfWindow(_window) {
   div += '</div>';
 
   div += '</div>';
-  $('#div_confWindow').append(div);
-  $('#div_confWindow').find('.confWindow:last').setValues(window, '.confWindowAttr');
+  $('#div_confWindows').append(div);
+  $('#div_confWindows').find('.confWindow:last').setValues(_window, '.confWindowAttr');
+}
 
+function saveEqLogic(_eqLogic) {
+  if (!isset(_eqLogic.configuration)) {
+    _eqLogic.configuration = {};
+  }
+  _eqLogic.configuration.confWindow = $('#div_confWindows .confWindow').getValues('.confWindowAttr');
+
+  console.log('saveEqLogic:', _eqLogic);
+  return _eqLogic;
+}
+
+function printEqLogic(_eqLogic) {
+  console.log('printEqLogic:', _eqLogic);
+
+  $('#div_confWindows').empty();
+  if (isset(_eqLogic.configuration)) {
+    if (isset(_eqLogic.configuration.confWindow)) {
+      for (var i in _eqLogic.configuration.confWindow) {
+        console.log("printEqLogic.addConfWindows", _eqLogic.configuration.confWindow[i]);
+        addConfWindows(_eqLogic.configuration.confWindow[i]);
+      }
+    }
+  }
 }
