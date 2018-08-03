@@ -124,20 +124,20 @@ class windows extends eqLogic
         $info->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE_OUTDOOR');
         $info->save();
 
-        // window
-        $info = $this->getCmd(null, 'window');
+        // presence
+        $info = $this->getCmd(null, 'presence');
         if (!is_object($info)) {
             $info = new windowsCmd();
-            $info->setLogicalId('window');
+            $info->setLogicalId('presence');
             $info->setIsVisible(1);
             $info->setIsHistorized(1);
-            $info->setName(__('Sonde ouverture', __FILE__));
+            $info->setName(__('Présence', __FILE__));
         }
         $info->setEqLogic_id($this->getId());
         $info->setType('info');
         $info->setSubType('binary');
         $value = '';
-        preg_match_all("/#([0-9]*)#/", $this->getConfiguration('window'), $matches);
+        preg_match_all("/#([0-9]*)#/", $this->getConfiguration('presence'), $matches);
         foreach ($matches[1] as $cmd_id) {
             if (is_numeric($cmd_id)) {
                 $cmd = cmd::byId($cmd_id);
