@@ -137,6 +137,18 @@ foreach (object::all() as $object) {
           </div>
       </div>
 
+      <div class="form-group">
+         <label class="col-sm-2 control-label">{{Présence}}</label>
+         <div class="col-sm-9">
+             <div class="input-group">
+                 <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="presence" data-concat="1"/>
+                 <span class="input-group-btn">
+                     <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
+                 </span>
+             </div>
+         </div>
+      </div>
+
    </fieldset>
 </form>
 
