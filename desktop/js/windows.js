@@ -40,12 +40,8 @@ function addCmdToTable(_cmd) {
   tr += '<span class="cmdAttr" data-l1key="id" style="display:none;"></span>';
   tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom}}">';
   tr += '</td>';
-  tr += '<td>';
-  tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
-  tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
-  tr += '</td>';
-  tr += '<td>';
 
+  tr += '<td>';
   tr += '<span><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" /> {{Historiser}}<br/></span>';
   tr += '<span><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" /> {{Affichage}}<br/></span>';
   tr += '</td>';

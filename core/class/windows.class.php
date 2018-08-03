@@ -75,7 +75,7 @@ class windows extends eqLogic
             $info->setName(__('Température', __FILE__));
             $info->setIsVisible(1);
             $info->setIsHistorized(1);
-            $info->setTemplate('dashboard', 'line');
+            //$info->setTemplate('dashboard', 'line');
         }
         $info->setEqLogic_id($this->getId());
         $info->setType('info');
@@ -121,7 +121,7 @@ class windows extends eqLogic
             }
         }
         $info->setValue($value);
-        $info->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE_OUTDOOR');
+        //$info->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE_OUTDOOR');
         $info->save();
 
         // presence
@@ -221,6 +221,11 @@ class windowsCmd extends cmd
 
     public function execute($_options = array())
     {
+        log::add('windows', 'debug', 'test execute');
+
+        // $weather->humidity->getValue()
+        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+        $eqlogic->checkAndUpdateCmd('presence', 1);
     }
 
     /*     * **********************Getteur Setteur*************************** */
