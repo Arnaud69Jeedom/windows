@@ -25,8 +25,6 @@ $("#table_cmd").sortable({
 /*
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
  */
-
- /*
 function addCmdToTable(_cmd) {
   if (!isset(_cmd)) {
     var _cmd = {
@@ -62,15 +60,15 @@ function addCmdToTable(_cmd) {
   }
   jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
-*/
 
-$(".eqLogic").delegate(".listCmdInfo", 'click', function() {
+
+$(".eqLogic").delegate(".listCmdInfo", 'click', function () {
   var el = $(this).closest('.form-group').find('.eqLogicAttr');
   jeedom.cmd.getSelectModal({
     cmd: {
       type: 'info'
     }
-  }, function(result) {
+  }, function (result) {
     if (el.attr('data-concat') == 1) {
       el.atCaret('insert', result.human);
     } else {
@@ -79,11 +77,11 @@ $(".eqLogic").delegate(".listCmdInfo", 'click', function() {
   });
 });
 
-$('#bt_addWindowEqLogic').on('click', function() {
+$('#bt_addWindowEqLogic').on('click', function () {
   addConfWindows({});
 });
 
-/*
+
 $('#bt_addWindowCmd').on('click', function() {
   addCmdToTable({
     configuration: {
@@ -91,9 +89,9 @@ $('#bt_addWindowCmd').on('click', function() {
     }
   });
 });
-*/
 
-$("#div_confWindows").delegate('.bt_removeConfWindow', 'click', function() {
+
+$("#div_confWindows").delegate('.bt_removeConfWindow', 'click', function () {
   $(this).closest('.confWindow').remove();
 });
 

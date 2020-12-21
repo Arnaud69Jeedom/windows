@@ -114,6 +114,10 @@ class windows extends eqLogic
 
     public function postUpdate()
     {
+        $cmd = $this->getCmd(null, 'refresh'); // On recherche la commande refresh de l’équipement
+        if (is_object($cmd)) { //elle existe et on lance la commande
+             $cmd->execCmd();
+        }
     }
 
     public function preRemove()

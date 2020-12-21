@@ -69,6 +69,7 @@ foreach ($eqLogics as $eqLogic) {
                     <i class="fa fa-tachometer"></i> {{Equipement}}
                 </a>
             </li>
+            <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li>
         </ul>
         <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
             <div role="tabpanel" class="tab-pane active" id="eqlogictab">
