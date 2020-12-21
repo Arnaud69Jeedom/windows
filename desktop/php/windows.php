@@ -259,23 +259,21 @@ foreach (jeeObject::all() as $object) {
                     <div id="div_confWindows"></div>
                 </form>
             </div>
-        </div>
 
-
-
-        <div role="tabpanel" class="tab-pane" id="commandtab">
-            <br>
-            <table id="table_cmd" class="table table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <th>{{Nom}}</th>
-                        <th>{{Configuration}}</th>
-                        <th>{{Action}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div role="tabpanel" class="tab-pane" id="commandtab">
+                <br>
+                <table id="table_cmd" class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>{{Nom}}</th>
+                            <th>{{Configuration}}</th>
+                            <th>{{Action}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
