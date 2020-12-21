@@ -69,7 +69,8 @@ foreach ($eqLogics as $eqLogic) {
                     <i class="fa fa-tachometer"></i> {{Equipement}}
                 </a>
             </li>
-            <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li>
+            <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i
+                        class="fa fa-list-alt"></i> {{Commandes}}</a></li>
         </ul>
         <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
             <div role="tabpanel" class="tab-pane active" id="eqlogictab">
@@ -259,6 +260,24 @@ foreach (jeeObject::all() as $object) {
                 </form>
             </div>
         </div>
+
+
+
+        <div role="tabpanel" class="tab-pane" id="commandtab">
+            <br>
+            <table id="table_cmd" class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>{{Nom}}</th>
+                        <th>{{Configuration}}</th>
+                        <th>{{Action}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
 
     </div>
 </div>
