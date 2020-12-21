@@ -2,9 +2,10 @@
   "id": "windows",
   "name": "Windows",
   "author": "Arnaud_69",
-  "description": "Plugin template pour la gestion des fenêtres",
+  "description":{
+    "fr_FR": "Plugin template pour la gestion des fenêtres"
+  },
   "licence": "AGPL",
-  "author": "Jeedom SAS",
   "require": "3.2",
   "version": "1.0",
   "category": "wellness",
@@ -17,6 +18,16 @@
     "forum": "Lien vers le forum",
     "video": "Lien vers une video"
   },
-  "language": ["fr_FR", "en_US", "de_DE", "sp_SP", "ru_RU", "id_ID", "it_IT"],
-  "compatibility": ["miniplus", "smart", "rpi", "docker", "diy", "mobile"]
+  "language": [
+    "fr_FR"
+  ],
+  "compatibility": [
+    "miniplus",
+    "smart",
+    "rpi",
+    "docker",
+    "diy",
+    "mobile",
+    "v4"
+  ]
 }
