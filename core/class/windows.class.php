@@ -167,9 +167,8 @@ class windowsCmd extends cmd
     {
         log::add('windows', 'debug', 'test execute');
 
-        // $weather->humidity->getValue()
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
-        $eqlogic->checkAndUpdateCmd('presence', 1);
+        $eqlogic->checkAndUpdateCmd('action', 1);
     }
 
     /*     * **********************Getteur Setteur*************************** */
