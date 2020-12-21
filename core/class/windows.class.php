@@ -67,6 +67,7 @@ class windows extends eqLogic
 
     public function postSave()
     {
+        /*
         // temperature_indoor
         $info = $this->getCmd(null, 'temperature_indoor');
         if (!is_object($info)) {
@@ -96,7 +97,7 @@ class windows extends eqLogic
         $info->save();
 
 
-        // temperature_indoor
+        // temperature_outdoor
         $info = $this->getCmd(null, 'temperature_outdoor');
         if (!is_object($info)) {
             $info = new windowsCmd();
@@ -162,6 +163,8 @@ class windows extends eqLogic
         $refresh->setType('action');
         $refresh->setSubType('other');
         $refresh->save();
+
+        */
     }
 
     public function preUpdate()

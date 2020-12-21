@@ -26,6 +26,7 @@ $("#table_cmd").sortable({
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
  */
 
+ /*
 function addCmdToTable(_cmd) {
   if (!isset(_cmd)) {
     var _cmd = {
@@ -61,7 +62,7 @@ function addCmdToTable(_cmd) {
   }
   jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
-
+*/
 
 $(".eqLogic").delegate(".listCmdInfo", 'click', function() {
   var el = $(this).closest('.form-group').find('.eqLogicAttr');
@@ -82,6 +83,7 @@ $('#bt_addWindowEqLogic').on('click', function() {
   addConfWindows({});
 });
 
+/*
 $('#bt_addWindowCmd').on('click', function() {
   addCmdToTable({
     configuration: {
@@ -89,6 +91,7 @@ $('#bt_addWindowCmd').on('click', function() {
     }
   });
 });
+*/
 
 $("#div_confWindows").delegate('.bt_removeConfWindow', 'click', function() {
   $(this).closest('.confWindow').remove();
