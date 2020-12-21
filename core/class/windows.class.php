@@ -67,89 +67,32 @@ class windows extends eqLogic
 
     public function postSave()
     {
-        /*
-        // temperature_indoor
-        $info = $this->getCmd(null, 'temperature_indoor');
+        // window_action
+        $info = $this->getCmd(null, 'window_action');
         if (!is_object($info)) {
             $info = new windowsCmd();
-            $info->setLogicalId('temperature_indoor');
-            $info->setName(__('Température', __FILE__));
+            $info->setLogicalId('window_action');
+            $info->setName(__('Action', __FILE__));
             $info->setIsVisible(1);
-            $info->setIsHistorized(1);
+            $info->setIsHistorized(0);
             //$info->setTemplate('dashboard', 'line');
         }
         $info->setEqLogic_id($this->getId());
         $info->setType('info');
-        $info->setSubType('numeric');
-        $info->setUnite('°C');
-        $value = '';
-        preg_match_all("/#([0-9]*)#/", $this->getConfiguration('temperature_indoor'), $matches);
-        foreach ($matches[1] as $cmd_id) {
-            if (is_numeric($cmd_id)) {
-                $cmd = cmd::byId($cmd_id);
-                if (is_object($cmd) && $cmd->getType() == 'info') {
-                    $value .= '#' . $cmd_id . '#';
-                    break;
-                }
-            }
-        }
+        $info->setSubType('boolean');
+        // $info->setUnite('°C');
+        $value = false;
+        // preg_match_all("/#([0-9]*)#/", $this->getConfiguration('window_action'), $matches);
+        // foreach ($matches[1] as $cmd_id) {
+        //     if (is_numeric($cmd_id)) {
+        //         $cmd = cmd::byId($cmd_id);
+        //         if (is_object($cmd) && $cmd->getType() == 'info') {
+        //             $value .= '#' . $cmd_id . '#';
+        //             break;
+        //         }
+        //     }
+        // }
         $info->setValue($value);
-        $info->save();
-
-
-        // temperature_outdoor
-        $info = $this->getCmd(null, 'temperature_outdoor');
-        if (!is_object($info)) {
-            $info = new windowsCmd();
-            $info->setLogicalId('temperature_outdoor');
-            $info->setIsVisible(1);
-            $info->setIsHistorized(1);
-            $info->setName(__('Température extérieure', __FILE__));
-        }
-        $info->setEqLogic_id($this->getId());
-        $info->setType('info');
-        $info->setSubType('numeric');
-        $info->setUnite('°C');
-        $value = '';
-        preg_match_all("/#([0-9]*)#/", $this->getConfiguration('temperature_outdoor'), $matches);
-        foreach ($matches[1] as $cmd_id) {
-            if (is_numeric($cmd_id)) {
-                $cmd = cmd::byId($cmd_id);
-                if (is_object($cmd) && $cmd->getType() == 'info') {
-                    $value .= '#' . $cmd_id . '#';
-                    break;
-                }
-            }
-        }
-        $info->setValue($value);
-        //$info->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE_OUTDOOR');
-        $info->save();
-
-        // presence
-        $info = $this->getCmd(null, 'presence');
-        if (!is_object($info)) {
-            $info = new windowsCmd();
-            $info->setLogicalId('presence');
-            $info->setIsVisible(1);
-            $info->setIsHistorized(1);
-            $info->setName(__('Présence', __FILE__));
-        }
-        $info->setEqLogic_id($this->getId());
-        $info->setType('info');
-        $info->setSubType('binary');
-        $value = '';
-        preg_match_all("/#([0-9]*)#/", $this->getConfiguration('presence'), $matches);
-        foreach ($matches[1] as $cmd_id) {
-            if (is_numeric($cmd_id)) {
-                $cmd = cmd::byId($cmd_id);
-                if (is_object($cmd) && $cmd->getType() == 'info') {
-                    $value .= '#' . $cmd_id . '#';
-                    break;
-                }
-            }
-        }
-        $info->setValue($value);
-        //  $info->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE_OUTDOOR');
         $info->save();
 
         // refresh
@@ -163,8 +106,6 @@ class windows extends eqLogic
         $refresh->setType('action');
         $refresh->setSubType('other');
         $refresh->save();
-
-        */
     }
 
     public function preUpdate()
