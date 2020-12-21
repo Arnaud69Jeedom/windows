@@ -201,7 +201,7 @@ foreach (jeeObject::all() as $object) {
                                 </div>
                             </div>
 
-                            <label class="col-sm-1 control-label">{{durée}}</label>
+                            <label class="col-sm-1 control-label">{{Durée}}</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
                                     <input type="text" class="eqLogicAttr form-control tooltips"
@@ -209,7 +209,7 @@ foreach (jeeObject::all() as $object) {
                                 </div>
                             </div>
 
-                            <label class="col-sm-1 control-label">{{seuil}}</label>
+                            <label class="col-sm-1 control-label">{{Seuil}}</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
                                     <input type="text" class="eqLogicAttr form-control tooltips"
@@ -227,7 +227,7 @@ foreach (jeeObject::all() as $object) {
                                 </div>
                             </div>
 
-                            <label class="col-sm-1 control-label">{{durée}}</label>
+                            <label class="col-sm-1 control-label">{{Durée}}</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
                                     <input type="text" class="eqLogicAttr form-control tooltips"
@@ -235,7 +235,7 @@ foreach (jeeObject::all() as $object) {
                                 </div>
                             </div>
 
-                            <label class="col-sm-1 control-label">{{seuil}}</label>
+                            <label class="col-sm-1 control-label">{{Seuil}}</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
                                     <input type="text" class="eqLogicAttr form-control tooltips"
@@ -257,21 +257,6 @@ foreach (jeeObject::all() as $object) {
                     <div id="div_confWindows"></div>
                 </form>
             </div>
-
-            <!-- <div role="tabpanel" class="tab-pane" id="commandtab">
-                <br>
-                <table id="table_cmd" class="table table-bordered table-condensed">
-                    <thead>
-                        <tr>
-                            <th>{{Nom}}</th>
-                            <th>{{Configuration}}</th>
-                            <th>{{Action}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div> -->
         </div>
 
     </div>
