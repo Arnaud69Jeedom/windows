@@ -16,10 +16,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
         <div class="eqLogicThumbnailContainer">
             <div class="cursor eqLogicAction" data-action="add"
                 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-                <i class="fa fa-plus-circle" style="font-size : 6em;color:#94ca02;"></i>
+                <i class="fa fa-plus-circle" style="font-size : 6em;color:#00A9EC;"></i>
                 <br>
                 <span
-                    style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02">{{Ajouter}}</span>
+                    style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#00A9EC">{{Ajouter}}</span>
             </div>
             <div class="cursor eqLogicAction" data-action="gotoPluginConf"
                 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
