@@ -9,7 +9,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
 <div class="row row-overflow">
     <div class="col-xs-12 eqLogicThumbnailDisplay" style="padding-top: 5px; height: 420.25px; overflow: hidden auto;">
-        <legend><i class="fa fa-cog"></i> {{Gestion}}</legend>
+        <legend>
+            <i class="fa fa-cog"></i>
+            {{Gestion}}
+        </legend>
         <div class="eqLogicThumbnailContainer">
             <div class="cursor eqLogicAction" data-action="add"
                 style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
@@ -26,7 +29,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676">{{Configuration}}</span>
             </div>
         </div>
-        <legend><i class="fa fa-table"></i> {{Mes équipements}}</legend>
+        <legend>
+            <i class="fa fa-table"></i> {{Mes équipements}}
+        </legend>
         <input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic">
         <div class="eqLogicThumbnailContainer">
             <?php
@@ -42,19 +47,28 @@ foreach ($eqLogics as $eqLogic) {
         </div>
     </div>
 
-    <div class="col-lg-10 col-md-9 col-sm-8 eqLogic"
-        style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
-        <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i>
+    <div class="col-xs-12 eqLogic" style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
+        <a class="btn btn-success eqLogicAction pull-right" data-action="save">
+            <i class="fa fa-check-circle"></i>
             {{Sauvegarder}}</a>
-        <a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i>
+        <a class="btn btn-danger eqLogicAction pull-right" data-action="remove">
+            <i class="fa fa-minus-circle"></i>
             {{Supprimer}}</a>
-        <a class="btn btn-default eqLogicAction pull-right" data-action="configure"><i class="fa fa-cogs"></i>
+        <a class="btn btn-default eqLogicAction pull-right" data-action="configure">
+            <i class="fa fa-cogs"></i>
             {{Configuration avancée}}</a>
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab"
-                    data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
-            <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab"
-                    data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipement}}</a></li>
+            <li role="presentation">
+                <a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab"
+                    data-action="returnToThumbnailDisplay">
+                    <i class="fa fa-arrow-circle-left"></i>
+                </a>
+            </li>
+            <li role="presentation" class="active">
+                <a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab">
+                    <i class="fa fa-tachometer"></i> {{Equipement}}
+                </a>
+            </li>
             <!-- <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li> -->
         </ul>
         <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
@@ -120,7 +134,9 @@ foreach (jeeObject::all() as $object) {
                                     <input type="text" class="eqLogicAttr form-control tooltips"
                                         data-l1key="configuration" data-l2key="temperature_outdoor" data-concat="1" />
                                     <span class="input-group-btn">
-                                        <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
+                                        <a class="btn btn-default listCmdInfo">
+                                            <i class="fa fa-list-alt"></i>
+                                        </a>
                                     </span>
                                 </div>
                             </div>
@@ -133,7 +149,9 @@ foreach (jeeObject::all() as $object) {
                                     <input type="text" class="eqLogicAttr form-control tooltips"
                                         data-l1key="configuration" data-l2key="temperature_indoor" data-concat="1" />
                                     <span class="input-group-btn">
-                                        <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
+                                        <a class="btn btn-default listCmdInfo">
+                                            <i class="fa fa-list-alt"></i>
+                                        </a>
                                     </span>
                                 </div>
                             </div>
@@ -155,11 +173,12 @@ foreach (jeeObject::all() as $object) {
                     </fieldset>
                 </form>
 
-
-
-                <legend><i class="icon jeedom-fenetre-ferme"></i> {{Sonde fenêtre}}<a
-                        class="btn btn-success btn-xs pull-right" id="bt_addWindowEqLogic"><i
-                            class="fa fa-plus-circle"></i></a></legend>
+                <legend>
+                    <i class="icon jeedom-fenetre-ferme"></i> {{Sonde fenêtre}}
+                    <a class="btn btn-success btn-xs pull-right" id="bt_addWindowEqLogic">
+                        <i class="fa fa-plus">{{Ajouter}}</i>
+                    </a>
+                </legend>
                 <form class="form-horizontal">
                     <div id="div_confWindows"></div>
                 </form>
