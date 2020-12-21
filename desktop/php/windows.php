@@ -69,7 +69,6 @@ foreach ($eqLogics as $eqLogic) {
                     <i class="fa fa-tachometer"></i> {{Equipement}}
                 </a>
             </li>
-            <!-- <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li> -->
         </ul>
         <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
             <div role="tabpanel" class="tab-pane active" id="eqlogictab">
@@ -79,10 +78,10 @@ foreach ($eqLogics as $eqLogic) {
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{Nom de l'équipement}}</label>
                             <div class="col-sm-3">
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="id"
-                                    style="display : none;" />
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="name"
-                                    placeholder="{{Nom de l'équipement template}}" />
+                                <input type="text" class="eqLogicAttr form-control" style="display: none;"
+                                    data-l1key="id" />
+                                <input type="text" class="eqLogicAttr form-control"
+                                    placeholder="{{Nom de l'équipement template}}" data-l1key="name" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -113,10 +112,14 @@ foreach (jeeObject::all() as $object) {
                         <div class="form-group">
                             <label class="col-sm-3 control-label"></label>
                             <div class="col-sm-9">
-                                <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr"
-                                        data-l1key="isEnable" checked />{{Activer}}</label>
-                                <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr"
-                                        data-l1key="isVisible" checked />{{Visible}}</label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="eqLogicAttr" data-l1key="isEnable"
+                                        checked />{{Activer}}
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="eqLogicAttr" data-l1key="isVisible"
+                                        checked />{{Visible}}
+                                </label>
                             </div>
                         </div>
                     </fieldset>
@@ -124,7 +127,8 @@ foreach (jeeObject::all() as $object) {
 
                 <form class="form-horizontal">
                     <fieldset>
-                        <legend><i class="fa fa-thermometer-empty" aria-hidden="true"></i> {{Sonde de température}}
+                        <legend>
+                            <i class="fa fa-thermometer-empty" aria-hidden="true"></i> {{Sonde de température}}
                         </legend>
 
                         <div class="form-group">
@@ -164,8 +168,78 @@ foreach (jeeObject::all() as $object) {
                                     <input type="text" class="eqLogicAttr form-control tooltips"
                                         data-l1key="configuration" data-l2key="presence" data-concat="1" />
                                     <span class="input-group-btn">
-                                        <a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>
+                                        <a class="btn btn-default listCmdInfo">
+                                            <i class="fa fa-list-alt"></i>
+                                        </a>
                                     </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{Thermostat}}</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" class="eqLogicAttr form-control tooltips"
+                                        data-l1key="configuration" data-l2key="thermostat" data-concat="1" />
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-default listCmdInfo">
+                                            <i class="fa fa-list-alt"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{Température hiver}}</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="eqLogicAttr form-control tooltips"
+                                        data-l1key="configuration" data-l2key="temperature_winter" data-concat="1" />
+                                </div>
+                            </div>
+
+                            <label class="col-sm-1 control-label">{{durée}}</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="eqLogicAttr form-control tooltips"
+                                        data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
+                                </div>
+                            </div>
+
+                            <label class="col-sm-1 control-label">{{seuil}}</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="eqLogicAttr form-control tooltips"
+                                        data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{Température été}}</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="eqLogicAttr form-control tooltips"
+                                        data-l1key="configuration" data-l2key="temperature_summer" data-concat="1" />
+                                </div>
+                            </div>
+
+                            <label class="col-sm-1 control-label">{{durée}}</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="eqLogicAttr form-control tooltips"
+                                        data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
+                                </div>
+                            </div>
+
+                            <label class="col-sm-1 control-label">{{seuil}}</label>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="eqLogicAttr form-control tooltips"
+                                        data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
                                 </div>
                             </div>
                         </div>
@@ -175,7 +249,7 @@ foreach (jeeObject::all() as $object) {
 
                 <legend>
                     <i class="icon jeedom-fenetre-ferme"></i> {{Sonde fenêtre}}
-                    <a class="btn btn-success btn-xs pull-right" id="bt_addWindowEqLogic">
+                    <a class="btn btn-default btn-xs pull-right" id="bt_addWindowEqLogic">
                         <i class="fa fa-plus">{{Ajouter}}</i>
                     </a>
                 </legend>
