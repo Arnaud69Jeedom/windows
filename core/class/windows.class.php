@@ -66,7 +66,7 @@ class windows extends eqLogic
     }
 
     public function postSave()
-    {
+    {        
         // window_action
         $info = $this->getCmd(null, 'window_action');
         if (!is_object($info)) {
@@ -80,18 +80,10 @@ class windows extends eqLogic
         $info->setEqLogic_id($this->getId());
         $info->setType('info');
         $info->setSubType('boolean');
-        // $info->setUnite('°C');
-        $value = false;
-        // preg_match_all("/#([0-9]*)#/", $this->getConfiguration('window_action'), $matches);
-        // foreach ($matches[1] as $cmd_id) {
-        //     if (is_numeric($cmd_id)) {
-        //         $cmd = cmd::byId($cmd_id);
-        //         if (is_object($cmd) && $cmd->getType() == 'info') {
-        //             $value .= '#' . $cmd_id . '#';
-        //             break;
-        //         }
-        //     }
-        // }
+        $info->setSubType('binary');
+        $info->setDisplay('generic_type', 'GENERIC_INFO');
+
+        $value = false;        
         $info->setValue($value);
         $info->save();
 
@@ -169,10 +161,80 @@ class windowsCmd extends cmd
 
     public function execute($_options = array())
     {
-        log::add('windows', 'debug', 'test execute');
+        switch ($this->getLogicalId()) {				
+            case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
+         
+               
+                $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+        
+                log::add('windows', 'debug', __('temperature_indoor', __FILE__));
+                                
+                // température interieure
+                $temperature_indoor = $eqlogic->getConfiguration('temperature_indoor');                               
+                $temperature_indoor = str_replace('#', '', $temperature_indoor);
+                $temperature_indoor = cmd::byId($temperature_indoor)->execCmd();
+                
+                // température exterieure
+                $temperature_outdoor = $eqlogic->getConfiguration('temperature_outdoor');                               
+                $temperature_outdoor = str_replace('#', '', $temperature_outdoor);
+                $temperature_outdoor = cmd::byId($temperature_outdoor)->execCmd();
 
-        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
-        $eqlogic->checkAndUpdateCmd('action', 1);
+                // température hiver
+                $temperature_winter  = $eqlogic->getConfiguration('temperature_winter');                               
+                
+                // presence
+                $presence = $eqlogic->getConfiguration('presence');                               
+                $presence = str_replace('#', '', $presence);
+                $presence = cmd::byId($presence)->execCmd();
+
+                // fenetre
+                $windows = $eqlogic->getConfiguration('window');                
+                $isOpened = false;
+			    foreach ($windows as $window) {
+                    $window = str_replace('#', '', $window);
+                    $window = cmd::byId($window)->execCmd();
+                    $isOpened = $isOpened || $window;
+                    if ($isOpened) {
+                        break;
+                    }
+                }
+                
+
+                
+                log::add('windows', 'debug', 
+                    'ext:'.$temperature_outdoor
+                    .', int:'.$temperature_indoor
+                    .', seuil hiver:'.$temperature_winter
+                    .', presence:'.$presence
+                    .', isOpened:'.$isOpened);
+
+                if ($temperature_outdoor < $temperature_winter 
+                    && !$isOpened
+                    && $presence
+                    && $temperature_outdoor > $temperature_indoor)
+                {
+                    log::add('windows', 'debug', 'il faut ouvrir');
+                } 
+                
+                if ($temperature_outdoor < $temperature_winter
+                    && $isOpened
+                    && $presence
+                    && $temperature_outdoor < $temperature_indoor)
+                {
+                    log::add('windows', 'debug', 'c\'est bon, faut fermer');
+                }
+                
+        
+        
+        //       if ($temperature_indoor == "19") {
+        //            $eqlogic->checkAndUpdateCmd('window_action', 1);
+        //        } else {
+        //            $eqlogic->checkAndUpdateCmd('window_action', 0);
+        //        }
+
+            break;
+        }
+        
     }
 
     /*     * **********************Getteur Setteur*************************** */
