@@ -182,6 +182,10 @@ class windowsCmd extends cmd
                 // température hiver
                 $temperature_winter  = $eqlogic->getConfiguration('temperature_winter');                               
                 
+                // seuil hiver
+                $duration_winter = $eqlogic->getConfiguration('duration_winter');                               
+
+
                 // presence
                 $presence = $eqlogic->getConfiguration('presence');                               
                 $presence = str_replace('#', '', $presence);
@@ -194,12 +198,18 @@ class windowsCmd extends cmd
 			    foreach ($windows as $window) {
                     $window = str_replace('#', '', $window);
                     $cmd = cmd::byId($window);
-                    $window = cmd::byId($window)->execCmd();
-                    $isOpened = $isOpened || $window;
+                    $window = cmd::byId($window)->execCmd();                                       
 
-                    if ($window) {
-                        $lastDateValue = $cmd->getCollectDate();
-                        log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue);
+                    if ($window) {                        
+                        $lastDateValue = $cmd->getValueDate();
+                        $time = strtotime($lastDateValue);
+                        $interval = (time() - $time) / 60; // en minutes
+                        log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue.', timediff:'.$interval);
+
+                        if ($interval >  $duration_winter) {
+                            log::add('windows', 'debug', 'ouvert depuis plus de :'.$duration_winter);
+                            $isOpened = $isOpened || $window;
+                        }
                     }
                 }
                 
