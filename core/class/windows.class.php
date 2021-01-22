@@ -181,10 +181,21 @@ class windowsCmd extends cmd
 
                 // température hiver
                 $temperature_winter  = $eqlogic->getConfiguration('temperature_winter');                               
-                
-                // seuil hiver
+                                
+                // durées
                 $duration_winter = $eqlogic->getConfiguration('duration_winter');                               
+                $duration_summer = $eqlogic->getConfiguration('duration_summer'); 
 
+                $dateTime = new DateTime('NOW');
+                $dayOfTheYear = $dateTime->format('z');
+                if($dayOfTheYear < 80 || $dayOfTheYear > 356){
+                    $duration = $duration_winter;
+                } else {
+                    $duration = $duration_summer;
+                }
+                unset($dateTime);
+                unset($duration_winter);
+                unset($duration_summer);
 
                 // presence
                 $presence = $eqlogic->getConfiguration('presence');                               
@@ -193,7 +204,7 @@ class windowsCmd extends cmd
 
                 // fenetre
                 $windows = $eqlogic->getConfiguration('window');                
-                $isOpened = false;
+                $isOpened = 0;
                 
 			    foreach ($windows as $window) {
                     $window = str_replace('#', '', $window);
@@ -206,8 +217,8 @@ class windowsCmd extends cmd
                         $interval = (time() - $time) / 60; // en minutes
                         log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue.', timediff:'.$interval);
 
-                        if ($interval >  $duration_winter) {
-                            log::add('windows', 'debug', 'ouvert depuis plus de :'.$duration_winter);
+                        if ($interval >  $duration) {
+                            log::add('windows', 'debug', 'ouvert depuis plus de :'.$duration);
                             $isOpened = $isOpened || $window;
                         }
                     }
