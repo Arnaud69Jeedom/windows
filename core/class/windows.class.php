@@ -190,17 +190,23 @@ class windowsCmd extends cmd
                 // fenetre
                 $windows = $eqlogic->getConfiguration('window');                
                 $isOpened = false;
+                
 			    foreach ($windows as $window) {
                     $window = str_replace('#', '', $window);
+                    $cmd = cmd::byId($window);
                     $window = cmd::byId($window)->execCmd();
                     $isOpened = $isOpened || $window;
-                    if ($isOpened) {
-                        break;
+
+                    if ($window) {
+                        $lastDateValue = $cmd->getCollectDate();
+                        log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue);
                     }
                 }
                 
+                // window_action                
+                $window_action = $eqlogic->getCmd(null, 'window_action');
+                $window_action->setValue(true);
 
-                
                 log::add('windows', 'debug', 
                     'ext:'.$temperature_outdoor
                     .', int:'.$temperature_indoor
@@ -208,19 +214,23 @@ class windowsCmd extends cmd
                     .', presence:'.$presence
                     .', isOpened:'.$isOpened);
 
+                // Hiver, fenetre fermée
                 if ($temperature_outdoor < $temperature_winter 
                     && !$isOpened
                     && $presence
                     && $temperature_outdoor > $temperature_indoor)
                 {
+                    $window_action->setValue(false);
                     log::add('windows', 'debug', 'il faut ouvrir');
                 } 
                 
+                // Hiver, fenetre ouverte
                 if ($temperature_outdoor < $temperature_winter
                     && $isOpened
                     && $presence
                     && $temperature_outdoor < $temperature_indoor)
                 {
+                    $window_action->setValue(false);
                     log::add('windows', 'debug', 'c\'est bon, faut fermer');
                 }
                 
