@@ -245,6 +245,13 @@ foreach (jeeObject::all() as $object) {
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{Notifier}}</label>
+                            <div class="col-sm-2">							
+                                <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="notifyifko"/>
+                            </div>                            
+                        </div>
 
                     </fieldset>
                 </form>
@@ -255,6 +262,7 @@ foreach (jeeObject::all() as $object) {
                         <i class="fa fa-plus">{{Ajouter}}</i>
                     </a>
                 </legend>
+                
                 <form class="form-horizontal">
                     <div id="div_confWindows"></div>
                 </form>

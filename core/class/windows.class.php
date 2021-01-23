@@ -242,6 +242,7 @@ class windowsCmd extends cmd
                     && $temperature_outdoor > $temperature_indoor)
                 {
                     $window_action->setValue(false);
+
                     log::add('windows', 'debug', 'il faut ouvrir');
                 } 
                 
@@ -255,7 +256,8 @@ class windowsCmd extends cmd
                     log::add('windows', 'debug', 'c\'est bon, faut fermer');
                 }
                 
-        
+                message::add('windows', __('test', __FILE__), '', '' . $this->getId());
+
         
         //       if ($temperature_indoor == "19") {
         //            $eqlogic->checkAndUpdateCmd('window_action', 1);
