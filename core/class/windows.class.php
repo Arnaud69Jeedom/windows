@@ -203,7 +203,7 @@ class windowsCmd extends cmd
                 $presence = str_replace('#', '', $presence);
                 $presence = cmd::byId($presence)->execCmd();
 
-                // fenetre
+                // fenetres
                 $windows = $eqlogic->getConfiguration('window');                
                 $isOpened = false;
                 
@@ -212,11 +212,10 @@ class windowsCmd extends cmd
                     $cmd = cmd::byId($window);
                     $window = cmd::byId($window)->execCmd();                                       
 
-                    // inversion 1 = fermé
+                    // 1 = fermé
                     $isWindowOpened = $window == 0; 
 
                     log::add('windows', 'debug', $cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$window);
-
 
                     if ($isWindowOpened) {                        
                         // si ouvert
@@ -235,10 +234,11 @@ class windowsCmd extends cmd
                 
                 // window_action                
                 $window_action = $eqlogic->getCmd(null, 'window_action');
-                log::add('windows', 'debug', 'set(1)');
-                $window_action->setValue(1);
 
+                log::add('windows', 'debug', 'name='.$window_action->getName());
+                $window_action->event(1);
 
+                // Log de résumé
                 $value = $isOpened ? 'true' : 'false';
                 log::add('windows', 'debug', 
                     'ext:'.$temperature_outdoor
@@ -256,9 +256,8 @@ class windowsCmd extends cmd
                     && $temperature_outdoor > $temperature_indoor)
                 {
                     log::add('windows', 'info', 'il faut ouvrir');
-
-                    log::add('windows', 'debug', 'set(0)');
-                    $window_action->setValue(0);
+                    
+                    $window_action->event(0);
                 } 
                 
                 // Hiver, fenetre ouverte
@@ -269,18 +268,10 @@ class windowsCmd extends cmd
                 {
                     log::add('windows', 'info', 'c\'est bon, faut fermer');
 
-                    log::add('windows', 'debug', 'set(0)');
-                    $window_action->setValue(0);
+                    $window_action->event(0);
                 }
                 
                 message::add('windows', __('test', __FILE__), '', '' . $this->getId());
-
-        
-        //       if ($temperature_indoor == "19") {
-        //            $eqlogic->checkAndUpdateCmd('window_action', 1);
-        //        } else {
-        //            $eqlogic->checkAndUpdateCmd('window_action', 0);
-        //        }
 
             break;
         }
