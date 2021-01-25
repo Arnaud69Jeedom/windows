@@ -167,8 +167,9 @@ class windowsCmd extends cmd
                
                 $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
         
-                log::add('windows', 'debug', __('temperature_indoor', __FILE__));
-                                
+                log::add('windows', 'info', '**************************', __FILE__);
+                log::add('windows', 'info', $eqlogic->getName(), __FILE__);
+
                 // température interieure
                 $temperature_indoor = $eqlogic->getConfiguration('temperature_indoor');                               
                 $temperature_indoor = str_replace('#', '', $temperature_indoor);
@@ -204,36 +205,49 @@ class windowsCmd extends cmd
 
                 // fenetre
                 $windows = $eqlogic->getConfiguration('window');                
-                $isOpened = 0;
+                $isOpened = false;
                 
 			    foreach ($windows as $window) {
                     $window = str_replace('#', '', $window);
                     $cmd = cmd::byId($window);
                     $window = cmd::byId($window)->execCmd();                                       
 
-                    if ($window) {                        
+                    // inversion 1 = fermé
+                    $isWindowOpened = $window == 0; 
+
+                    log::add('windows', 'debug', $cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$window);
+
+
+                    if ($isWindowOpened) {                        
+                        // si ouvert
                         $lastDateValue = $cmd->getValueDate();
                         $time = strtotime($lastDateValue);
                         $interval = (time() - $time) / 60; // en minutes
-                        log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue.', timediff:'.$interval);
 
+                        log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue.' windows:'.$window.', timediff:'.$interval);
+                        
                         if ($interval >  $duration) {
                             log::add('windows', 'debug', 'ouvert depuis plus de :'.$duration);
-                            $isOpened = $isOpened || $window;
+                            $isOpened = $isOpened || $isWindowOpened;
                         }
                     }
                 }
                 
                 // window_action                
                 $window_action = $eqlogic->getCmd(null, 'window_action');
-                $window_action->setValue(true);
+                log::add('windows', 'debug', 'set(1)');
+                $window_action->setValue(1);
 
+
+                $value = $isOpened ? 'true' : 'false';
                 log::add('windows', 'debug', 
                     'ext:'.$temperature_outdoor
                     .', int:'.$temperature_indoor
                     .', seuil hiver:'.$temperature_winter
                     .', presence:'.$presence
-                    .', isOpened:'.$isOpened);
+                    .', isOpened:'. $value
+                );
+                unset($value);
 
                 // Hiver, fenetre fermée
                 if ($temperature_outdoor < $temperature_winter 
@@ -241,9 +255,10 @@ class windowsCmd extends cmd
                     && $presence
                     && $temperature_outdoor > $temperature_indoor)
                 {
-                    $window_action->setValue(false);
+                    log::add('windows', 'info', 'il faut ouvrir');
 
-                    log::add('windows', 'debug', 'il faut ouvrir');
+                    log::add('windows', 'debug', 'set(0)');
+                    $window_action->setValue(0);
                 } 
                 
                 // Hiver, fenetre ouverte
@@ -252,8 +267,10 @@ class windowsCmd extends cmd
                     && $presence
                     && $temperature_outdoor < $temperature_indoor)
                 {
-                    $window_action->setValue(false);
-                    log::add('windows', 'debug', 'c\'est bon, faut fermer');
+                    log::add('windows', 'info', 'c\'est bon, faut fermer');
+
+                    log::add('windows', 'debug', 'set(0)');
+                    $window_action->setValue(0);
                 }
                 
                 message::add('windows', __('test', __FILE__), '', '' . $this->getId());
