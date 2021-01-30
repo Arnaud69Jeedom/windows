@@ -29,10 +29,19 @@ class windows extends eqLogic
 
     /*
      * Fonction exécutée automatiquement toutes les minutes par Jeedom
+     * */
       public static function cron() {
-
+        foreach (eqLogic::byType(__CLASS__, true) as $window) {
+            if ($window->getIsEnable() == 1) {
+				$cmd = $window->getCmd(null, 'refresh');
+				if (!is_object($cmd)) {
+					continue; 
+				}
+				$cmd->execCmd();
+			}
+          }
       }
-     */
+     
 
 
     /*
