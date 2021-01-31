@@ -77,10 +77,13 @@ $(".eqLogic").delegate(".listCmdInfo", 'click', function () {
   });
 });
 
+// ***** Windows ****************
+/**
+ * Bouton Ajout d'une ouverture
+ */
 $('#bt_addWindowEqLogic').on('click', function () {
   addConfWindows({});
 });
-
 
 $('#bt_addWindowCmd').on('click', function() {
   addCmdToTable({
@@ -89,7 +92,6 @@ $('#bt_addWindowCmd').on('click', function() {
     }
   });
 });
-
 
 $("#div_confWindows").delegate('.bt_removeConfWindow', 'click', function () {
   $(this).closest('.confWindow').remove();
@@ -103,7 +105,7 @@ function addConfWindows(_window) {
   var div = '<div class="confWindow ' + $('.eqLogicAttr[data-l1key=configuration][data-l2key=window]').value() + '">';
 
   div += '<div class="form-group">';
-  div += '<label class="col-sm-2 control-label">{{Sonde fenêtre}}</label>';
+  div += '<label class="col-sm-2 control-label">{{Ouverture}}</label>';
   div += '<div class="col-sm-9">';
   div += '<div class="input-group">';
   div += '<input type="text" class="eqLogicAttr form-control confWindowAttr tooltips" data-l1key="configuration" data-l2key="window"  data-concat="1"/>';
@@ -121,6 +123,49 @@ function addConfWindows(_window) {
   $('#div_confWindows').append(div);
   $('#div_confWindows').find('.confWindow:last').setValues(_window, '.confWindowAttr');
 }
+
+
+// **** Action ************
+/**
+ * Bouton Ajout d'une action
+ */
+$('#bt_addActionEqLogic').on('click', function () {
+  addConfActions({});
+});
+
+$("#div_confActions").delegate('.bt_removeConAction', 'click', function () {
+  $(this).closest('.confAction').remove();
+});
+
+function addConfActions(_action) {
+  if (!isset(_action)) {
+    _action = {};
+  }
+  console.log("addConfActions", _action);
+  var div = '<div class="confAction ' + $('.eqLogicAttr[data-l1key=configuration][data-l2key=window]').value() + '">';
+
+  div += '<div class="form-group">';
+  div += '<label class="col-sm-2 control-label">{{Action}}</label>';
+  div += '<div class="col-sm-9">';
+  div += '<div class="input-group">';
+  div += '<input type="text" class="eqLogicAttr form-control confActionAttr tooltips" data-l1key="configuration" data-l2key="action"  data-concat="1"/>';
+  div += '<span class="input-group-btn">';
+  div += '<a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>';
+  div += '</span>';
+  div += '</div>';
+  div += '</div>';
+  div += '<div class="col-sm-1">';
+  div += '<i class="fa fa-minus-circle pull-right cursor bt_removeConfAction"></i>';
+  div += '</div>';
+  div += '</div>';
+
+  div += '</div>';
+  $('#div_confActions').append(div);
+  $('#div_confActions').find('.confAtion:last').setValues(_action, '.confActionAttr');
+}
+
+
+
 
 function saveEqLogic(_eqLogic) {
   if (!isset(_eqLogic.configuration)) {
@@ -145,3 +190,13 @@ function printEqLogic(_eqLogic) {
     }
   }
 }
+
+// Sondes triables
+$("#div_confWindows").sortable({
+  axis: "y",
+  cursor: "move",
+  items: ".confWindow",
+  placeholder: "ui-state-highlight",
+  tolerance: "intersect",
+  forcePlaceholderSize: true
+});

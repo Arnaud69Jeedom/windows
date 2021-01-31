@@ -69,6 +69,12 @@ foreach ($eqLogics as $eqLogic) {
                     <i class="fa fa-tachometer"></i> {{Equipement}}
                 </a>
             </li>
+            <li role="presentation"><a href="#sondetab" aria-controls="profile" role="tab" data-toggle="tab"><i
+                        class="fa fa-thermometer-empty"></i> {{Sondes}}</a></li>
+            <li role="presentation"><a href="#configureWindowstab" aria-controls="profile" role="tab" data-toggle="tab"><i
+                        class="fa jeedom-fenetre-ouverte"></i> {{Ouvertures}}</a></li>
+            <li role="presentation"><a href="#actiontab" aria-controls="profile" role="tab" data-toggle="tab"><i
+                        class="fa fa-list-alt"></i> {{Actions}}</a></li>
             <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i
                         class="fa fa-list-alt"></i> {{Commandes}}</a></li>
         </ul>
@@ -126,7 +132,10 @@ foreach (jeeObject::all() as $object) {
                         </div>
                     </fieldset>
                 </form>
+            </div>
 
+            <div role="tabpanel" class="tab-pane active" id="sondetab">
+                <br />
                 <form class="form-horizontal">
                     <fieldset>
                         <legend>
@@ -195,7 +204,7 @@ foreach (jeeObject::all() as $object) {
 
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">{{Température hiver}}</label>
+                            <label class="col-sm-2 control-label">{{Température hiver (°C)}}</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
                                     <input type="text" class="eqLogicAttr form-control tooltips"
@@ -221,7 +230,7 @@ foreach (jeeObject::all() as $object) {
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">{{Température été}}</label>
+                            <label class="col-sm-2 control-label">{{Température été (°C)}}</label>
                             <div class="col-sm-2">
                                 <div class="input-group">
                                     <input type="text" class="eqLogicAttr form-control tooltips"
@@ -255,16 +264,37 @@ foreach (jeeObject::all() as $object) {
 
                     </fieldset>
                 </form>
+            </div>
 
-                <legend>
-                    <i class="icon jeedom-fenetre-ferme"></i> {{Sonde fenêtre}}
-                    <a class="btn btn-default btn-xs pull-right" id="bt_addWindowEqLogic">
-                        <i class="fa fa-plus">{{Ajouter}}</i>
-                    </a>
-                </legend>
+            <div role="tabpanel" class="tab-pane" id="configureWindowstab">
+                <br />
+                
+                <a class="btn btn-success addWindow pull-right" id="bt_addWindowEqLogic"
+                    data-type="failureActuator" 
+                    style="position: relative;top: -7px;">
+                    <i class="fas fa-plus-circle"></i>{{Ajouter une ouverture}}
+                </a>
+                <br />
+                <br />
                 
                 <form class="form-horizontal">
                     <div id="div_confWindows"></div>
+                </form>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="actiontab">
+            <br />
+                
+                <a class="btn btn-success addAction pull-right" id="bt_addActionEqLogic"
+                    data-type="failureActuator" 
+                    style="position: relative;top: -7px;">
+                    <i class="fas fa-plus-circle"></i>{{Ajouter une action}}
+                </a>
+                <br />
+                <br />
+                
+                <form class="form-horizontal">
+                    <div id="div_confActions"></div>
                 </form>
             </div>
 
