@@ -77,236 +77,217 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <div role="tabpanel" class="tab-pane active" id="eqlogictab">
                 <!-- Partie gauche de l'onglet "Equipements" -->
 				<!-- Paramètres généraux de l'équipement -->
-                <form class="form-horizontal">
-                    <fieldset>
-                        <div class="col-lg-7">
-                            <legend><i class="fas fa-wrench"></i> {{Général}}</legend>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Nom de l'équipement}}</label>
-                                <div class="col-sm-7">
-                                    <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;"/>
-                                    <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement}}"/>
+                <br>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <form class="form-horizontal">
+                            <fieldset>                        
+                                <legend><i class="fas fa-wrench"></i> {{Général}}</legend>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Nom de l'équipement}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;"/>
+                                        <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement}}"/>
+                                    </div>
+                                </div>                       
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Objet parent}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
+                                            <option value="">{{Aucun}}</option>
+                                            <?php
+                                            $options = '';
+                                            foreach ((jeeObject::buildTree(null, false)) as $object) {
+                                                $options .= '<option value="' . $object->getId() . '">' . str_repeat('&nbsp;&nbsp;', $object->getConfiguration('parentNumber')) . $object->getName() . '</option>';
+                                            }
+                                            echo $options;
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>                       
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Objet parent}}</label>
-                                <div class="col-sm-7">
-                                    <select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
-                                        <option value="">{{Aucun}}</option>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Catégorie}}</label>
+                                    <div class="col-sm-9">
                                         <?php
-                                        $options = '';
-                                        foreach ((jeeObject::buildTree(null, false)) as $object) {
-                                            $options .= '<option value="' . $object->getId() . '">' . str_repeat('&nbsp;&nbsp;', $object->getConfiguration('parentNumber')) . $object->getName() . '</option>';
+                                        foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
+                                            echo '<label class="checkbox-inline">';
+                                            echo '<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="' . $key . '" />' . $value['name'];
+                                            echo '</label>';
                                         }
-                                        echo $options;
                                         ?>
-                                    </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Catégorie}}</label>
-                                <div class="col-sm-9">
-                                    <?php
-                                    foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
-                                        echo '<label class="checkbox-inline">';
-                                        echo '<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="' . $key . '" />' . $value['name'];
-                                        echo '</label>';
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Options}}</label>
-                                <div class="col-sm-7">
-                                    <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked />{{Activer}}</label>
-                                    <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked />{{Visible}}</label>
-                                </div>
-                            </div>
-                            <br>
-
-							<!-- Champ de saisie du cron d'auto-actualisation + assistant cron -->
-							<!-- La fonction cron de la classe du plugin doit contenir le code prévu pour que ce champ soit fonctionnel -->
-							<div class="form-group">
-								<label class="col-sm-3 control-label">{{Auto-actualisation}}
-									<sup><i class="fas fa-question-circle tooltips" title="{{Fréquence de rafraîchissement de l'équipement}}"></i></sup>
-								</label>
-								<div class="col-sm-7">
-									<div class="input-group">
-										<input type="text" class="eqLogicAttr form-control roundedLeft" data-l1key="configuration" data-l2key="autorefresh" placeholder="{{Cliquer sur ? pour afficher l'assistant cron}}"/>
-										<span class="input-group-btn">
-											<a class="btn btn-default cursor jeeHelper roundedRight" data-helper="cron" title="Assistant cron">
-												<i class="fas fa-question-circle"></i>
-											</a>
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<!-- Partie droite de l'onglet "Équipement" -->
-						<!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
-						<div class="col-lg-5">
-							<legend><i class="fas fa-info"></i> {{Informations}}</legend>
-							<div class="form-group">
-								<div class="text-center">
-									<img name="icon_visu" src="<?= $plugin->getPathImgIcon(); ?>" style="max-width:160px;"/>
-								</div>
-							</div>
-                        </div>
-                    </fieldset>
-                </form>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Options}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked />{{Activer}}</label>
+                                        <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked />{{Visible}}</label>
+                                    </div>
+                                </div>                                                                                                                       
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
                 <hr>
             </div><!-- /.tabpanel #eqlogictab-->
 
+            <!-- Onglet Sonde -->
             <div role="tabpanel" class="tab-pane" id="sondetab">
-                <form class="form-horizontal">
-                    <fieldset>
-                        <div class="col-lg-7">
-                            <legend><i class="fas fa-thermometer-empty" aria-hidden="true"></i> {{Sonde de température}}</legend>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Température extérieure}}</label>
-                                <div class="col-sm-7">
-                                    <div class="input-group">
-                                        <input type="text" class="eqLogicAttr form-control"
-                                            data-l1key="configuration" data-l2key="temperature_outdoor" data-concat="1" />
-                                        <span class="input-group-btn">
-                                            <a class="btn btn-default listCmdInfo">
-                                                <i class="fa fa-list-alt"></i>
-                                            </a>
-                                        </span>
+                <br>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <legend><i class="fas fa-thermometer-empty" aria-hidden="true"></i> {{Sonde de température}}</legend>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Température extérieure}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control"
+                                                data-l1key="configuration" data-l2key="temperature_outdoor" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fas fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Température intérieure}}</label>
-                                <div class="col-sm-7">
-                                    <div class="input-group">
-                                        <input type="text" class="eqLogicAttr form-control"
-                                            data-l1key="configuration" data-l2key="temperature_indoor" data-concat="1" />
-                                        <span class="input-group-btn">
-                                            <a class="btn btn-default listCmdInfo">
-                                                <i class="fa fa-list-alt"></i>
-                                            </a>
-                                        </span>
+                            
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Température intérieure}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control"
+                                                data-l1key="configuration" data-l2key="temperature_indoor" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fas fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Présence}}</label>
-                                <div class="col-sm-7">
-                                    <div class="input-group">
-                                        <input type="text" class="eqLogicAttr form-control tooltips"
-                                            data-l1key="configuration" data-l2key="presence" data-concat="1" />
-                                        <span class="input-group-btn">
-                                            <a class="btn btn-default listCmdInfo">
-                                                <i class="fa fa-list-alt"></i>
-                                            </a>
-                                        </span>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Présence}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="presence" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fa fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Thermostat}}</label>
-                                <div class="col-sm-7">
-                                    <div class="input-group">
-                                        <input type="text" class="eqLogicAttr form-control tooltips"
-                                            data-l1key="configuration" data-l2key="thermostat" data-concat="1" />
-                                        <span class="input-group-btn">
-                                            <a class="btn btn-default listCmdInfo">
-                                                <i class="fa fa-list-alt"></i>
-                                            </a>
-                                        </span>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Thermostat}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="thermostat" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fa fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">{{Température hiver (°C)}}</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input type="text" class="eqLogicAttr form-control tooltips"
-                                        data-l1key="configuration" data-l2key="temperature_winter" data-concat="1" />
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Température hiver (°C)}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="temperature_winter" data-concat="1" />
+                                        </div>
+                                    </div>
+
+                                    <label class="col-sm-1 control-label">{{Durée}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
+                                        </div>
+                                    </div>
+
+                                    <label class="col-sm-1 control-label">{{Seuil}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <label class="col-sm-1 control-label">{{Durée}}</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input type="text" class="eqLogicAttr form-control tooltips"
-                                        data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
-                                </div>
-                            </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Température été (°C)}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="temperature_summer" data-concat="1" />
+                                        </div>
+                                    </div>
 
-                            <label class="col-sm-1 control-label">{{Seuil}}</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input type="text" class="eqLogicAttr form-control tooltips"
-                                        data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
-                                </div>
-                            </div>
-                        </div>
+                                    <label class="col-sm-1 control-label">{{Durée}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
+                                        </div>
+                                    </div>
 
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">{{Température été (°C)}}</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input type="text" class="eqLogicAttr form-control tooltips"
-                                        data-l1key="configuration" data-l2key="temperature_summer" data-concat="1" />
+                                    <label class="col-sm-1 control-label">{{Seuil}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <label class="col-sm-1 control-label">{{Durée}}</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input type="text" class="eqLogicAttr form-control tooltips"
-                                        data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Notifier}}</label>
+                                    <div class="col-sm-2">							
+                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="notifyifko"/>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <label class="col-sm-1 control-label">{{Seuil}}</label>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input type="text" class="eqLogicAttr form-control tooltips"
-                                        data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">{{Notifier}}</label>
-                            <div class="col-sm-2">							
-                                <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="notifyifko"/>
-                            </div>                            
-                        </div>
-                        </div>
-                    </fieldset>
-                </form>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <hr>
             </div><!-- /.tabpanel #sondetab-->
 
             <div role="tabpanel" class="tab-pane" id="configureWindowstab">
-                <br />
-                
-                <a class="btn btn-success addWindow pull-right" id="bt_addWindowEqLogic"
-                    data-type="failureActuator" 
-                    style="position: relative;top: -7px;">
-                    <i class="fas fa-plus-circle"></i>{{Ajouter une ouverture}}
-                </a>
-                <br />
-                <br />
-                
-                <form class="form-horizontal">
-                <fieldset>
-                    <div class="col-lg-7">
-                        <legend><i class="fas fa-thermometer-empty" aria-hidden="true"></i> {{Ouvertures}}</legend>
-                        <div id="div_confWindows"></div>
-                    </div>
-                </form>
+                <br>              
+                    <form class="form-horizontal">
+                        <fieldset>                                
+                            <legend><i class="fas fa-thermometer-empty" aria-hidden="true"></i> {{Ouvertures}}
+                                <a class="btn btn-default btn-xs pull-right" 
+                                    id="bt_addWindowEqLogic"
+                                    data-type="failureActuator" 
+                                    style="margin-right:15px;">
+                                    <i class="fas fa-plus"></i> {{Ajouter}}
+                                </a>
+                            </legend>                            
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div id="div_confWindows"></div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>                  
+                <hr>
             </div><!-- /.tabpanel #configureWindowstab-->
 
+            <!-- Onglet Action -->
             <div role="tabpanel" class="tab-pane" id="actiontab">
             <br />
                 
@@ -323,17 +304,15 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 </form>
             </div>
 
-
 			<!-- Onglet des commandes de l'équipement -->
             <div role="tabpanel" class="tab-pane" id="commandtab">
                 <br/>
                 <div class="table-responsive">
                     <table id="table_cmd" class="table table-bordered table-condensed">
                         <thead>
-                            <tr>
-                                <th>{{Id}}</th>
+                            <tr>                                
                                 <th>{{Nom}}</th>
-                                <th>{{Configuration}}</th>
+                                <th>{{Options}}</th>
                                 <th>{{Action}}</th>
                             </tr>
                         </thead>
