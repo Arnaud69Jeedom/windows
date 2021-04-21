@@ -31,6 +31,8 @@ class windows extends eqLogic
      * Fonction exécutée automatiquement toutes les minutes par Jeedom
      * */
       public static function cron() {
+        log::add('windows', 'debug', 'cron');
+
         foreach (eqLogic::byType(__CLASS__, true) as $window) {
             if ($window->getIsEnable() == 1) {
 				$cmd = $window->getCmd(null, 'refresh');
@@ -77,6 +79,9 @@ class windows extends eqLogic
     public function postSave()
     {        
         // window_action
+        
+        log::add('windows', 'debug', 'postSave');
+
         $info = $this->getCmd(null, 'window_action');
         if (!is_object($info)) {
             $info = new windowsCmd();
@@ -100,13 +105,16 @@ class windows extends eqLogic
         $refresh = $this->getCmd(null, 'refresh');
         if (!is_object($refresh)) {
             $refresh = new windowsCmd();
+            $refresh->setLogicalId('refresh');
+            $refresh->setIsVisible(1);
             $refresh->setName(__('Rafraichir', __FILE__));
+            $refresh->setOrder(0);
         }
         $refresh->setEqLogic_id($this->getId());
-        $refresh->setLogicalId('refresh');
         $refresh->setType('action');
         $refresh->setSubType('other');
         $refresh->save();
+        
     }
 
     public function preUpdate()
@@ -170,14 +178,15 @@ class windowsCmd extends cmd
 
     public function execute($_options = array())
     {
+        log::add('windows', 'debug', 'execute', __FILE__);
+
         switch ($this->getLogicalId()) {				
             case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
          
                
                 $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
         
-                log::add('windows', 'info', '**************************', __FILE__);
-                log::add('windows', 'info', $eqlogic->getName(), __FILE__);
+                log::add('windows', 'debug', $eqlogic->getName(), __FILE__);
 
                 // température interieure
                 $temperature_indoor = $eqlogic->getConfiguration('temperature_indoor');                               
