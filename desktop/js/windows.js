@@ -154,9 +154,15 @@ function addConfActions(_action) {
   div += '<label class="col-sm-2 control-label">{{Action}}</label>';
   div += '<div class="col-sm-9">';
   div += '<div class="input-group">';
-  div += '<input type="text" class="eqLogicAttr form-control confActionAttr tooltips" data-l1key="configuration" data-l2key="action"  data-concat="1"/>';
+  // div += '<input type="text" class="eqLogicAttr form-control confActionAttr tooltips" data-l1key="configuration" data-l2key="action"  data-concat="1"/>';
+  div += '<input class="expressionAttr confActionAttr form-control input-sm cmdAction" data-l1key="cmd" data-type="watchdogAction" />';
+
   div += '<span class="input-group-btn">';
-  div += '<a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>';
+  
+  div += '<a class="btn btn-default btn-sm listAction" data-type="confAction" title="{{Sélectionner un mot-clé}}"><i class="fa fa-tasks"></i></a>';
+  div += '<a class="btn btn-default btn-sm listCmdAction" data-type="confAction"><i class="fa fa-list-alt"></i></a>';
+
+  // div += '<a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>';
   div += '</span>';
   div += '</div>';
   div += '</div>';
@@ -167,12 +173,41 @@ function addConfActions(_action) {
 
   div += '</div>';
   $('#div_confActions').append(div);
-  $('#div_confActions').find('.confAtion:last').setValues(_action, '.confActionAttr');
+  $('#div_confActions').find('.confAction:last').setValues(_action, '.confActionAttr');
 }
 
+$(".eqLogic").delegate(".listCmdAction", 'click', function () {
+
+  //console.log("--------- listCmdAction");
+      var type = $(this).attr('data-type');
+      var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=cmd]');
+   //   var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=configuration][data-l2key=commande]');
+      jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
+          el.value(result.human);
+          jeedom.cmd.displayActionOption(el.value(), '', function (html) {
+              el.closest('.' + type).find('.actionOptions').html(html);
+              taAutosize();
+          });
+      });
+  });
+
+$(".eqLogic").delegate(".listAction", 'click', function () {
+	//console.log("--------- listAction");
+  var type = $(this).attr('data-type');
+  var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=cmd]');
+	//var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=configuration][data-l2key=commande]');
+
+  jeedom.getSelectActionModal({}, function (result) {
+    el.value(result.human);
+    jeedom.cmd.displayActionOption(el.value(), '', function (html) {
+      el.closest('.' + type).find('.actionOptions').html(html);
+      taAutosize();
+  });
+});
+});
 
 
-
+/*** Save ***/
 function saveEqLogic(_eqLogic) {
   if (!isset(_eqLogic.configuration)) {
     _eqLogic.configuration = {};
