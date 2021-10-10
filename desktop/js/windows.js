@@ -165,33 +165,11 @@ function addConfActions(_action) {
   div += '</div>';
   div += '</div>';
   div += '<div class="col-sm-7 actionOptions">';
-  //  div += jeedom.cmd.displayActionOption(init(_action.cmd, ''), _action.options);
+  div += jeedom.cmd.displayActionOption(init(_action.cmd, ''), _action.options);
   div += '</div>';
   div += '</div>';
   $('#div_confActions').append(div);
   $('#div_confActions').find('.confAction:last').setValues(_action, '.confActionAttr');
-  
-  /* from thermostat */
-//   var div = '<div class="confAction ' + $('.eqLogicAttr[data-l1key=configuration][data-l2key=window]').value() + '">';
-//   div += '<div class="form-group ">';
-//   div += '<label class="col-sm-1 control-label">{{Action}}</label>';
-//   div += '<div class="col-sm-4">';
-//   div += '<div class="input-group">';
-//   div += '<span class="input-group-btn">';
-//   div += '<a class="btn btn-default bt_removeConfAction roundedLeft" data-type=""><i class="fas fa-minus-circle"></i></a>';
-//   div += '</span>';
-//   div += '<input class="expressionAttr confActionAttr form-control cmdAction" data-l1key="cmd" data-type="" />';
-//   div += '<span class="input-group-btn">';
-//   div += '<a class="btn btn-default listCmdInfo roundedRight" data-type=""><i class="fas fa-list-alt"></i></a>';
-//   div += '</span>';
-//   div += '</div>';
-//   div += '</div>';
-//   div += '<div class="col-sm-7 actionOptions">';
-// //  div += jeedom.cmd.displayActionOption(init(_action.cmd, ''), _action.options);
-//   div += '</div>';
-//   div += '</div>';
-//   $('#div_confActions').append(div);
-//   $('#div_confActions').last().setValues(_action, '.confActionAttr');
 }
 
 $(".eqLogic").delegate(".listCmdAction", 'click', function () {

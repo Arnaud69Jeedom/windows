@@ -266,16 +266,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
             </div><!-- /.tabpanel #sondetab-->
 
             <div role="tabpanel" class="tab-pane" id="configureWindowstab">
-                <br>              
+            <br />
+                
+                <a class="btn btn-success addAction pull-right" 
+                    id="bt_addWindowEqLogic"
+                    data-type="failureActuator" 
+                    style="position: relative;top: -7px;">
+                    <i class="fas fa-plus-circle"></i> {{Ajouter une ouverture}}
+                </a>
+                <br />
+                <br />    
+            
                     <form class="form-horizontal">
                         <fieldset>                                
-                            <legend><i class="fas fa-thermometer-empty" aria-hidden="true"></i> {{Ouvertures}}
-                                <a class="btn btn-default btn-xs pull-right" 
-                                    id="bt_addWindowEqLogic"
-                                    data-type="failureActuator" 
-                                    style="margin-right:15px;">
-                                    <i class="fas fa-plus"></i> {{Ajouter}}
-                                </a>
+                            <legend><i class="fas jeedom-fenetre-ouverte" aria-hidden="true"></i> {{Ouvertures}}                                
                             </legend>                            
                             <div class="row">
                                 <div class="col-lg-7">
@@ -294,7 +298,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <a class="btn btn-success addAction pull-right" id="bt_addActionEqLogic"
                     data-type="failureActuator" 
                     style="position: relative;top: -7px;">
-                    <i class="fas fa-plus-circle"></i>{{Ajouter une action}}
+                    <i class="fas fa-plus-circle"></i> {{Ajouter une action}}
                 </a>
                 <br />
                 <br />
