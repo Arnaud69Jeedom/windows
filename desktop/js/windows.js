@@ -151,31 +151,22 @@ function addConfActions(_action) {
   }
   console.log("addConfActions", _action);
   var div = '<div class="confAction ' + $('.eqLogicAttr[data-l1key=configuration][data-l2key=window]').value() + '">';
-
   div += '<div class="form-group">';
-  div += '<label class="col-sm-2 control-label">{{Action}}</label>';
-  div += '<div class="col-sm-9">';
+  div += '<label class="col-sm-1 control-label">{{Action}}</label>';
+  div += '<div class="col-sm-4">';
   div += '<div class="input-group">';
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default bt_removeConfAction roundedLeft" data-type=""><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
-  // div += '<input type="text" class="eqLogicAttr form-control confActionAttr tooltips" data-l1key="configuration" data-l2key="action"  data-concat="1"/>';
-  div += '<input class="expressionAttr confActionAttr form-control input-sm cmdAction" data-l1key="cmd" data-type="watchdogAction" />';
-
+  div += '<input class="expressionAttr confActionAttr form-control cmdAction" data-l1key="cmd" data-type="watchdogAction" />';
   div += '<span class="input-group-btn">';
-  
-  // div += '<a class="btn btn-default btn-sm listAction" data-type="confAction" title="{{Sélectionner un mot-clé}}"><i class="fa fa-tasks"></i></a>';
-  div += '<a class="btn btn-default btn-sm listCmdAction" data-type="confAction"><i class="fa fa-list-alt"></i></a>';
-
-  // div += '<a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>';
+  div += '<a class="btn btn-default listCmdAction roundedRight" data-type="confAction"><i class="fas fa-list-alt"></i></a>';
   div += '</span>';
   div += '</div>';
   div += '</div>';
-  // div += '<div class="col-sm-1">';
-  // div += '<i class="fa fa-minus-circle pull-right cursor bt_removeConfAction"></i>';
-  // div += '</div>';
+  div += '<div class="col-sm-7 actionOptions">';
+  //  div += jeedom.cmd.displayActionOption(init(_action.cmd, ''), _action.options);
   div += '</div>';
-
   div += '</div>';
   $('#div_confActions').append(div);
   $('#div_confActions').find('.confAction:last').setValues(_action, '.confActionAttr');
