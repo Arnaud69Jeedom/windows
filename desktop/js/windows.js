@@ -117,7 +117,7 @@ function addConfWindows(_window) {
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default bt_removeConfWindow roundedLeft" data-type=""><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
-  div += '<input type="text" class="eqLogicAttr form-control confWindowAttr tooltips" data-l1key="cmd" data-type="window"/>';
+  div += '<input class="eqLogicAttr form-control expressionAttr tooltips" data-l1key="cmd" data-type="window"/>';
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>';
   div += '</span>';
@@ -129,7 +129,7 @@ function addConfWindows(_window) {
 
   div += '</div>';
   $('#div_confWindows').append(div);
-  $('#div_confWindows').find('.confWindow:last').setValues(_window, '.confWindowAttr');
+  $('#div_confWindows').find('.confWindow:last').setValues(_window, '.expressionAttr');
 }
 
 
@@ -158,7 +158,7 @@ function addConfActions(_action) {
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default bt_removeConfAction roundedLeft" data-type=""><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
-  div += '<input class="expressionAttr confActionAttr form-control cmdAction" data-l1key="cmd" data-type="action" />';
+  div += '<input class="expressionAttr form-control cmdAction" data-l1key="cmd" data-type="action" />';
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default listCmdAction roundedRight" data-type="confAction"><i class="fas fa-list-alt"></i></a>';
   div += '</span>';
@@ -169,7 +169,7 @@ function addConfActions(_action) {
   div += '</div>';
   div += '</div>';
   $('#div_confActions').append(div);
-  $('#div_confActions').find('.confAction:last').setValues(_action, '.confActionAttr');
+  $('#div_confActions').find('.confAction:last').setValues(_action, '.expressionAttr');
 }
 
 $(".eqLogic").delegate(".listCmdAction", 'click', function () {
@@ -208,8 +208,8 @@ function saveEqLogic(_eqLogic) {
   if (!isset(_eqLogic.configuration)) {
     _eqLogic.configuration = {};
   }
-  _eqLogic.configuration.window = $('#div_confWindows .confWindow').getValues('.confWindowAttr');
-  _eqLogic.configuration.action = $('#div_confActions .confAction').getValues('.confActionAttr');
+  _eqLogic.configuration.window = $('#div_confWindows .confWindow').getValues('.expressionAttr');
+  _eqLogic.configuration.action = $('#div_confActions .confAction').getValues('.expressionAttr');
 
   console.log('saveEqLogic:', _eqLogic);
   return _eqLogic;
