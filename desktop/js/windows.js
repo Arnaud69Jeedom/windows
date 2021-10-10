@@ -173,33 +173,31 @@ function addConfActions(_action) {
 }
 
 $(".eqLogic").delegate(".listCmdAction", 'click', function () {
+    //console.log("--------- listCmdAction");
+    var type = $(this).attr('data-type');
+    var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=cmd]');
 
-  //console.log("--------- listCmdAction");
-      var type = $(this).attr('data-type');
-      var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=cmd]');
-   //   var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=configuration][data-l2key=commande]');
-      jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
-          el.value(result.human);
-          jeedom.cmd.displayActionOption(el.value(), '', function (html) {
-              el.closest('.' + type).find('.actionOptions').html(html);
-              taAutosize();
-          });
-      });
+    jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
+        el.value(result.human);
+        jeedom.cmd.displayActionOption(el.value(), '', function (html) {
+          el.closest('.' + type).find('.actionOptions').html(html);
+          taAutosize();
+        });
+    });
   });
 
 $(".eqLogic").delegate(".listAction", 'click', function () {
 	//console.log("--------- listAction");
   var type = $(this).attr('data-type');
   var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=cmd]');
-	//var el = $(this).closest('.' + type).find('.expressionAttr[data-l1key=configuration][data-l2key=commande]');
 
   jeedom.getSelectActionModal({}, function (result) {
     el.value(result.human);
     jeedom.cmd.displayActionOption(el.value(), '', function (html) {
       el.closest('.' + type).find('.actionOptions').html(html);
       taAutosize();
+    });
   });
-});
 });
 
 
