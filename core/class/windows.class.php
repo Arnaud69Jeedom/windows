@@ -224,11 +224,10 @@ class windowsCmd extends cmd
                 // fenetres
                 $windows = $eqlogic->getConfiguration('window');                
                 $isOpened = false;
-                
 			    foreach ($windows as $window) {
                     $window = str_replace('#', '', $window['cmd']);
                     $cmd = cmd::byId($window);
-                    $windowState = $cmd->execCmd();                                       
+                    $windowState = $cmd->execCmd();
 
                     // 1 = fermé
                     log::add('windows', 'debug', $cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$windowState);
@@ -252,7 +251,7 @@ class windowsCmd extends cmd
                     }
                 }
                 
-                // window_action                
+                // window_action : icone sur le widget               
                 $window_action = $eqlogic->getCmd(null, 'window_action');
 
                 log::add('windows', 'debug', 'name='.$window_action->getName());
@@ -293,6 +292,15 @@ class windowsCmd extends cmd
                 
                 message::add('windows', __('test', __FILE__), '', '' . $this->getId());
 
+
+                // actions
+                $actions = $eqlogic->getConfiguration('action');
+                $isOpened = false;
+			    foreach ($actions as $action) {
+                    $action = str_replace('#', '', $action['cmd']);
+                    $cmd = cmd::byId($action);
+                    $actionDone = $cmd->execCmd();
+                }
             break;
         }
         
