@@ -108,7 +108,7 @@ function addConfWindows(_window) {
     _window = {};
   }
   console.log("addConfWindows", _window);
-  var div = '<div class="confWindow ' + $('.eqLogicAttr[data-l1key=configuration][data-l2key=window]').value() + '">';
+  var div = '<div class="confWindow">';
 
   div += '<div class="form-group">';
   div += '<label class="col-sm-3 control-label">{{Ouverture}}</label>';
@@ -117,7 +117,7 @@ function addConfWindows(_window) {
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default bt_removeConfWindow roundedLeft" data-type=""><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
-  div += '<input type="text" class="eqLogicAttr form-control confWindowAttr tooltips" data-l1key="configuration" data-l2key="window"  data-concat="1"/>';
+  div += '<input type="text" class="eqLogicAttr form-control confWindowAttr tooltips" data-l1key="cmd" data-type="window"/>';
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default listCmdInfo"><i class="fa fa-list-alt"></i></a>';
   div += '</span>';
@@ -150,7 +150,7 @@ function addConfActions(_action) {
     _action = {};
   }
   console.log("addConfActions", _action);
-  var div = '<div class="confAction ' + $('.eqLogicAttr[data-l1key=configuration][data-l2key=window]').value() + '">';
+  var div = '<div class="confAction">';
   div += '<div class="form-group">';
   div += '<label class="col-sm-1 control-label">{{Action}}</label>';
   div += '<div class="col-sm-4">';
@@ -158,7 +158,7 @@ function addConfActions(_action) {
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default bt_removeConfAction roundedLeft" data-type=""><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
-  div += '<input class="expressionAttr confActionAttr form-control cmdAction" data-l1key="cmd" data-type="watchdogAction" />';
+  div += '<input class="expressionAttr confActionAttr form-control cmdAction" data-l1key="cmd" data-type="action" />';
   div += '<span class="input-group-btn">';
   div += '<a class="btn btn-default listCmdAction roundedRight" data-type="confAction"><i class="fas fa-list-alt"></i></a>';
   div += '</span>';
@@ -208,7 +208,8 @@ function saveEqLogic(_eqLogic) {
   if (!isset(_eqLogic.configuration)) {
     _eqLogic.configuration = {};
   }
-  _eqLogic.configuration.confWindow = $('#div_confWindows .confWindow').getValues('.confWindowAttr');
+  _eqLogic.configuration.window = $('#div_confWindows .confWindow').getValues('.confWindowAttr');
+  _eqLogic.configuration.action = $('#div_confActions .confAction').getValues('.confActionAttr');
 
   console.log('saveEqLogic:', _eqLogic);
   return _eqLogic;
@@ -219,10 +220,20 @@ function printEqLogic(_eqLogic) {
 
   $('#div_confWindows').empty();
   if (isset(_eqLogic.configuration)) {
-    if (isset(_eqLogic.configuration.confWindow)) {
-      for (var i in _eqLogic.configuration.confWindow) {
-        console.log("printEqLogic.addConfWindows", _eqLogic.configuration.confWindow[i]);
-        addConfWindows(_eqLogic.configuration.confWindow[i]);
+    if (isset(_eqLogic.configuration.window)) {
+      for (var i in _eqLogic.configuration.window) {
+        console.log("printEqLogic.addConfWindows", _eqLogic.configuration.window[i]);
+        addConfWindows(_eqLogic.configuration.window[i]);
+      }
+    }
+  }
+
+  $('#div_confActions').empty();
+  if (isset(_eqLogic.configuration)) {
+    if (isset(_eqLogic.configuration.action)) {
+      for (var i in _eqLogic.configuration.action) {
+        console.log("printEqLogic.addConfActions", _eqLogic.configuration.action[i]);
+        addConfActions(_eqLogic.configuration.action[i]);
       }
     }
   }

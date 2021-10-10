@@ -189,7 +189,7 @@ class windowsCmd extends cmd
                 log::add('windows', 'debug', $eqlogic->getName(), __FILE__);
 
                 // température interieure
-                $temperature_indoor = $eqlogic->getConfiguration('temperature_indoor');                               
+                $temperature_indoor = $eqlogic->getConfiguration('temperature_indoor');                       
                 $temperature_indoor = str_replace('#', '', $temperature_indoor);
                 $temperature_indoor = cmd::byId($temperature_indoor)->execCmd();
                 
@@ -200,7 +200,7 @@ class windowsCmd extends cmd
 
                 // température hiver
                 $temperature_winter  = $eqlogic->getConfiguration('temperature_winter');                               
-                                
+                            
                 // durées
                 $duration_winter = $eqlogic->getConfiguration('duration_winter');                               
                 $duration_summer = $eqlogic->getConfiguration('duration_summer'); 
@@ -217,7 +217,7 @@ class windowsCmd extends cmd
                 unset($duration_summer);
 
                 // presence
-                $presence = $eqlogic->getConfiguration('presence');                               
+                $presence = $eqlogic->getConfiguration('presence');                            
                 $presence = str_replace('#', '', $presence);
                 $presence = cmd::byId($presence)->execCmd();
 
@@ -226,22 +226,24 @@ class windowsCmd extends cmd
                 $isOpened = false;
                 
 			    foreach ($windows as $window) {
-                    $window = str_replace('#', '', $window);
+                    $window = str_replace('#', '', $window['cmd']);
                     $cmd = cmd::byId($window);
-                    $window = cmd::byId($window)->execCmd();                                       
+                    $windowState = $cmd->execCmd();                                       
 
                     // 1 = fermé
-                    $isWindowOpened = $window == 0; 
+                    log::add('windows', 'debug', $cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$windowState);
 
-                    log::add('windows', 'debug', $cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$window);
+                    $isWindowOpened = ($windowState == 0);
+                    // $isWindowOpenedString =  $windowState ? 'true' : 'false';
+                    // log::add('windows', 'debug', 'isWindowOpened='. $isWindowOpenedString, __FILE__);
 
-                    if ($isWindowOpened) {                        
+                    if ($isWindowOpened) {
                         // si ouvert
                         $lastDateValue = $cmd->getValueDate();
                         $time = strtotime($lastDateValue);
                         $interval = (time() - $time) / 60; // en minutes
 
-                        log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue.' windows:'.$window.', timediff:'.$interval);
+                        log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue.' windowState:'.$windowState.', timediff:'.$interval);
                         
                         if ($interval >  $duration) {
                             log::add('windows', 'debug', 'ouvert depuis plus de :'.$duration);
