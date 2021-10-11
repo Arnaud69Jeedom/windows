@@ -114,7 +114,6 @@ class windows extends eqLogic
         $refresh->setType('action');
         $refresh->setSubType('other');
         $refresh->save();
-        
     }
 
     public function preUpdate()
@@ -123,10 +122,10 @@ class windows extends eqLogic
 
     public function postUpdate()
     {
-        $cmd = $this->getCmd(null, 'refresh'); // On recherche la commande refresh de l’équipement
-        if (is_object($cmd)) { //elle existe et on lance la commande
-             $cmd->execCmd();
-        }
+        // $cmd = $this->getCmd(null, 'refresh'); // On recherche la commande refresh de l’équipement
+        // if (is_object($cmd)) { //elle existe et on lance la commande
+        //      $cmd->execCmd();
+        // }
     }
 
     public function preRemove()
