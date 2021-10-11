@@ -31,7 +31,7 @@ class windows extends eqLogic
      * Fonction exécutée automatiquement toutes les minutes par Jeedom
      * */
       public static function cron() {
-        log::add('windows', 'debug', 'cron');
+        log::add('windows', 'debug', '*** cron ***');
 
         foreach (eqLogic::byType(__CLASS__, true) as $window) {
             if ($window->getIsEnable() == 1) {
@@ -178,7 +178,7 @@ class windowsCmd extends cmd
 
     public function execute($_options = array())
     {
-        log::add('windows', 'debug', 'execute', __FILE__);
+        log::add('windows', 'debug', ' **** execute ****', __FILE__);
 
         switch ($this->getLogicalId()) {				
             case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
@@ -186,7 +186,7 @@ class windowsCmd extends cmd
                
                 $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
         
-                log::add('windows', 'debug', $eqlogic->getName(), __FILE__);
+                log::add('windows', 'debug', ' Objet : '.$eqlogic->getName(), __FILE__);
 
                 // température interieure
                 $temperature_indoor = $eqlogic->getConfiguration('temperature_indoor');                       
@@ -221,7 +221,8 @@ class windowsCmd extends cmd
                 $presence = str_replace('#', '', $presence);
                 $presence = cmd::byId($presence)->execCmd();
 
-                // fenetres
+                // ouvertures
+                log::add('windows', 'debug', ' Liste des ouvertures :');
                 $windows = $eqlogic->getConfiguration('window');                
                 $isOpened = false;
 			    foreach ($windows as $window) {
@@ -230,7 +231,7 @@ class windowsCmd extends cmd
                     $windowState = $cmd->execCmd();
 
                     // 1 = fermé
-                    log::add('windows', 'debug', $cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$windowState);
+                    log::add('windows', 'debug', '    '.$cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$windowState);
 
                     $isWindowOpened = ($windowState == 0);
                     // $isWindowOpenedString =  $windowState ? 'true' : 'false';
@@ -242,10 +243,10 @@ class windowsCmd extends cmd
                         $time = strtotime($lastDateValue);
                         $interval = (time() - $time) / 60; // en minutes
 
-                        log::add('windows', 'debug', 'lastDateValue:'.$lastDateValue.' windowState:'.$windowState.', timediff:'.$interval);
+                        log::add('windows', 'debug', '    lastDateValue:'.$lastDateValue.' windowState:'.$windowState.', timediff:'.$interval);
                         
                         if ($interval >  $duration) {
-                            log::add('windows', 'debug', 'ouvert depuis plus de :'.$duration);
+                            log::add('windows', 'debug', '    ouvert depuis plus de :'.$duration);
                             $isOpened = $isOpened || $isWindowOpened;
                         }
                     }
@@ -253,8 +254,6 @@ class windowsCmd extends cmd
                 
                 // window_action : icone sur le widget               
                 $window_action = $eqlogic->getCmd(null, 'window_action');
-
-                log::add('windows', 'debug', 'name='.$window_action->getName());
                 $window_action->event(1);
 
                 // Log de résumé
@@ -305,6 +304,8 @@ class windowsCmd extends cmd
                     $actions = $eqlogic->getConfiguration('action');
                     $isOpened = false;
                     foreach ($actions as $action) {
+                        log::add('windows', 'debug', ' Lancement des actions');
+
                         $options = array();
                         if (isset($action['options'])) {
                             $options = $action['options'];
@@ -318,6 +319,8 @@ class windowsCmd extends cmd
                         }
                         scenarioExpression::createAndExec('action', $action['cmd'], $options);
                     }
+                } else {
+                    log::add('windows', 'info', 'rien à faire');
                 }
             break;
         }
