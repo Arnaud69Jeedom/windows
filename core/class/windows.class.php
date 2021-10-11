@@ -268,17 +268,47 @@ class windowsCmd extends cmd
                     return;                
                 }
 
-                // Seuil ?
+                // Seuil hiver
+                $threshold_winter = $eqlogic->getConfiguration('threshold_winter'); 
+                if (!is_numeric($threshold_winter)) {
+                    log::add('windows', 'error', ' Mauvaise threshold_winter:'.$threshold_winter, __FILE__);
+                    return;
+                }
 
-                // Thermostat ?
+                // Seuil été
+                $threshold_summer = $eqlogic->getConfiguration('threshold_summer'); 
+                if (!is_numeric($threshold_summer)) {
+                    log::add('windows', 'error', ' Mauvaise threshold_summer:'.$threshold_summer, __FILE__);
+                    return;
+                }
+
+                // Consigne thermostat
+                log::add('windows', 'debug', ' Analyse consigne', __FILE__);
+                $consigne = $eqlogic->getConfiguration('thermostat');                       
+                $consigne = str_replace('#', '', $consigne);
+                if ($consigne != '') {
+                    $cmd = cmd::byId($consigne);
+                    if ($cmd == null) {
+                        log::add('windows', 'error', ' Mauvaise consigne :'.$consigne, __FILE__);
+                        return;
+                    }
+                    $consigne = $cmd->execCmd();
+                    log::add('windows', 'debug', ' consigne: '. $consigne, __FILE__);
+                } else {
+                    log::add('windows', 'error', ' Pas de consigne', __FILE__);
+                    return;
+                }
+                unset($cmd);
 
                 // Recherche de la durée à prendre en compte
                 $dateTime = new DateTime('NOW');
                 $dayOfTheYear = $dateTime->format('z');
                 if($dayOfTheYear < 80 || $dayOfTheYear > 280){
                     $duration = $duration_winter;
+                    $isWinter = true;
                 } else {
                     $duration = $duration_summer;
+                    $isWinter = false;
                 }
                 unset($dateTime);
                 unset($duration_winter);
@@ -306,20 +336,29 @@ class windowsCmd extends cmd
 
                     // 1 = fermé
                     $isWindowOpened = ($windowState == 0);
-                    // $isWindowOpenedString =  $windowState ? 'true' : 'false';
-                    // log::add('windows', 'debug', 'isWindowOpened='. $isWindowOpenedString, __FILE__);
-
+                   
                     if ($isWindowOpened) {
                         // si ouvert
+                        
+                        // Vérification de la durée
                         $lastDateValue = $cmd->getValueDate();
                         $time = strtotime($lastDateValue);
                         $interval = (time() - $time) / 60; // en minutes
-
                         log::add('windows', 'debug', '    lastDateValue:'.$lastDateValue.' windowState:'.$windowState.', timediff:'.$interval.', duration:'.$duration);
                         
-                        if ($interval >  $duration) {
+                        // Vérification sur durée
+                        if ($interval >=  $duration) {
                             log::add('windows', 'debug', '    ouvert depuis plus de :'.$duration);
                             $isOpened = $isOpened || $isWindowOpened;
+                        }
+
+                        // Vérification du seuil
+                        if ($isWinter) {
+                            $temp_mini = $consigne - $threshold_winter;
+                            if ($temperature_indoor <= $temp_mini) {
+                                log::add('windows', 'debug', '    température mini dépassée :'.$temp_mini);
+                                $isOpened = $isOpened || $isWindowOpened;
+                            }
                         }
                     }
                 }
@@ -343,6 +382,8 @@ class windowsCmd extends cmd
                 $actionToExecute = false;
 
                 // Hiver, fenetre fermée
+                // mais il fait plus chaud dehors tout de même
+                // il faut donc ouvrir
                 if ($temperature_outdoor < $temperature_winter 
                     && !$isOpened
                     && $presence
@@ -356,6 +397,8 @@ class windowsCmd extends cmd
                 } 
                 
                 // Hiver, fenetre ouverte
+                // La température va continuer à descendre
+                // il faut fermer
                 if ($temperature_outdoor < $temperature_winter
                     && $isOpened
                     && $presence
