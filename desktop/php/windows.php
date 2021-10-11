@@ -301,6 +301,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <i class="fas fa-plus-circle"></i> {{Ajouter une action}}
                 </a>
                 <br />
+                <br />
 
                 <div class="alert-info bg-success">
                     A mettre dans <b>Titre</b> ou dans <b>Message</b> pour y récupérer la valeur</br>
