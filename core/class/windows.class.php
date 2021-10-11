@@ -271,7 +271,7 @@ class windowsCmd extends cmd
                 // Seuil ?
 
                 // Thermostat ?
-                
+
                 // Recherche de la durée à prendre en compte
                 $dateTime = new DateTime('NOW');
                 $dayOfTheYear = $dateTime->format('z');
@@ -379,8 +379,9 @@ class windowsCmd extends cmd
                 if ($actionToExecute) {
                     $actions = $eqlogic->getConfiguration('action');
                     $isOpened = false;
+                    log::add('windows', 'debug', ' Lancement des actions :');
                     foreach ($actions as $action) {
-                        log::add('windows', 'debug', ' Lancement des actions');
+                        log::add('windows', 'debug', $action['cmd']);
 
                         $options = array();
                         if (isset($action['options'])) {
@@ -390,7 +391,12 @@ class windowsCmd extends cmd
                                 $option = str_replace('#name#', $eqlogic->getName(), $option);
                                 $option = str_replace('#message#', $messageWindows, $option);
                                 $options[$key] = $option;
+                            }
 
+                            if ($option['title'] == ''
+                              || $option['message'] == '') {
+                                log::add('windows', 'error', 'Action sans titre ou message');
+                                break;
                             }
                         }
                         scenarioExpression::createAndExec('action', $action['cmd'], $options);
