@@ -268,14 +268,19 @@ class windowsCmd extends cmd
                 );
                 unset($value);
 
+                $messageWindows = '';
+                $actionToExecute = false;
+
                 // Hiver, fenetre fermée
                 if ($temperature_outdoor < $temperature_winter 
                     && !$isOpened
                     && $presence
                     && $temperature_outdoor > $temperature_indoor)
                 {
-                    log::add('windows', 'info', 'il faut ouvrir');
-                    
+                    $messageWindows = 'il faut ouvrir';
+                    log::add('windows', 'info', $messageWindows);
+                    $actionToExecute = true;
+
                     $window_action->event(0);
                 } 
                 
@@ -285,7 +290,9 @@ class windowsCmd extends cmd
                     && $presence
                     && $temperature_outdoor < $temperature_indoor)
                 {
-                    log::add('windows', 'info', 'c\'est bon, faut fermer');
+                    $messageWindows = 'il faut fermer';
+                    log::add('windows', 'info', $messageWindows);
+                    $actionToExecute = true;
 
                     $window_action->event(0);
                 }
@@ -294,22 +301,23 @@ class windowsCmd extends cmd
 
 
                 // actions
-                $actions = $eqlogic->getConfiguration('action');
-                $isOpened = false;
-			    foreach ($actions as $action) {
-                    $options = array();
-					if (isset($action['options'])) {
-						$options = $action['options'];
+                if ($actionToExecute) {
+                    $actions = $eqlogic->getConfiguration('action');
+                    $isOpened = false;
+                    foreach ($actions as $action) {
+                        $options = array();
+                        if (isset($action['options'])) {
+                            $options = $action['options'];
 
-                        $messageWindows = 'faire un truc';
-                        foreach ($options as $key => $option) {
-                            $option = str_replace('#name#', $eqlogic->getName(), $option);
-                            $option = str_replace('#message#', $messageWindows, $option);
-                            $options[$key] = $option;
+                            foreach ($options as $key => $option) {
+                                $option = str_replace('#name#', $eqlogic->getName(), $option);
+                                $option = str_replace('#message#', $messageWindows, $option);
+                                $options[$key] = $option;
 
+                            }
                         }
-					}
-					scenarioExpression::createAndExec('action', $action['cmd'], $options);
+                        scenarioExpression::createAndExec('action', $action['cmd'], $options);
+                    }
                 }
             break;
         }
