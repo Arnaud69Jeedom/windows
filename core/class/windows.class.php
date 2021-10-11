@@ -297,9 +297,19 @@ class windowsCmd extends cmd
                 $actions = $eqlogic->getConfiguration('action');
                 $isOpened = false;
 			    foreach ($actions as $action) {
-                    $action = str_replace('#', '', $action['cmd']);
-                    $cmd = cmd::byId($action);
-                    $actionDone = $cmd->execCmd();
+                    $options = array();
+					if (isset($action['options'])) {
+						$options = $action['options'];
+
+                        $messageWindows = 'faire un truc';
+                        foreach ($options as $key => $option) {
+                            $option = str_replace('#name#', $eqlogic->getName(), $option);
+                            $option = str_replace('#message#', $messageWindows, $option);
+                            $options[$key] = $option;
+
+                        }
+					}
+					scenarioExpression::createAndExec('action', $action['cmd'], $options);
                 }
             break;
         }
