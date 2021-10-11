@@ -270,10 +270,12 @@ class windowsCmd extends cmd
 
                 // Seuil ?
 
+                // Thermostat ?
+                
                 // Recherche de la durée à prendre en compte
                 $dateTime = new DateTime('NOW');
                 $dayOfTheYear = $dateTime->format('z');
-                if($dayOfTheYear < 80 || $dayOfTheYear > 356){
+                if($dayOfTheYear < 80 || $dayOfTheYear > 280){
                     $duration = $duration_winter;
                 } else {
                     $duration = $duration_summer;
@@ -313,7 +315,7 @@ class windowsCmd extends cmd
                         $time = strtotime($lastDateValue);
                         $interval = (time() - $time) / 60; // en minutes
 
-                        log::add('windows', 'debug', '    lastDateValue:'.$lastDateValue.' windowState:'.$windowState.', timediff:'.$interval);
+                        log::add('windows', 'debug', '    lastDateValue:'.$lastDateValue.' windowState:'.$windowState.', timediff:'.$interval.', duration:'.$duration);
                         
                         if ($interval >  $duration) {
                             log::add('windows', 'debug', '    ouvert depuis plus de :'.$duration);
@@ -365,9 +367,13 @@ class windowsCmd extends cmd
 
                     $window_action->event(0);
                 }
-                
-                message::add('windows', __('test', __FILE__), '', '' . $this->getId());
 
+                // Notifier
+                $notify = $eqlogic->getConfiguration('notifyifko');
+                log::add('windows', 'debug', $notify);
+                if ($notify == 1) {
+                    message::add('windows', $messageWindows, '', '' . $this->getId());
+                }
 
                 // actions
                 if ($actionToExecute) {
