@@ -177,7 +177,7 @@ class windowsCmd extends cmd
 
     public function execute($_options = array())
     {
-        log::add('windows', 'debug', ' **** execute ****', __FILE__);
+        log::add('windows', 'info', ' **** execute ****', __FILE__);
 
         switch ($this->getLogicalId()) {				
             case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
@@ -239,7 +239,7 @@ class windowsCmd extends cmd
                     return; 
                 }
                 unset($cmd);
-                
+
                 // température hiver
                 $temperature_winter  = $eqlogic->getConfiguration('temperature_winter');                               
                 if (!is_numeric($temperature_winter)) {
@@ -289,18 +289,20 @@ class windowsCmd extends cmd
 			    foreach ($windows as $window) {
                     $window = str_replace('#', '', $window['cmd']);
                     if ($window != '') {
-                        $window = cmd::byId($window)->execCmd();
+                        $cmd = cmd::byId($window);                    
                     } else {
                         log::add('windows', 'error', ' Pas de window', __FILE__);
                         return; 
                     }
-
-                    $cmd = cmd::byId($window);
+                    
+                    if ($cmd == null) {
+                        log::add('windows', 'error', ' Mauvaise window :'.$window, __FILE__);
+                        return;
+                    }
                     $windowState = $cmd->execCmd();
-
-                    // 1 = fermé
                     log::add('windows', 'debug', '    '.$cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$windowState);
 
+                    // 1 = fermé
                     $isWindowOpened = ($windowState == 0);
                     // $isWindowOpenedString =  $windowState ? 'true' : 'false';
                     // log::add('windows', 'debug', 'isWindowOpened='. $isWindowOpenedString, __FILE__);
@@ -326,7 +328,7 @@ class windowsCmd extends cmd
 
                 // Log de résumé
                 $value = $isOpened ? 'true' : 'false';
-                log::add('windows', 'debug', 
+                log::add('windows', 'info', 
                     'ext:'.$temperature_outdoor
                     .', int:'.$temperature_indoor
                     .', seuil hiver:'.$temperature_winter
