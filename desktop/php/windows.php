@@ -170,7 +170,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Présence (optionel)}}</label>
+                                    <label class="col-sm-3 control-label">{{Présence (optionel)}}
+                                        <br/>Si pas renseigné : toujours calculé
+                                        <br/>Si rensigné : calculé que si présent
+                                    </label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips"
@@ -185,7 +188,41 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ Consigne Thermostat (optionel)}}</label>
+                                    <label class="col-sm-3 control-label">{{Durée hiver}}</label>                                    
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
+                                        </div>
+                                    </div>                                   
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Durée été}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Notifier}}</label>
+                                    <div class="col-sm-2">							
+                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="notifyifko"/>
+                                    </div>
+                                </div>
+
+                                <br/>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend><i class="fas fa-clock" aria-hidden="true"></i> {{Calcul sur température}}</legend>
+                                Optionnel : Utilisé pour rester au plus prêt de la consigne du thermostat
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ Consigne Thermostat}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips"
@@ -199,6 +236,31 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Seuil hiver}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{Seuil été}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend><i class="fas fa-sun" aria-hidden="true"></i> {{Température Saison}}</legend>                                
+                                
+                                Optionel : Rechercher la saison par rapport à la température minimum et maximum prévue dans la journée
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ Tempérture maxi (optionel)}}</label>
                                     <div class="col-xs-11 col-sm-7">
@@ -237,22 +299,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                                 data-l1key="configuration" data-l2key="temperature_winter" data-concat="1" />
                                         </div>
                                     </div>
-
-                                    <label class="col-sm-1 control-label">{{Durée}}</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
-                                        </div>
-                                    </div>
-
-                                    <label class="col-sm-1 control-label">{{Seuil}}</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -263,30 +309,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                                 data-l1key="configuration" data-l2key="temperature_summer" data-concat="1" />
                                         </div>
                                     </div>
-
-                                    <label class="col-sm-1 control-label">{{Durée}}</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
-                                        </div>
-                                    </div>
-
-                                    <label class="col-sm-1 control-label">{{Seuil}}</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
-                                        </div>
-                                    </div>
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Notifier}}</label>
-                                    <div class="col-sm-2">							
-                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="notifyifko"/>
-                                    </div>
-                                </div>
+
                             </fieldset>
                         </form>
                     </div>

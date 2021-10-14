@@ -233,7 +233,7 @@ class windowsCmd extends cmd
                 return;
             }
         } else {
-            log::add('windows', 'debug', ' Pas de presence : valeur par défaut prise = 1', __FILE__);
+            log::add('windows', 'debug', ' Pas de presence : valeur par défaut = 1', __FILE__);
             // Valeur par défaut
             $configuration->presence = 1;                    
         }
@@ -289,7 +289,11 @@ class windowsCmd extends cmd
 
         // Seuil hiver
         $threshold_winter = $eqlogic->getConfiguration('threshold_winter'); 
-        if (!is_numeric($threshold_winter)) {
+        if ($threshold_winter == '') {
+            log::add('windows', 'debug', ' Pas de threshold_winter : valeur par défaut = 0', __FILE__);
+            $configuration->threshold_winter = 0;
+        }
+        else if (!is_numeric($threshold_winter)) {
             log::add('windows', 'error', ' Mauvaise threshold_winter:'.$threshold_winter, __FILE__);
             return;
         } else {
@@ -299,7 +303,11 @@ class windowsCmd extends cmd
 
         // Seuil été
         $threshold_summer = $eqlogic->getConfiguration('threshold_summer'); 
-        if (!is_numeric($threshold_summer)) {
+        if ($threshold_summer == '') {
+            log::add('windows', 'debug', ' Pas de threshold_summer : valeur par défaut = 0', __FILE__);
+            $configuration->threshold_summer = 0;
+        }
+        else if (!is_numeric($threshold_summer)) {
             log::add('windows', 'error', ' Mauvaise threshold_summer:'.$threshold_summer, __FILE__);
             return;
         } else {
@@ -329,7 +337,6 @@ class windowsCmd extends cmd
             log::add('windows', 'debug', ' Pas de consigne', __FILE__);                    
         }
         unset($cmd);
-
 
         // temperature_maxi
         log::add('windows', 'debug', ' Analyse température maxi', __FILE__);
