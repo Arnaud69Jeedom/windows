@@ -43,24 +43,6 @@ class windows extends eqLogic
 			}
           }
       }
-     
-
-
-    /*
-     * Fonction exécutée automatiquement toutes les heures par Jeedom
-      public static function cronHourly() {
-
-      }
-     */
-
-    /*
-     * Fonction exécutée automatiquement tous les jours par Jeedom
-      public static function cronDaily() {
-
-      }
-     */
-
-
 
     /*     * *********************Méthodes d'instance************************* */
 
@@ -175,6 +157,9 @@ class windowsCmd extends cmd
       }
      */
 
+     /**
+      * Récupérer la configuration
+      */
     private function getMyConfiguration() {    
         $configuration = new StdClass();
 
@@ -329,6 +314,10 @@ class windowsCmd extends cmd
         return $configuration;
     }
 
+    /**
+     * Récupérer la configuration sur les fenêtres
+     * Récupère l'état des fenêtres (et la durée si ouverte)
+     */
     private function getWindowsInformation($configuration) {
         if ($configuration == null) return;
 
@@ -373,14 +362,19 @@ class windowsCmd extends cmd
         }
     }
 
+    /**
+     * Vérifie l'action à réaliser et le message à afficher associé
+     */
     private function checkAction($configuration) {
         if ($configuration == null) return;
 
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
 
+        $result = new stdClass();
+        $result->actionToExecute = false;
+
         // Vérifier s'il faut fermer
-        log::add('windows', 'debug', ' Analyse métier');                
-        $isTimeToClose = false;
+        log::add('windows', 'debug', ' Analyse métier');        
         if ($configuration->isOpened) {
             // si ouvert
                                 
@@ -388,7 +382,7 @@ class windowsCmd extends cmd
             log::add('windows', 'debug', '    calcul sur durée');
             if ($configuration->durationOpened >=  $configuration->duration) {                
                 log::add('windows', 'debug', '    il faudra fermer sur durée');
-                $isTimeToClose = true;
+                $result->actionToExecute = true;
             }
 
             // Vérification du seuil
@@ -402,7 +396,7 @@ class windowsCmd extends cmd
 
                     if ($configuration->temperature_indoor <= $temp_mini) {
                         log::add('windows', 'debug', '    il faudra fermer sur température');
-                        $isTimeToClose = true;
+                        $result->actionToExecute = true;
                     }
                 }
             }
@@ -416,12 +410,11 @@ class windowsCmd extends cmd
             .', seuil hiver:'.$configuration->temperature_winter
             .', presence:'.$configuration->presence
             .', isOpened:'. ($configuration->isOpened ? 'true' : 'false')
-            .', isTimeToClose:'. ($isTimeToClose ? 'true' : 'false')
+            .', actionToExecute:'. ($result->actionToExecute ? 'true' : 'false')
         );
         unset($value);
 
-        $messageWindows = '';
-        $actionToExecute = false;
+       
 
         // Hiver, fenetre fermée
         // mais il fait plus chaud dehors tout de même
@@ -431,18 +424,18 @@ class windowsCmd extends cmd
             && $configuration->presence
             && $configuration->temperature_outdoor > $configuration->temperature_indoor)
         {
-            $messageWindows = 'il faut ouvrir';
-            log::add('windows', 'info', $messageWindows);
-            $actionToExecute = true;
+            $result->messageWindows = 'il faut ouvrir';
+            log::add('windows', 'info', $result->messageWindows);
+            $result->actionToExecute = true;
         } 
 
         // Hiver
-        if ($isTimeToClose
+        if ($result->actionToExecute
             && $configuration->presence)
         {
-            $messageWindows = 'il faut fermer';
-            log::add('windows', 'info', $messageWindows);
-            $actionToExecute = true;
+            $result->messageWindows = 'il faut fermer';
+            log::add('windows', 'info', $result->messageWindows);
+            $result->actionToExecute = true;
         }
 
         // // Hiver, fenetre ouverte
@@ -453,9 +446,9 @@ class windowsCmd extends cmd
         //     && $presence
         //     && $temperature_outdoor < $temperature_indoor)
         // {
-        //     $messageWindows = 'il faut fermer (sur temps)';
-        //     log::add('windows', 'info', $messageWindows);
-        //     $actionToExecute = true;
+        //     $result->messageWindows = 'il faut fermer (sur temps)';
+        //     log::add('windows', 'info', $result->messageWindows);
+        //     $result->actionToExecute = true;
 
         //     $window_action->event(0);
         // }
@@ -464,17 +457,29 @@ class windowsCmd extends cmd
         // if (isset($consigne) && $consigne != '' && $isOpened) {
         //     // Hiver
         //     if ($isWinter) {
-        //         $messageWindows = 'il faut fermer (sur consigne)';
-        //         log::add('windows', 'info', $messageWindows);
-        //         $actionToExecute = true;
+        //         $result->messageWindows = 'il faut fermer (sur consigne)';
+        //         log::add('windows', 'info', $result->messageWindows);
+        //         $result->actionToExecute = true;
 
         //         $window_action->event(0);
         //     }
         // }
 
+        return $result;
+    }
+
+    /**
+     * Réaliser les actions :
+     *  - Icone sur le widget
+     *  - Notification
+     *  - Actions diverses
+     */
+    private function action($configuration, $result) {
+        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+
         // Icone sur le widget
         $window_action = $eqlogic->getCmd(null, 'window_action');
-        if ($actionToExecute) {
+        if ($result->actionToExecute) {
             $window_action->event(0);
         } else {
             $window_action->event(1);
@@ -482,12 +487,12 @@ class windowsCmd extends cmd
 
         // Notification
         log::add('windows', 'debug', '    notification:'.$configuration->notifyko);
-        if ($configuration->notifyko == 1 && $actionToExecute) {
-            message::add('windows', $messageWindows, '', '' . $this->getId());
+        if ($configuration->notifyko == 1 && $result->actionToExecute) {
+            message::add('windows', $result->messageWindows, '', '' . $this->getId());
         }
 
-        // actions
-        if ($actionToExecute) {
+        // Actions
+        if ($result->actionToExecute) {
             $actions = $eqlogic->getConfiguration('action');                    
             log::add('windows', 'debug', ' Lancement des actions :');
             foreach ($actions as $action) {
@@ -499,7 +504,7 @@ class windowsCmd extends cmd
 
                     foreach ($options as $key => $option) {
                         $option = str_replace('#name#', $eqlogic->getName(), $option);
-                        $option = str_replace('#message#', $messageWindows, $option);
+                        $option = str_replace('#message#', $result->messageWindows, $option);
                         $options[$key] = $option;
                     }
 
@@ -530,7 +535,8 @@ class windowsCmd extends cmd
                 $this->getWindowsInformation($configuration);
                 log::add('windows', 'debug', ' configuration :' .json_encode((array)$configuration));
 
-                $this->checkAction($configuration);
+                $result = $this->checkAction($configuration);
+                $this->action($configuration, $result);
                 
             break;
         }
