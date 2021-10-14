@@ -175,307 +175,363 @@ class windowsCmd extends cmd
       }
      */
 
+    private function getMyConfiguration() {    
+        $configuration = new StdClass();
+
+        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+
+        // Lecture et Analyse de la configuration
+
+        // température exterieure
+        log::add('windows', 'debug', ' Analyse temperature_outdoor', __FILE__);
+        $temperature_outdoor = $eqlogic->getConfiguration('temperature_outdoor');                               
+        $temperature_outdoor = str_replace('#', '', $temperature_outdoor);
+        if ($temperature_outdoor != '') {                        
+            $cmd = cmd::byId($temperature_outdoor);
+            if ($cmd == null) {
+                log::add('windows', 'error', ' Mauvaise temperature_outdoor :'. $temperature_outdoor, __FILE__);
+                return;
+            }
+            $configuration->temperature_outdoor = $cmd->execCmd();    
+            log::add('windows', 'debug', ' temperature_outdoor: '. $configuration->temperature_outdoor, __FILE__);
+        } else {
+            log::add('windows', 'error', ' Pas de temperature_outdoor', __FILE__);
+            return;  
+        }                
+        unset($cmd);
+
+        // température interieure
+        log::add('windows', 'debug', ' Analyse temperature_indoor', __FILE__);
+        $temperature_indoor = $eqlogic->getConfiguration('temperature_indoor');                       
+        $temperature_indoor = str_replace('#', '', $temperature_indoor);
+        if ($temperature_indoor != '') {
+            $cmd = cmd::byId($temperature_indoor);
+            if ($cmd == null) {
+                log::add('windows', 'error', ' Mauvaise temperature_indoor :'.$temperature_indoor, __FILE__);
+                return;
+            }
+            $configuration->temperature_indoor = $cmd->execCmd();
+            log::add('windows', 'debug', ' temperature_indoor: '. $configuration->temperature_indoor, __FILE__);
+        } else {
+            log::add('windows', 'error', ' Pas de temperature_indoor', __FILE__);
+            return;
+        }
+        unset($cmd);
+
+        // presence
+        log::add('windows', 'debug', ' Analyse presence', __FILE__);
+        $presence = $eqlogic->getConfiguration('presence');                            
+        $presence = str_replace('#', '', $presence);
+        if ($presence != '') {
+            $cmd = cmd::byId($presence);
+            if ($cmd == null) {
+                log::add('windows', 'error', ' Mauvaise presence :'.$presence, __FILE__);
+                return;
+            }
+            $configuration->presence = $cmd->execCmd();
+            log::add('windows', 'debug', ' presence: '. $presence, __FILE__);
+        } else {
+            log::add('windows', 'debug', ' Pas de presence : valeur par défaut prise = 1', __FILE__);
+            // Valeur par défaut
+            $configuration->presence = 1;                    
+        }
+        unset($cmd);
+
+        // température hiver
+        $temperature_winter  = $eqlogic->getConfiguration('temperature_winter');                               
+        if (!is_numeric($temperature_winter)) {
+            log::add('windows', 'error', ' Mauvaise temperature_winter: '.$temperature_winter, __FILE__);
+            return;
+        } else {
+            $configuration->temperature_winter = $temperature_winter;
+        }
+        
+        // température été
+        $temperature_summer  = $eqlogic->getConfiguration('temperature_summer');                               
+        if (!is_numeric($temperature_summer)) {
+            log::add('windows', 'error', ' Mauvaise temperature_summer:'.$temperature_summer, __FILE__);
+            return;
+        } else {
+            $configuration->temperature_summer = $temperature_summer;
+        }
+
+        // durée hiver
+        $duration_winter = $eqlogic->getConfiguration('duration_winter');
+        if (!is_numeric($duration_winter)) {
+            log::add('windows', 'error', ' Mauvaise duration_winter:'. $duration_winter, __FILE__);
+            return;
+        } else {
+            $duration_winter = $duration_winter;
+        }
+
+        // durée été
+        $duration_summer = $eqlogic->getConfiguration('duration_summer'); 
+        if (!is_numeric($duration_summer)) {
+            log::add('windows', 'error', ' Mauvaise duration_summer:'.$duration_summer, __FILE__);
+            return;                
+        } else {
+            $duration_summer = $duration_summer;
+        }
+
+        // Seuil hiver
+        $threshold_winter = $eqlogic->getConfiguration('threshold_winter'); 
+        if (!is_numeric($threshold_winter)) {
+            log::add('windows', 'error', ' Mauvaise threshold_winter:'.$threshold_winter, __FILE__);
+            return;
+        } else {
+            $configuration->threshold_winter = $threshold_winter;
+        }
+
+        // Seuil été
+        $threshold_summer = $eqlogic->getConfiguration('threshold_summer'); 
+        if (!is_numeric($threshold_summer)) {
+            log::add('windows', 'error', ' Mauvaise threshold_summer:'.$threshold_summer, __FILE__);
+            return;
+        } else {
+            $configuration->threshold_summer = $threshold_summer;
+        }
+
+        // Consigne thermostat
+        log::add('windows', 'debug', ' Analyse consigne', __FILE__);
+        $consigne = $eqlogic->getConfiguration('consigne');                       
+        $consigne = str_replace('#', '', $consigne);
+        if ($consigne != '') {
+            $cmd = cmd::byId($consigne);
+            if ($cmd == null) {
+                log::add('windows', 'error', ' Mauvaise consigne :'.$consigne, __FILE__);
+                return;
+            }
+            $configuration->consigne = $cmd->execCmd();
+            log::add('windows', 'debug', ' consigne: '. $consigne, __FILE__);
+        } else {
+            log::add('windows', 'debug', ' Pas de consigne', __FILE__);                    
+        }
+        unset($cmd);
+
+        // Notification
+        $configuration->notifyko = $eqlogic->getConfiguration('notifyifko');
+
+
+        // Recherche de la durée à prendre en compte
+        $dateTime = new DateTime('NOW');
+        $dayOfTheYear = $dateTime->format('z');
+        if($dayOfTheYear < 80 || $dayOfTheYear > 280){
+            $configuration->duration = $duration_winter;
+            $configuration->isWinter = true;
+        } else {
+            $configuration->duration = $duration_summer;
+            $configuration->isWinter = false;
+        }
+        unset($dateTime);
+        unset($duration_winter);
+        unset($duration_summer); 
+
+        return $configuration;
+    }
+
+    private function getWindowsInformation($configuration) {
+        if ($configuration == null) return;
+
+        $configuration->isOpened = false;
+        $configuration->durationOpened = 0;
+
+        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+
+        log::add('windows', 'debug', ' Liste des ouvertures :');
+        $windows = $eqlogic->getConfiguration('window');
+        foreach ($windows as $window) {
+            $window = str_replace('#', '', $window['cmd']);
+            if ($window != '') {
+                $cmd = cmd::byId($window);                    
+            } else {
+                log::add('windows', 'error', ' Pas de window', __FILE__);
+                return; 
+            }
+            
+            if ($cmd == null) {
+                log::add('windows', 'error', ' Mauvaise window :'.$window, __FILE__);
+                return;
+            }
+            $windowState = $cmd->execCmd();
+            log::add('windows', 'debug', '    '.$cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$windowState);
+
+            // 1 = fermé
+            $isWindowOpened = ($windowState == 0);
+           
+            if ($isWindowOpened) {
+                // si ouvert
+                
+                // Vérification de la durée
+                $lastDateValue = $cmd->getValueDate();
+                $time = strtotime($lastDateValue);
+                $interval = (time() - $time) / 60; // en minutes
+                log::add('windows', 'debug', '       lastDateValue:'.$lastDateValue.' windowState:'.$windowState.', timediff:'.$interval.', duration:'.$configuration->duration);
+                
+                $configuration->isOpened = true;
+                $configuration->durationOpened = max($configuration->durationOpened, $interval);
+            }
+        }
+    }
+
+    private function checkAction($configuration) {
+        if ($configuration == null) return;
+
+        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+
+        // Vérifier s'il faut fermer
+        log::add('windows', 'debug', ' Analyse métier');                
+        $isTimeToClose = false;
+        if ($configuration->isOpened) {
+            // si ouvert
+                                
+            // Vérification sur durée
+            log::add('windows', 'debug', '    calcul sur durée');
+            if ($configuration->durationOpened >=  $configuration->duration) {                
+                log::add('windows', 'debug', '    il faudra fermer sur durée');
+                $isTimeToClose = true;
+            }
+
+            // Vérification du seuil
+            if (isset($configuration->consigne) && $configuration->consigne != '') {
+                log::add('windows', 'debug', '    calcul sur consigne: '.$configuration->consigne);
+
+                // Hiver
+                if ($configuration->isWinter) {
+                    $temp_mini = $configuration->consigne - $configuration->threshold_winter;
+                    log::add('windows', 'debug', '    température mini :'.$temp_mini.', température:'.$configuration->temperature_indoor);
+
+                    if ($configuration->temperature_indoor <= $temp_mini) {
+                        log::add('windows', 'debug', '    il faudra fermer sur température');
+                        $isTimeToClose = true;
+                    }
+                }
+            }
+        }
+
+        // Log de résumé        
+        log::add('windows', 'info', 
+            '     '
+            .'ext:'.$configuration->temperature_outdoor
+            .', int:'.$configuration->temperature_indoor
+            .', seuil hiver:'.$configuration->temperature_winter
+            .', presence:'.$configuration->presence
+            .', isOpened:'. ($configuration->isOpened ? 'true' : 'false')
+            .', isTimeToClose:'. ($isTimeToClose ? 'true' : 'false')
+        );
+        unset($value);
+
+        $messageWindows = '';
+        $actionToExecute = false;
+
+        // Hiver, fenetre fermée
+        // mais il fait plus chaud dehors tout de même
+        // il faut donc ouvrir
+        if ($configuration->temperature_outdoor < $configuration->temperature_winter 
+            && !$configuration->isOpened
+            && $configuration->presence
+            && $configuration->temperature_outdoor > $configuration->temperature_indoor)
+        {
+            $messageWindows = 'il faut ouvrir';
+            log::add('windows', 'info', $messageWindows);
+            $actionToExecute = true;
+        } 
+
+        // Hiver
+        if ($isTimeToClose
+            && $configuration->presence)
+        {
+            $messageWindows = 'il faut fermer';
+            log::add('windows', 'info', $messageWindows);
+            $actionToExecute = true;
+        }
+
+        // // Hiver, fenetre ouverte
+        // // La température va continuer à descendre
+        // // il faut fermer
+        // if ($temperature_outdoor < $temperature_winter
+        //     && $isOpened
+        //     && $presence
+        //     && $temperature_outdoor < $temperature_indoor)
+        // {
+        //     $messageWindows = 'il faut fermer (sur temps)';
+        //     log::add('windows', 'info', $messageWindows);
+        //     $actionToExecute = true;
+
+        //     $window_action->event(0);
+        // }
+
+        // // Avec consigne
+        // if (isset($consigne) && $consigne != '' && $isOpened) {
+        //     // Hiver
+        //     if ($isWinter) {
+        //         $messageWindows = 'il faut fermer (sur consigne)';
+        //         log::add('windows', 'info', $messageWindows);
+        //         $actionToExecute = true;
+
+        //         $window_action->event(0);
+        //     }
+        // }
+
+        // Icone sur le widget
+        $window_action = $eqlogic->getCmd(null, 'window_action');
+        if ($actionToExecute) {
+            $window_action->event(0);
+        } else {
+            $window_action->event(1);
+        }
+
+        // Notification
+        log::add('windows', 'debug', '    notification:'.$configuration->notifyko);
+        if ($configuration->notifyko == 1 && $actionToExecute) {
+            message::add('windows', $messageWindows, '', '' . $this->getId());
+        }
+
+        // actions
+        if ($actionToExecute) {
+            $actions = $eqlogic->getConfiguration('action');                    
+            log::add('windows', 'debug', ' Lancement des actions :');
+            foreach ($actions as $action) {
+                log::add('windows', 'debug', $action['cmd']);
+
+                $options = array();
+                if (isset($action['options'])) {
+                    $options = $action['options'];
+
+                    foreach ($options as $key => $option) {
+                        $option = str_replace('#name#', $eqlogic->getName(), $option);
+                        $option = str_replace('#message#', $messageWindows, $option);
+                        $options[$key] = $option;
+                    }
+
+                    if ($option['title'] == ''
+                    || $option['message'] == '') {
+                        log::add('windows', 'error', 'Action sans titre ou message');
+                        break;
+                    }
+                }
+                scenarioExpression::createAndExec('action', $action['cmd'], $options);
+            }
+        } else {
+            log::add('windows', 'info', 'rien à faire');
+        }
+    }
+
     public function execute($_options = array())
     {
         log::add('windows', 'info', ' **** execute ****', __FILE__);
-
+        
         switch ($this->getLogicalId()) {				
-            case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
+            case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm .                                 
                 $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
                 log::add('windows', 'info', ' Objet : '.$eqlogic->getName(), __FILE__);
 
                 // Lecture et Analyse de la configuration
+                $configuration = $this->getMyConfiguration();
+                $this->getWindowsInformation($configuration);
+                log::add('windows', 'debug', ' configuration :' .json_encode((array)$configuration));
 
-                // température exterieure
-                log::add('windows', 'debug', ' Analyse temperature_outdoor', __FILE__);
-                $temperature_outdoor = $eqlogic->getConfiguration('temperature_outdoor');                               
-                $temperature_outdoor = str_replace('#', '', $temperature_outdoor);
-                if ($temperature_outdoor != '') {                        
-                    $cmd = cmd::byId($temperature_outdoor);
-                    if ($cmd == null) {
-                        log::add('windows', 'error', ' Mauvaise temperature_outdoor :'. $temperature_outdoor, __FILE__);
-                        return;
-                    }
-                    $temperature_outdoor = $cmd->execCmd();    
-                    log::add('windows', 'debug', ' temperature_outdoor: '. $temperature_outdoor, __FILE__);
-                } else {
-                    log::add('windows', 'error', ' Pas de temperature_outdoor', __FILE__);
-                    return;  
-                }                
-                unset($cmd);
-
-                // température interieure
-                log::add('windows', 'debug', ' Analyse temperature_indoor', __FILE__);
-                $temperature_indoor = $eqlogic->getConfiguration('temperature_indoor');                       
-                $temperature_indoor = str_replace('#', '', $temperature_indoor);
-                if ($temperature_indoor != '') {
-                    $cmd = cmd::byId($temperature_indoor);
-                    if ($cmd == null) {
-                        log::add('windows', 'error', ' Mauvaise temperature_indoor :'.$temperature_indoor, __FILE__);
-                        return;
-                    }
-                    $temperature_indoor = $cmd->execCmd();
-                    log::add('windows', 'debug', ' temperature_indoor: '. $temperature_indoor, __FILE__);
-                } else {
-                    log::add('windows', 'error', ' Pas de temperature_indoor', __FILE__);
-                    return;
-                }
-                unset($cmd);
-
-                // presence
-                log::add('windows', 'debug', ' Analyse presence', __FILE__);
-                $presence = $eqlogic->getConfiguration('presence');                            
-                $presence = str_replace('#', '', $presence);
-                if ($presence != '') {
-                    $cmd = cmd::byId($presence);
-                    if ($cmd == null) {
-                        log::add('windows', 'error', ' Mauvaise presence :'.$presence, __FILE__);
-                        return;
-                    }
-                    $presence = $cmd->execCmd();
-                    log::add('windows', 'debug', ' presence: '. $presence, __FILE__);
-                } else {
-                    log::add('windows', 'debug', ' Pas de presence : valeur par défaut prise = 1', __FILE__);
-                    // Valeur par défaut
-                    $presence = 1;                    
-                }
-                unset($cmd);
-
-                // température hiver
-                $temperature_winter  = $eqlogic->getConfiguration('temperature_winter');                               
-                if (!is_numeric($temperature_winter)) {
-                    log::add('windows', 'error', ' Mauvaise temperature_winter: '.$temperature_winter, __FILE__);
-                    return;
-                }
+                $this->checkAction($configuration);
                 
-                // température été
-                $temperature_summer  = $eqlogic->getConfiguration('temperature_summer');                               
-                if (!is_numeric($temperature_summer)) {
-                    log::add('windows', 'error', ' Mauvaise temperature_summer:'.$temperature_summer, __FILE__);
-                    return;
-                }
-
-                // durée hiver
-                $duration_winter = $eqlogic->getConfiguration('duration_winter');
-                if (!is_numeric($duration_winter)) {
-                    log::add('windows', 'error', ' Mauvaise duration_winter:'. $duration_winter, __FILE__);
-                    return;
-                }
-
-                // durée été
-                $duration_summer = $eqlogic->getConfiguration('duration_summer'); 
-                if (!is_numeric($duration_summer)) {
-                    log::add('windows', 'error', ' Mauvaise duration_summer:'.$duration_summer, __FILE__);
-                    return;                
-                }
-
-                // Seuil hiver
-                $threshold_winter = $eqlogic->getConfiguration('threshold_winter'); 
-                if (!is_numeric($threshold_winter)) {
-                    log::add('windows', 'error', ' Mauvaise threshold_winter:'.$threshold_winter, __FILE__);
-                    return;
-                }
-
-                // Seuil été
-                $threshold_summer = $eqlogic->getConfiguration('threshold_summer'); 
-                if (!is_numeric($threshold_summer)) {
-                    log::add('windows', 'error', ' Mauvaise threshold_summer:'.$threshold_summer, __FILE__);
-                    return;
-                }
-
-                // Consigne thermostat
-                log::add('windows', 'debug', ' Analyse consigne', __FILE__);
-                $consigne = $eqlogic->getConfiguration('consigne');                       
-                $consigne = str_replace('#', '', $consigne);
-                if ($consigne != '') {
-                    $cmd = cmd::byId($consigne);
-                    if ($cmd == null) {
-                        log::add('windows', 'error', ' Mauvaise consigne :'.$consigne, __FILE__);
-                        return;
-                    }
-                    $consigne = $cmd->execCmd();
-                    log::add('windows', 'debug', ' consigne: '. $consigne, __FILE__);
-                } else {
-                    log::add('windows', 'debug', ' Pas de consigne', __FILE__);                    
-                }
-                unset($cmd);
-
-                // Recherche de la durée à prendre en compte
-                $dateTime = new DateTime('NOW');
-                $dayOfTheYear = $dateTime->format('z');
-                if($dayOfTheYear < 80 || $dayOfTheYear > 280){
-                    $duration = $duration_winter;
-                    $isWinter = true;
-                } else {
-                    $duration = $duration_summer;
-                    $isWinter = false;
-                }
-                unset($dateTime);
-                unset($duration_winter);
-                unset($duration_summer);            
-
-                // ouvertures
-                log::add('windows', 'debug', ' Liste des ouvertures :');
-                $windows = $eqlogic->getConfiguration('window');                
-                $isOpened = false;
-			    foreach ($windows as $window) {
-                    $window = str_replace('#', '', $window['cmd']);
-                    if ($window != '') {
-                        $cmd = cmd::byId($window);                    
-                    } else {
-                        log::add('windows', 'error', ' Pas de window', __FILE__);
-                        return; 
-                    }
-                    
-                    if ($cmd == null) {
-                        log::add('windows', 'error', ' Mauvaise window :'.$window, __FILE__);
-                        return;
-                    }
-                    $windowState = $cmd->execCmd();
-                    log::add('windows', 'debug', '    '.$cmd->getEqLogic()->getHumanName().'['.$cmd->getName().'] : '.$windowState);
-
-                    // 1 = fermé
-                    $isWindowOpened = ($windowState == 0);
-                   
-                    if ($isWindowOpened) {
-                        // si ouvert
-                        
-                        // Vérification de la durée
-                        $lastDateValue = $cmd->getValueDate();
-                        $time = strtotime($lastDateValue);
-                        $interval = (time() - $time) / 60; // en minutes
-                        log::add('windows', 'debug', '    lastDateValue:'.$lastDateValue.' windowState:'.$windowState.', timediff:'.$interval.', duration:'.$duration);
-                        
-                        // Vérification sur durée
-                        if ($interval >=  $duration) {
-                            log::add('windows', 'debug', '    ouvert depuis plus de :'.$duration);
-                            $isOpened = $isOpened || $isWindowOpened;
-                        }
-
-                        // Vérification du seuil
-                        if (isset($consigne) && $consigne != '') {
-                            log::add('windows', 'debug', '    calcul sur consigne: '.$consigne);
-
-                            if ($isWinter) {
-                                $temp_mini = $consigne - $threshold_winter;
-                                log::add('windows', 'debug', '    température mini :'.$temp_mini.', température:'.$temperature_indoor);
-
-                                if ($temperature_indoor <= $temp_mini) {
-                                    log::add('windows', 'debug', '    température mini dépassée :'.$temp_mini);
-                                    $isOpened = $isOpened || $isWindowOpened;
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                // window_action : icone sur le widget               
-                $window_action = $eqlogic->getCmd(null, 'window_action');
-                $window_action->event(1);
-
-                // Log de résumé
-                $value = $isOpened ? 'true' : 'false';
-                log::add('windows', 'info', 
-                    'ext:'.$temperature_outdoor
-                    .', int:'.$temperature_indoor
-                    .', seuil hiver:'.$temperature_winter
-                    .', presence:'.$presence
-                    .', isOpened:'. $value
-                );
-                unset($value);
-
-                $messageWindows = '';
-                $actionToExecute = false;
-
-                // Hiver, fenetre fermée
-                // mais il fait plus chaud dehors tout de même
-                // il faut donc ouvrir
-                if ($temperature_outdoor < $temperature_winter 
-                    && !$isOpened
-                    && $presence
-                    && $temperature_outdoor > $temperature_indoor)
-                {
-                    $messageWindows = 'il faut ouvrir';
-                    log::add('windows', 'info', $messageWindows);
-                    $actionToExecute = true;
-
-                    $window_action->event(0);
-                } 
-                
-                // Hiver
-                if ($isOpened
-                    && $presence)
-                {
-                    $messageWindows = 'il faut fermer';
-                    log::add('windows', 'info', $messageWindows);
-                    $actionToExecute = true;
-
-                    $window_action->event(0);
-                }
-
-                // // Hiver, fenetre ouverte
-                // // La température va continuer à descendre
-                // // il faut fermer
-                // if ($temperature_outdoor < $temperature_winter
-                //     && $isOpened
-                //     && $presence
-                //     && $temperature_outdoor < $temperature_indoor)
-                // {
-                //     $messageWindows = 'il faut fermer (sur temps)';
-                //     log::add('windows', 'info', $messageWindows);
-                //     $actionToExecute = true;
-
-                //     $window_action->event(0);
-                // }
-
-                // // Avec consigne
-                // if (isset($consigne) && $consigne != '' && $isOpened) {
-                //     // Hiver
-                //     if ($isWinter) {
-                //         $messageWindows = 'il faut fermer (sur consigne)';
-                //         log::add('windows', 'info', $messageWindows);
-                //         $actionToExecute = true;
-    
-                //         $window_action->event(0);
-                //     }
-                // }
-
-                // Notifier
-                $notify = $eqlogic->getConfiguration('notifyifko');
-                log::add('windows', 'debug', '    notification:'.$notify);
-                if ($notify == 1) {
-                    message::add('windows', $messageWindows, '', '' . $this->getId());
-                }
-
-                // actions
-                if ($actionToExecute) {
-                    $actions = $eqlogic->getConfiguration('action');
-                    $isOpened = false;
-                    log::add('windows', 'debug', ' Lancement des actions :');
-                    foreach ($actions as $action) {
-                        log::add('windows', 'debug', $action['cmd']);
-
-                        $options = array();
-                        if (isset($action['options'])) {
-                            $options = $action['options'];
-
-                            foreach ($options as $key => $option) {
-                                $option = str_replace('#name#', $eqlogic->getName(), $option);
-                                $option = str_replace('#message#', $messageWindows, $option);
-                                $options[$key] = $option;
-                            }
-
-                            if ($option['title'] == ''
-                              || $option['message'] == '') {
-                                log::add('windows', 'error', 'Action sans titre ou message');
-                                break;
-                            }
-                        }
-                        scenarioExpression::createAndExec('action', $action['cmd'], $options);
-                    }
-                } else {
-                    log::add('windows', 'info', 'rien à faire');
-                }
             break;
         }
         
