@@ -199,6 +199,35 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ Tempérture maxi (optionel)}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="temperature_maxi" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fa fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ Tempérture mini (optionel)}}</label>
+                                    <div class="col-xs-11 col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips"
+                                                data-l1key="configuration" data-l2key="temperature_mini" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fa fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Température hiver (°C)}}</label>
