@@ -300,11 +300,20 @@ class windowsCmd extends cmd
         // Recherche de la durée à prendre en compte
         $dateTime = new DateTime('NOW');
         $dayOfTheYear = $dateTime->format('z');
-        if($dayOfTheYear < 80 || $dayOfTheYear > 280){
+        // Type de saison
+        if($dayOfTheYear < 80 || $dayOfTheYear > 264) {
+            // du 21 septembre au 21 mars : automne et hivers
             $configuration->duration = $duration_winter;
+            $configuration->isSummer = false;
             $configuration->isWinter = true;
+        } else if ($dayOfTheYear > 172 && $dayOfTheYear < 264) {
+            // du 21 juin au 21 septebmre : été
+            $configuration->duration = $duration_summer;
+            $configuration->isSummer = true;
+            $configuration->isWinter = false;
         } else {
             $configuration->duration = $duration_summer;
+            $configuration->isSummer = false;
             $configuration->isWinter = false;
         }
         unset($dateTime);
@@ -368,102 +377,123 @@ class windowsCmd extends cmd
     private function checkAction($configuration) {
         if ($configuration == null) return;
 
-        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
-
         $result = new stdClass();
         $result->actionToExecute = false;
+        $result->messageWindows = '';
 
-        // Vérifier s'il faut fermer
-        log::add('windows', 'debug', ' Analyse métier');        
-        if ($configuration->isOpened) {
-            // si ouvert
-                                
+        log::add('windows', 'debug', ' Analyse métier'); 
+
+        // Vérification sur Présence
+        if (!$configuration->presence) {
+            log::add('windows', 'debug', '    Pas présent : rien à faire'); 
+            return $result;
+        }
+
+        /*** HIVER ***/
+        // Hiver, fenetre fermée
+        // mais il fait plus chaud dehors tout de même
+        // il faut donc ouvrir
+        if ($configuration->isWinter
+            && !$configuration->isOpened            
+            && $configuration->temperature_outdoor > $configuration->temperature_indoor)
+        {
+            log::add('windows', 'debug', '    test hiver sur température');
+
+            $result->messageWindows = 'il faut ouvrir';
+            $result->actionToExecute = true;
+            log::add('windows', 'info', $result->messageWindows);
+        } 
+
+        // Vérifier s'il faut fermer      
+        // si hiver et ouvert
+        if ($configuration->isWinter && $configuration->isOpened) {
+            log::add('windows', 'debug', '    test hiver sur température et durée');
+
             // Vérification sur durée
             log::add('windows', 'debug', '    calcul sur durée');
+            // Hiver et trop longtemps
             if ($configuration->durationOpened >=  $configuration->duration) {                
-                log::add('windows', 'debug', '    il faudra fermer sur durée');
                 $result->actionToExecute = true;
+                $result->messageWindows = 'il faut fermer';
+                log::add('windows', 'info', '    il faudra fermer sur durée');
+
             }
 
-            // Vérification du seuil
+            // Vérification sur consigne
             if (isset($configuration->consigne) && $configuration->consigne != '') {
                 log::add('windows', 'debug', '    calcul sur consigne: '.$configuration->consigne);
 
-                // Hiver
-                if ($configuration->isWinter) {
-                    $temp_mini = $configuration->consigne - $configuration->threshold_winter;
-                    log::add('windows', 'debug', '    température mini :'.$temp_mini.', température:'.$configuration->temperature_indoor);
+                // Hiver                
+                $temp_mini = $configuration->consigne - $configuration->threshold_winter;
+                log::add('windows', 'debug', '    température mini :'.$temp_mini.', température:'.$configuration->temperature_indoor);
 
-                    if ($configuration->temperature_indoor <= $temp_mini) {
-                        log::add('windows', 'debug', '    il faudra fermer sur température');
-                        $result->actionToExecute = true;
-                    }
+                if ($configuration->temperature_indoor <= $temp_mini) {                        
+                    $result->actionToExecute = true;
+                    $result->messageWindows = 'il faut fermer';
+                    log::add('windows', 'info', '    il faudra fermer sur température');
                 }
             }
         }
 
+        /*** ETE***/
+        // Eté, fenetre fermée
+        // mais il fait plus frais dehors tout de même
+        // il faut donc ouvrir
+        if ($configuration->isSummer
+            && !$configuration->isOpened            
+            && $configuration->temperature_outdoor < $configuration->temperature_indoor)
+        {
+            log::add('windows', 'debug', '    test été sur température');
+
+            $result->messageWindows = 'il faut ouvrir';
+            $result->actionToExecute = true;
+            log::add('windows', 'info', $result->messageWindows);
+        } 
+
+        // Vérifier s'il faut fermer      
+        // si hiver et ouvert
+        if ($configuration->isSummer && $configuration->isOpened) {
+            log::add('windows', 'debug', '    test été sur température et durée');
+
+            // Vérification sur durée
+            log::add('windows', 'debug', '    calcul sur durée');
+            // Hiver et trop longtemps
+            if ($configuration->durationOpened >=  $configuration->duration) {                
+                $result->actionToExecute = true;
+                $result->messageWindows = 'il faut fermer';
+                log::add('windows', 'info', '    il faudra fermer sur durée');
+
+            }
+
+            // // Vérification sur consigne
+            // if (isset($configuration->consigne) && $configuration->consigne != '') {
+            //     log::add('windows', 'debug', '    calcul sur consigne: '.$configuration->consigne);
+
+            //     // Hiver                
+            //     $temp_mini = $configuration->consigne - $configuration->threshold_summer;
+            //     log::add('windows', 'debug', '    température mini :'.$temp_mini.', température:'.$configuration->temperature_indoor);
+
+            //     if ($configuration->temperature_indoor >= $temp_mini) {
+            //         $result->actionToExecute = true;
+            //         $result->messageWindows = 'il faut fermer';
+            //         log::add('windows', 'info', '    il faudra fermer sur température');
+            //     }
+            // }
+        }
+
+
         // Log de résumé        
-        log::add('windows', 'info', 
-            '     '
+        log::add('windows', 'debug', 
+            '     ==> '
             .'ext:'.$configuration->temperature_outdoor
             .', int:'.$configuration->temperature_indoor
             .', seuil hiver:'.$configuration->temperature_winter
             .', presence:'.$configuration->presence
             .', isOpened:'. ($configuration->isOpened ? 'true' : 'false')
             .', actionToExecute:'. ($result->actionToExecute ? 'true' : 'false')
+            .', messageWindows:'. $result->messageWindows
         );
         unset($value);
-
-       
-
-        // Hiver, fenetre fermée
-        // mais il fait plus chaud dehors tout de même
-        // il faut donc ouvrir
-        if ($configuration->temperature_outdoor < $configuration->temperature_winter 
-            && !$configuration->isOpened
-            && $configuration->presence
-            && $configuration->temperature_outdoor > $configuration->temperature_indoor)
-        {
-            $result->messageWindows = 'il faut ouvrir';
-            log::add('windows', 'info', $result->messageWindows);
-            $result->actionToExecute = true;
-        } 
-
-        // Hiver
-        if ($result->actionToExecute
-            && $configuration->presence)
-        {
-            $result->messageWindows = 'il faut fermer';
-            log::add('windows', 'info', $result->messageWindows);
-            $result->actionToExecute = true;
-        }
-
-        // // Hiver, fenetre ouverte
-        // // La température va continuer à descendre
-        // // il faut fermer
-        // if ($temperature_outdoor < $temperature_winter
-        //     && $isOpened
-        //     && $presence
-        //     && $temperature_outdoor < $temperature_indoor)
-        // {
-        //     $result->messageWindows = 'il faut fermer (sur temps)';
-        //     log::add('windows', 'info', $result->messageWindows);
-        //     $result->actionToExecute = true;
-
-        //     $window_action->event(0);
-        // }
-
-        // // Avec consigne
-        // if (isset($consigne) && $consigne != '' && $isOpened) {
-        //     // Hiver
-        //     if ($isWinter) {
-        //         $result->messageWindows = 'il faut fermer (sur consigne)';
-        //         log::add('windows', 'info', $result->messageWindows);
-        //         $result->actionToExecute = true;
-
-        //         $window_action->event(0);
-        //     }
-        // }
 
         return $result;
     }
