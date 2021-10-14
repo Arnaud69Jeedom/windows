@@ -238,6 +238,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Seuil hiver}}</label>
+                                    0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips"
@@ -248,6 +249,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Seuil été}}</label>
+                                    0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips"
@@ -262,7 +264,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 
                                 Optionel : Rechercher la saison par rapport à la température minimum et maximum prévue dans la journée
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ Tempérture maxi (optionel)}}</label>
+                                    <label class="col-sm-3 control-label">{{ Tempérture maxi}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips"
@@ -277,7 +279,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ Tempérture mini (optionel)}}</label>
+                                    <label class="col-sm-3 control-label">{{ Tempérture mini}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips"
