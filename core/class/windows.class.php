@@ -180,7 +180,7 @@ class windowsCmd extends cmd
             $temperature_outdoor = $cmd->execCmd();
             if (is_numeric($temperature_outdoor)) {
                 $configuration->temperature_outdoor = $temperature_outdoor;
-                log::add('windows', 'debug', ' temperature_outdoor: '. $configuration->temperature_outdoor, __FILE__);
+                // log::add('windows', 'debug', ' temperature_outdoor: '. $configuration->temperature_outdoor, __FILE__);
             } else {
                 log::add('windows', 'error', ' Mauvaise temperature_outdoor :'. $temperature_outdoor, __FILE__);
                 return;
@@ -204,7 +204,7 @@ class windowsCmd extends cmd
             $temperature_indoor = $cmd->execCmd();
             if (is_numeric($temperature_indoor)) {
                 $configuration->temperature_indoor = $temperature_indoor;
-                log::add('windows', 'debug', ' temperature_indoor: '. $configuration->temperature_indoor, __FILE__);
+                // log::add('windows', 'debug', ' temperature_indoor: '. $configuration->temperature_indoor, __FILE__);
             } else {
                 log::add('windows', 'error', ' Mauvaise temperature_indoor :'. $temperature_indoor, __FILE__);
                 return;
@@ -227,7 +227,7 @@ class windowsCmd extends cmd
             }
             if (is_numeric($presence)) {
                 $configuration->presence = $presence;
-                log::add('windows', 'debug', ' presence: '. $configuration->presence, __FILE__);
+                // log::add('windows', 'debug', ' presence: '. $configuration->presence, __FILE__);
             } else {
                 log::add('windows', 'error', ' Mauvaise presence :'. $presence, __FILE__);
                 return;
@@ -247,7 +247,7 @@ class windowsCmd extends cmd
                 return;
             } else {
                 $configuration->temperature_winter = $temperature_winter;
-                log::add('windows', 'debug', ' temperature_winter: '.$temperature_winter, __FILE__);
+                // log::add('windows', 'debug', ' temperature_winter: '.$temperature_winter, __FILE__);
             }
         } else {
             log::add('windows', 'debug', ' Pas de temperature_winter', __FILE__);
@@ -261,7 +261,7 @@ class windowsCmd extends cmd
                 return;
             } else {
                 $configuration->temperature_summer = $temperature_summer;
-                log::add('windows', 'debug', ' temperature_summer: '. $configuration->temperature_summer, __FILE__);
+                // log::add('windows', 'debug', ' temperature_summer: '. $configuration->temperature_summer, __FILE__);
             }
         } else {
             log::add('windows', 'debug', ' Pas de temperature_summer', __FILE__);
@@ -274,7 +274,7 @@ class windowsCmd extends cmd
             return;
         } else {
             $duration_winter = $duration_winter;
-            log::add('windows', 'debug', ' duration_winter: '. $duration_winter, __FILE__);
+            // log::add('windows', 'debug', ' duration_winter: '. $duration_winter, __FILE__);
         }
 
         // durée été
@@ -284,7 +284,7 @@ class windowsCmd extends cmd
             return;                
         } else {
             $duration_summer = $duration_summer;
-            log::add('windows', 'debug', ' duration_summer: '. $duration_summer, __FILE__);
+            // log::add('windows', 'debug', ' duration_summer: '. $duration_summer, __FILE__);
         }
 
         // Seuil hiver
@@ -294,7 +294,7 @@ class windowsCmd extends cmd
             return;
         } else {
             $configuration->threshold_winter = $threshold_winter;
-            log::add('windows', 'debug', ' threshold_winter: '. $configuration->threshold_winter, __FILE__);
+            // log::add('windows', 'debug', ' threshold_winter: '. $configuration->threshold_winter, __FILE__);
         }
 
         // Seuil été
@@ -304,7 +304,7 @@ class windowsCmd extends cmd
             return;
         } else {
             $configuration->threshold_summer = $threshold_summer;
-            log::add('windows', 'debug', ' threshold_summer: '. $configuration->threshold_summer, __FILE__);
+            // log::add('windows', 'debug', ' threshold_summer: '. $configuration->threshold_summer, __FILE__);
         }
 
         // Consigne thermostat
@@ -323,7 +323,7 @@ class windowsCmd extends cmd
                 return;
             } else {
                 $configuration->consigne = $consigne;
-                log::add('windows', 'debug', ' consigne: '. $configuration->consigne, __FILE__);
+                // log::add('windows', 'debug', ' consigne: '. $configuration->consigne, __FILE__);
             }            
         } else {
             log::add('windows', 'debug', ' Pas de consigne', __FILE__);                    
@@ -347,7 +347,7 @@ class windowsCmd extends cmd
                 return;
             } else {
                 $configuration->temperature_maxi = $temperature_maxi;
-                log::add('windows', 'debug', ' temperature_maxi: '. $configuration->temperature_maxi, __FILE__);
+                // log::add('windows', 'debug', ' temperature_maxi: '. $configuration->temperature_maxi, __FILE__);
             }
         } else {
             log::add('windows', 'debug', ' Pas de temperature_maxi', __FILE__);                    
@@ -370,7 +370,7 @@ class windowsCmd extends cmd
                 return;
             } else {
                 $configuration->temperature_mini = $temperature_mini;
-                log::add('windows', 'debug', ' temperature_mini: '. $configuration->temperature_mini, __FILE__);
+                // log::add('windows', 'debug', ' temperature_mini: '. $configuration->temperature_mini, __FILE__);
             }
         } else {
             log::add('windows', 'debug', ' Pas de temperature_mini', __FILE__);                    
@@ -390,7 +390,6 @@ class windowsCmd extends cmd
 
                 if ($configuration->temperature_mini <= $configuration->temperature_winter) {
                     log::add('windows', 'debug', ' Saison : Hiver', __FILE__);
-
                     $configuration->isWinter = true;
                     $configuration->isSummer = false;
                 } else if ($configuration->temperature_maxi >= $configuration->temperature_summer) {
@@ -434,8 +433,6 @@ class windowsCmd extends cmd
         } else {
             $configuration->duration = $duration_summer;
         }
-
-        
 
         unset($dateTime);
         unset($duration_winter);
