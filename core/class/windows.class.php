@@ -235,8 +235,9 @@ class windowsCmd extends cmd
                     $presence = $cmd->execCmd();
                     log::add('windows', 'debug', ' presence: '. $presence, __FILE__);
                 } else {
-                    log::add('windows', 'error', ' Pas de presence', __FILE__);
-                    return; 
+                    log::add('windows', 'debug', ' Pas de presence : valeur par défaut prise = 1', __FILE__);
+                    // Valeur par défaut
+                    $presence = 1;                    
                 }
                 unset($cmd);
 
@@ -284,7 +285,7 @@ class windowsCmd extends cmd
 
                 // Consigne thermostat
                 log::add('windows', 'debug', ' Analyse consigne', __FILE__);
-                $consigne = $eqlogic->getConfiguration('thermostat');                       
+                $consigne = $eqlogic->getConfiguration('consigne');                       
                 $consigne = str_replace('#', '', $consigne);
                 if ($consigne != '') {
                     $cmd = cmd::byId($consigne);
@@ -295,8 +296,7 @@ class windowsCmd extends cmd
                     $consigne = $cmd->execCmd();
                     log::add('windows', 'debug', ' consigne: '. $consigne, __FILE__);
                 } else {
-                    log::add('windows', 'error', ' Pas de consigne', __FILE__);
-                    return;
+                    log::add('windows', 'debug', ' Pas de consigne', __FILE__);                    
                 }
                 unset($cmd);
 
@@ -353,11 +353,17 @@ class windowsCmd extends cmd
                         }
 
                         // Vérification du seuil
-                        if ($isWinter) {
-                            $temp_mini = $consigne - $threshold_winter;
-                            if ($temperature_indoor <= $temp_mini) {
-                                log::add('windows', 'debug', '    température mini dépassée :'.$temp_mini);
-                                $isOpened = $isOpened || $isWindowOpened;
+                        if (isset($consigne) && $consigne != '') {
+                            log::add('windows', 'debug', '    calcul sur consigne: '.$consigne);
+
+                            if ($isWinter) {
+                                $temp_mini = $consigne - $threshold_winter;
+                                log::add('windows', 'debug', '    température mini :'.$temp_mini.', température:'.$temperature_indoor);
+
+                                if ($temperature_indoor <= $temp_mini) {
+                                    log::add('windows', 'debug', '    température mini dépassée :'.$temp_mini);
+                                    $isOpened = $isOpened || $isWindowOpened;
+                                }
                             }
                         }
                     }
@@ -396,13 +402,9 @@ class windowsCmd extends cmd
                     $window_action->event(0);
                 } 
                 
-                // Hiver, fenetre ouverte
-                // La température va continuer à descendre
-                // il faut fermer
-                if ($temperature_outdoor < $temperature_winter
-                    && $isOpened
-                    && $presence
-                    && $temperature_outdoor < $temperature_indoor)
+                // Hiver
+                if ($isOpened
+                    && $presence)
                 {
                     $messageWindows = 'il faut fermer';
                     log::add('windows', 'info', $messageWindows);
@@ -411,9 +413,36 @@ class windowsCmd extends cmd
                     $window_action->event(0);
                 }
 
+                // // Hiver, fenetre ouverte
+                // // La température va continuer à descendre
+                // // il faut fermer
+                // if ($temperature_outdoor < $temperature_winter
+                //     && $isOpened
+                //     && $presence
+                //     && $temperature_outdoor < $temperature_indoor)
+                // {
+                //     $messageWindows = 'il faut fermer (sur temps)';
+                //     log::add('windows', 'info', $messageWindows);
+                //     $actionToExecute = true;
+
+                //     $window_action->event(0);
+                // }
+
+                // // Avec consigne
+                // if (isset($consigne) && $consigne != '' && $isOpened) {
+                //     // Hiver
+                //     if ($isWinter) {
+                //         $messageWindows = 'il faut fermer (sur consigne)';
+                //         log::add('windows', 'info', $messageWindows);
+                //         $actionToExecute = true;
+    
+                //         $window_action->event(0);
+                //     }
+                // }
+
                 // Notifier
                 $notify = $eqlogic->getConfiguration('notifyifko');
-                log::add('windows', 'debug', $notify);
+                log::add('windows', 'debug', '    notification:'.$notify);
                 if ($notify == 1) {
                     message::add('windows', $messageWindows, '', '' . $this->getId());
                 }

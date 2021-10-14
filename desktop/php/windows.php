@@ -170,7 +170,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Présence}}</label>
+                                    <label class="col-sm-3 control-label">{{Présence (optionel)}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips"
@@ -185,11 +185,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Thermostat}}</label>
+                                    <label class="col-sm-3 control-label">{{ Consigne Thermostat (optionel)}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="thermostat" data-concat="1" />
+                                                data-l1key="configuration" data-l2key="consigne" data-concat="1" />
                                             <span class="input-group-btn">
                                                 <a class="btn btn-default listCmdInfo">
                                                     <i class="fa fa-list-alt"></i>
