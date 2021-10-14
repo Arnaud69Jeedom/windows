@@ -225,6 +225,7 @@ class windowsCmd extends cmd
                 log::add('windows', 'error', ' Mauvaise presence :'.$presence, __FILE__);
                 return;
             }
+            $presence = $cmd->execCmd();
             if (is_numeric($presence)) {
                 $configuration->presence = $presence;
                 // log::add('windows', 'debug', ' presence: '. $configuration->presence, __FILE__);
@@ -641,8 +642,8 @@ class windowsCmd extends cmd
         }
 
         // Notification
-        log::add('windows', 'debug', '    notification:'.$configuration->notifyko);
         if ($configuration->notifyko == 1 && $result->actionToExecute) {
+            log::add('windows', 'debug', ' Notification:'.$configuration->notifyko);
             message::add('windows', $result->messageWindows, '', '' . $this->getId());
         }
 
