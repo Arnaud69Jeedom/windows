@@ -362,41 +362,41 @@ class windowsCmd extends cmd
         }
         unset($cmd);
 
-        // temperature_mini
-        log::add('windows', 'debug', ' Analyse température mini', __FILE__);
-        $temperature_mini = $eqlogic->getConfiguration('temperature_mini');                       
-        $temperature_mini = str_replace('#', '', $temperature_mini);
-        if ($temperature_mini != '') {
-            $cmd = cmd::byId($temperature_mini);
-            if ($cmd == null) {
-                log::add('windows', 'error', ' Mauvaise temperature_mini :'.$temperature_mini, __FILE__);
-                return;
-            }
-            $temperature_mini = $cmd->execCmd();
-            if (!is_numeric($temperature_mini)) {
-                log::add('windows', 'error', ' Mauvaise temperature_mini:'.$temperature_mini, __FILE__);
-                return;
-            } else {
-                $configuration->temperature_mini = $temperature_mini;
-                // log::add('windows', 'debug', ' temperature_mini: '. $configuration->temperature_mini, __FILE__);
-            }
-        } else {
-            log::add('windows', 'debug', ' Pas de temperature_mini', __FILE__);                    
-        }
-        unset($cmd);
+        // // temperature_mini
+        // log::add('windows', 'debug', ' Analyse température mini', __FILE__);
+        // $temperature_mini = $eqlogic->getConfiguration('temperature_mini');                       
+        // $temperature_mini = str_replace('#', '', $temperature_mini);
+        // if ($temperature_mini != '') {
+        //     $cmd = cmd::byId($temperature_mini);
+        //     if ($cmd == null) {
+        //         log::add('windows', 'error', ' Mauvaise temperature_mini :'.$temperature_mini, __FILE__);
+        //         return;
+        //     }
+        //     $temperature_mini = $cmd->execCmd();
+        //     if (!is_numeric($temperature_mini)) {
+        //         log::add('windows', 'error', ' Mauvaise temperature_mini:'.$temperature_mini, __FILE__);
+        //         return;
+        //     } else {
+        //         $configuration->temperature_mini = $temperature_mini;
+        //         // log::add('windows', 'debug', ' temperature_mini: '. $configuration->temperature_mini, __FILE__);
+        //     }
+        // } else {
+        //     log::add('windows', 'debug', ' Pas de temperature_mini', __FILE__);                    
+        // }
+        // unset($cmd);
 
         // Notification
         $configuration->notifyko = $eqlogic->getConfiguration('notifyifko');
 
-        // Recherche de la saisone
+        // Recherche de la saison
         if (isset($configuration->temperature_maxi) 
-            && isset($configuration->temperature_mini)
+            // && isset($configuration->temperature_mini)
             && isset($configuration->temperature_summer)
             && isset($configuration->temperature_winter)) {
                 // Type de saison par température
                 log::add('windows', 'debug', ' Saison par température', __FILE__);                    
 
-                if ($configuration->temperature_mini <= $configuration->temperature_winter) {
+                if ($configuration->temperature_maxi <= $configuration->temperature_winter) {
                     log::add('windows', 'debug', ' Saison : Hiver', __FILE__);
                     $configuration->isWinter = true;
                     $configuration->isSummer = false;
@@ -541,7 +541,7 @@ class windowsCmd extends cmd
             if ($configuration->durationOpened >=  $configuration->duration) {                
                 $result->actionToExecute = true;
                 $result->messageWindows = 'il faut fermer';
-                log::add('windows', 'info', '    il faudra fermer sur durée');
+                log::add('windows', 'info', '     > il faudra fermer sur durée');
 
             }
 
@@ -549,14 +549,22 @@ class windowsCmd extends cmd
             if (isset($configuration->consigne) && $configuration->consigne != '') {
                 log::add('windows', 'debug', '    calcul sur consigne: '.$configuration->consigne);
 
-                // Hiver                
                 $temp_mini = $configuration->consigne - $configuration->threshold_winter;
                 log::add('windows', 'debug', '    température mini :'.$temp_mini.', température:'.$configuration->temperature_indoor);
 
+                // Si durée longue mais tout de même chaude dedans
+                if ($result->actionToExecute = true 
+                    && $configuration->temperature_indoor >= $configuration->consigne) {                        
+                    $result->actionToExecute = false;
+                    $result->messageWindows = '';
+                    log::add('windows', 'info', '     > plus la peine de fermer sur durée');
+                }
+               
+                // Si température plus froide que le mini autorisé
                 if ($configuration->temperature_indoor <= $temp_mini) {                        
                     $result->actionToExecute = true;
                     $result->messageWindows = 'il faut fermer';
-                    log::add('windows', 'info', '    il faudra fermer sur température');
+                    log::add('windows', 'info', '     > il faudra fermer sur température');
                 }
             }
         }

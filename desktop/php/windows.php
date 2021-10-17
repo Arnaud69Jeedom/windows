@@ -263,6 +263,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <legend><i class="fas fa-sun" aria-hidden="true"></i> {{Température Saison}}</legend>                                
                                 
                                 Optionel : Rechercher la saison par rapport à la température minimum et maximum prévue dans la journée
+                                <br/>
+                                Comparer Température maxi et hiver, et Température maxi et été
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ Tempérture maxi}}</label>
                                     <div class="col-xs-11 col-sm-7">
@@ -278,7 +280,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ Tempérture mini}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
@@ -291,7 +293,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                             </span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Température hiver (°C)}}</label>
