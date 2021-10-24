@@ -532,7 +532,8 @@ class windowsCmd extends cmd
 
         // Vérifier s'il faut fermer      
         // si hiver et ouvert
-        if ($configuration->isWinter && $configuration->isOpened) {
+        // if ($configuration->isWinter && $configuration->isOpened) {
+        if (!$configuration->isSummer && $configuration->isOpened) {
             log::add('windows', 'debug', '    test hiver sur température et durée');
 
             // Vérification sur durée
@@ -585,7 +586,7 @@ class windowsCmd extends cmd
         } 
 
         // Vérifier s'il faut fermer      
-        // si hiver et ouvert
+        // si été et ouvert
         if ($configuration->isSummer && $configuration->isOpened) {
             log::add('windows', 'debug', '    test été sur température et durée');
 
