@@ -23,7 +23,11 @@ class windows extends eqLogic
 {
     /*     * *************************Attributs****************************** */
 
-
+  /*
+   * Permet de définir les possibilités de personnalisation du widget (en cas d'utilisation de la fonction 'toHtml' par exemple)
+   * Tableau multidimensionnel - exemple: array('custom' => true, 'custom::layout' => false)
+	public static $_widgetPossibility = array();
+   */
 
     /*     * ***********************Methode static*************************** */
 
@@ -120,20 +124,20 @@ class windows extends eqLogic
     }
 
     /*
-     * Non obligatoire mais permet de modifier l'affichage du widget si vous en avez besoin
+     * Non obligatoire : permet de modifier l'affichage du widget (également utilisable par les commandes)
       public function toHtml($_version = 'dashboard') {
 
       }
      */
 
     /*
-     * Non obligatoire mais ca permet de déclencher une action après modification de variable de configuration
+     * Non obligatoire : permet de déclencher une action après modification de variable de configuration
     public static function postConfig_<Variable>() {
     }
      */
 
     /*
-     * Non obligatoire mais ca permet de déclencher une action avant modification de variable de configuration
+     * Non obligatoire : permet de déclencher une action avant modification de variable de configuration
     public static function preConfig_<Variable>() {
     }
      */
@@ -145,6 +149,9 @@ class windowsCmd extends cmd
 {
     /*     * *************************Attributs****************************** */
 
+    /*
+      public static $_widgetPossibility = array();
+    */
 
     /*     * ***********************Methode static*************************** */
 
@@ -694,7 +701,8 @@ class windowsCmd extends cmd
         }
     }
 
-    public function execute($_options = array())
+  // Exécution d'une commande  
+     public function execute($_options = array())
     {
         log::add('windows', 'info', ' **** execute ****', __FILE__);
 
