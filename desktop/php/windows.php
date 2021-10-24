@@ -30,17 +30,17 @@ $eqLogics = eqLogic::byType($plugin->getId());
         <legend><i class="fas fa-table"></i> {{Mes équipements}}</legend>
         <!-- Champ de recherche -->
         <div class="input-group" style="margin:5px;">
-			<input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>
-			<div class="input-group-btn">
-				<a id="bt_resetSearch" class="btn roundedRight" style="width:30px"><i class="fas fa-times"></i></a>
-			</div>
-		</div>
-		<!-- Liste des équipements du plugin -->
+            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
+            <div class="input-group-btn">
+                <a id="bt_resetSearch" class="btn roundedRight" style="width:30px"><i class="fas fa-times"></i></a>
+            </div>
+        </div>
+        <!-- Liste des équipements du plugin -->
         <div class="eqLogicThumbnailContainer">
             <?php
             foreach ($eqLogics as $eqLogic) {
                 $opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
-                echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
+                echo '<div class="eqLogicDisplayCard cursor ' . $opacity . '" data-eqLogic_id="' . $eqLogic->getId() . '">';
                 echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
                 echo '<br>';
                 echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
@@ -50,46 +50,46 @@ $eqLogics = eqLogic::byType($plugin->getId());
         </div>
     </div> <!-- /.eqLogicThumbnailDisplay -->
 
-	<!-- Page de présentation de l'équipement -->
-	<div class="col-xs-12 eqLogic" style="display: none;">
-		<!-- barre de gestion de l'équipement -->
-		<div class="input-group pull-right" style="display:inline-flex;">
-			<span class="input-group-btn">
-				<!-- Les balises <a></a> sont volontairement fermées à la ligne suivante pour éviter les espaces entre les boutons. Ne pas modifier -->
-				<a class="btn btn-sm btn-default eqLogicAction roundedLeft" data-action="configure"><i class="fas fa-cogs"></i><span class="hidden-xs"> {{Configuration avancée}}</span>
-				</a><a class="btn btn-sm btn-default eqLogicAction" data-action="copy"><i class="fas fa-copy"></i><span class="hidden-xs">  {{Dupliquer}}</span>
-				</a><a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}
-				</a><a class="btn btn-sm btn-danger eqLogicAction roundedRight" data-action="remove"><i class="fas fa-minus-circle"></i> {{Supprimer}}
-				</a>
-			</span>
-		</div>
-		<!-- Onglets -->
+    <!-- Page de présentation de l'équipement -->
+    <div class="col-xs-12 eqLogic" style="display: none;">
+        <!-- barre de gestion de l'équipement -->
+        <div class="input-group pull-right" style="display:inline-flex;">
+            <span class="input-group-btn">
+                <!-- Les balises <a></a> sont volontairement fermées à la ligne suivante pour éviter les espaces entre les boutons. Ne pas modifier -->
+                <a class="btn btn-sm btn-default eqLogicAction roundedLeft" data-action="configure"><i class="fas fa-cogs"></i><span class="hidden-xs"> {{Configuration avancée}}</span>
+                </a><a class="btn btn-sm btn-default eqLogicAction" data-action="copy"><i class="fas fa-copy"></i><span class="hidden-xs"> {{Dupliquer}}</span>
+                </a><a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}
+                </a><a class="btn btn-sm btn-danger eqLogicAction roundedRight" data-action="remove"><i class="fas fa-minus-circle"></i> {{Supprimer}}
+                </a>
+            </span>
+        </div>
+        <!-- Onglets -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
-			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
+            <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
             <li role="presentation"><a href="#sondetab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-thermometer-empty"></i><span class="hidden-xs"> {{Sondes}}</span></a></li>
             <li role="presentation"><a href="#configureWindowstab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas jeedom-fenetre-ouverte"></i><span class="hidden-xs"> {{Ouvertures}}</span></a></li>
             <li role="presentation"><a href="#actiontab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list-alt"></i><span class="hidden-xs"> {{Actions}}</span></a></li>
             <li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i><span class="hidden-xs"> {{Commandes}}</span></a></li>
         </ul>
         <div class="tab-content">
-   			<!-- Onglet de configuration de l'équipement -->
+            <!-- Onglet de configuration de l'équipement -->
             <div role="tabpanel" class="tab-pane active" id="eqlogictab">
                 <!-- Partie gauche de l'onglet "Equipements" -->
-				<!-- Paramètres généraux de l'équipement -->
+                <!-- Paramètres généraux de l'équipement -->
                 <br>
                 <div class="row">
                     <div class="col-lg-7">
                         <form class="form-horizontal">
-                            <fieldset>                        
+                            <fieldset>
                                 <legend><i class="fas fa-wrench"></i> {{Général}}</legend>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Nom de l'équipement}}</label>
                                     <div class="col-xs-11 col-sm-7">
-                                        <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;"/>
-                                        <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement}}"/>
+                                        <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
+                                        <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement}}" />
                                     </div>
-                                </div>                       
+                                </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Objet parent}}</label>
                                     <div class="col-xs-11 col-sm-7">
@@ -123,7 +123,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                         <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked />{{Activer}}</label>
                                         <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked />{{Visible}}</label>
                                     </div>
-                                </div>                                                                                                                       
+                                </div>
                             </fieldset>
                         </form>
                     </div>
@@ -143,8 +143,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <label class="col-sm-3 control-label">{{Température extérieure}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control"
-                                                data-l1key="configuration" data-l2key="temperature_outdoor" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="temperature_outdoor" data-concat="1" />
                                             <span class="input-group-btn">
                                                 <a class="btn btn-default listCmdInfo">
                                                     <i class="fas fa-list-alt"></i>
@@ -153,13 +152,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                         </div>
                                     </div>
                                 </div>
-                            
+
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Température intérieure}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control"
-                                                data-l1key="configuration" data-l2key="temperature_indoor" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="temperature_indoor" data-concat="1" />
                                             <span class="input-group-btn">
                                                 <a class="btn btn-default listCmdInfo">
                                                     <i class="fas fa-list-alt"></i>
@@ -171,13 +169,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Présence (optionel)}}
-                                        <br/>Si pas renseigné : toujours calculé
-                                        <br/>Si rensigné : calculé que si présent
+                                        <br />Si pas renseigné : toujours calculé
+                                        <br />Si rensigné : calculé que si présent
                                     </label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="presence" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="presence" data-concat="1" />
                                             <span class="input-group-btn">
                                                 <a class="btn btn-default listCmdInfo">
                                                     <i class="fa fa-list-alt"></i>
@@ -188,45 +185,42 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Durée hiver}}</label>                                    
+                                    <label class="col-sm-3 control-label">{{Durée hiver}}</label>
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
                                         </div>
-                                    </div>                                   
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Durée été}}</label>
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Notifier}}</label>
-                                    <div class="col-sm-2">							
-                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="notifyifko"/>
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="notifyifko" />
                                     </div>
                                 </div>
 
-                                <br/>
+                                <br />
                             </fieldset>
 
                             <fieldset>
                                 <legend><i class="fas fa-clock" aria-hidden="true"></i> {{Calcul sur température}}</legend>
                                 Optionnel : Utilisé pour rester au plus prêt de la consigne du thermostat
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ Consigne Thermostat}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="consigne" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="consigne" data-concat="1" />
                                             <span class="input-group-btn">
                                                 <a class="btn btn-default listCmdInfo">
                                                     <i class="fa fa-list-alt"></i>
@@ -241,8 +235,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -252,25 +245,23 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
                             </fieldset>
 
                             <fieldset>
-                                <legend><i class="fas fa-sun" aria-hidden="true"></i> {{Température Saison}}</legend>                                
-                                
+                                <legend><i class="fas fa-sun" aria-hidden="true"></i> {{Température Saison}}</legend>
+
                                 Optionel : Rechercher la saison par rapport à la température minimum et maximum prévue dans la journée
-                                <br/>
+                                <br />
                                 Comparer Température maxi et hiver, et Température maxi et été
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ Tempérture maxi}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="temperature_maxi" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="temperature_maxi" data-concat="1" />
                                             <span class="input-group-btn">
                                                 <a class="btn btn-default listCmdInfo">
                                                     <i class="fa fa-list-alt"></i>
@@ -299,8 +290,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <label class="col-sm-3 control-label">{{Température hiver (°C)}}</label>
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="temperature_winter" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="temperature_winter" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -309,8 +299,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <label class="col-sm-3 control-label">{{Température été (°C)}}</label>
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"
-                                                data-l1key="configuration" data-l2key="temperature_summer" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="temperature_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -323,38 +312,33 @@ $eqLogics = eqLogic::byType($plugin->getId());
             </div><!-- /.tabpanel #sondetab-->
 
             <div role="tabpanel" class="tab-pane" id="configureWindowstab">
-            <br />
-                
-                <a class="btn btn-success addAction pull-right" 
-                    id="bt_addWindowEqLogic"
-                    data-type="failureActuator" 
-                    style="position: relative;top: -7px;">
+                <br />
+
+                <a class="btn btn-success addAction pull-right" id="bt_addWindowEqLogic" data-type="failureActuator" style="position: relative;top: -7px;">
                     <i class="fas fa-plus-circle"></i> {{Ajouter une ouverture}}
                 </a>
                 <br />
-                <br />    
-            
-                    <form class="form-horizontal">
-                        <fieldset>                                
-                            <legend><i class="fas jeedom-fenetre-ouverte" aria-hidden="true"></i> {{Ouvertures}}                                
-                            </legend>                            
-                            <div class="row">
-                                <div class="col-lg-7">
-                                    <div id="div_confWindows"></div>
-                                </div>
+                <br />
+
+                <form class="form-horizontal">
+                    <fieldset>
+                        <legend><i class="fas jeedom-fenetre-ouverte" aria-hidden="true"></i> {{Ouvertures}}
+                        </legend>
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <div id="div_confWindows"></div>
                             </div>
-                        </fieldset>
-                    </form>                  
+                        </div>
+                    </fieldset>
+                </form>
                 <hr>
             </div><!-- /.tabpanel #configureWindowstab-->
 
             <!-- Onglet Action -->
             <div role="tabpanel" class="tab-pane" id="actiontab">
-            <br />
-                
-                <a class="btn btn-success addAction pull-right" id="bt_addActionEqLogic"
-                    data-type="failureActuator" 
-                    style="position: relative;top: -7px;">
+                <br />
+
+                <a class="btn btn-success addAction pull-right" id="bt_addActionEqLogic" data-type="failureActuator" style="position: relative;top: -7px;">
                     <i class="fas fa-plus-circle"></i> {{Ajouter une action}}
                 </a>
                 <br />
@@ -366,19 +350,19 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <b>#message#</b> = NomMessage à afficher.</br>
                 </div>
                 <br />
-                
+
                 <form class="form-horizontal">
                     <div id="div_confActions"></div>
                 </form>
             </div>
 
-			<!-- Onglet des commandes de l'équipement -->
+            <!-- Onglet des commandes de l'équipement -->
             <div role="tabpanel" class="tab-pane" id="commandtab">
-                <br/>
+                <br />
                 <div class="table-responsive">
                     <table id="table_cmd" class="table table-bordered table-condensed">
                         <thead>
-                            <tr>                                
+                            <tr>
                                 <th>{{Nom}}</th>
                                 <th>{{Options}}</th>
                                 <th>{{Action}}</th>
@@ -390,10 +374,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 </div>
             </div><!-- /.tabpanel #commandtab-->
         </div><!-- /.tab-content -->
-	</div><!-- /.eqLogic -->
+    </div><!-- /.eqLogic -->
 </div><!-- /.row row-overflow -->
 
 <!-- Inclusion du fichier javascript du plugin (dossier, nom_du_fichier, extension_du_fichier, id_du_plugin) -->
-<?php include_file('desktop', 'windows', 'js', 'windows');?>
+<?php include_file('desktop', 'windows', 'js', 'windows'); ?>
 <!-- Inclusion du fichier javascript du core - NE PAS MODIFIER NI SUPPRIMER -->
-<?php include_file('core', 'plugin.template', 'js');?>
+<?php include_file('core', 'plugin.template', 'js'); ?>
