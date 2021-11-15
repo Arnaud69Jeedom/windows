@@ -152,18 +152,22 @@ function addConfActions(_action) {
   if (!isset(_action)) {
     _action = {};
   }
-  console.log("addConfActions", _action);
+  if (!isset(_action.options)) {
+    _action.options = {}
+  }
+  // console.log("addConfActions", _action);
   var div = '<div class="confAction">';
   div += '<div class="form-group">';
   div += '<label class="col-sm-1 control-label">{{Action}}</label>';
   div += '<div class="col-sm-4">';
   div += '<div class="input-group">';
   div += '<span class="input-group-btn">';
-  div += '<a class="btn btn-default bt_removeConfAction roundedLeft" data-type=""><i class="fas fa-minus-circle"></i></a>';
+  div += '<a class="btn btn-default bt_removeConfAction btn-sm roundedLeft" data-type=""><i class="fas fa-minus-circle"></i></a>';
   div += '</span>';
-  div += '<input class="expressionAttr form-control cmdAction" data-l1key="cmd" data-type="action" />';
+  div += '<input class="expressionAttr form-control input-sm cmdAction" data-l1key="cmd" data-type="action" />';
   div += '<span class="input-group-btn">';
-  div += '<a class="btn btn-default listCmdAction roundedRight" data-type="confAction"><i class="fas fa-list-alt"></i></a>';
+  div += '<a class="btn btn-default btn-sm listAction" data-type="confAction" title="{{Sélectionner un mot-clé}}"><i class="fas fa-tasks"></i></a>';
+  div += '<a class="btn btn-default btn-sm listCmdAction roundedRight" data-type="confAction" title="{{Sélectionner la commande}}"><i class="fas fa-list-alt"></i></a>';
   div += '</span>';
   div += '</div>';
   div += '</div>';
