@@ -168,9 +168,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Présence (optionel)}}
+                                    <label class="col-sm-3 control-label">{{Présence (optionnel)}}
                                         <br />Si pas renseigné : toujours calculé
-                                        <br />Si rensigné : calculé que si présent
+                                        <br />Si renseigné : calculé que si présent
                                     </label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
@@ -214,7 +214,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                             <fieldset>
                                 <legend><i class="fas fa-clock" aria-hidden="true"></i> {{Calcul sur température}}</legend>
-                                Optionnel : Utilisé pour rester au plus prêt de la consigne du thermostat
+                                Optionnel : Utilisé pour rester au plus près de la consigne du thermostat
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ Consigne Thermostat}}</label>
@@ -254,11 +254,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <fieldset>
                                 <legend><i class="fas fa-sun" aria-hidden="true"></i> {{Température Saison}}</legend>
 
-                                Optionel : Rechercher la saison par rapport à la température minimum et maximum prévue dans la journée
+                                Optionnel : Rechercher la saison par rapport à la température minimum et maximum prévue dans la journée
                                 <br />
                                 Comparer Température maxi et hiver, et Température maxi et été
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ Tempérture maxi}}</label>
+                                    <label class="col-sm-3 control-label">{{ Température maxi}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="temperature_maxi" data-concat="1" />
