@@ -67,6 +67,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
             <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
+            <li role="presentation"><a href="#infotab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-info"></i><span class="hidden-xs"> {{Informations}}</span></a></li>
             <li role="presentation"><a href="#sondetab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-thermometer-empty"></i><span class="hidden-xs"> {{Sondes}}</span></a></li>
             <li role="presentation"><a href="#configureWindowstab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas jeedom-fenetre-ouverte"></i><span class="hidden-xs"> {{Ouvertures}}</span></a></li>
             <li role="presentation"><a href="#actiontab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list-alt"></i><span class="hidden-xs"> {{Actions}}</span></a></li>
@@ -131,12 +132,76 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <hr>
             </div><!-- /.tabpanel #eqlogictab-->
 
+            <!-- Onglet Info -->
+            <div role="tabpanel" class="tab-pane" id="infotab">
+                <br>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <form class="form-horizontal">
+                            <legend>Informations</legend>
+                            <div> 
+                                <div>
+                                    Pour éviter une augmentation de l'humidité relative, l'apparition de moisissures, de spores de champignons ou bien la rétention d'allergènes ou de produits chimiques polluants, les médecins recommandent d'aérer sa maison entre 15 et 30 minutes par jour. Mieux vaut le faire en plusieurs fois, en début ou en fin de jour, aux heures où la pollution extérieure est la plus faible.
+                                </div>
+                                Source: <a href="https://www.futura-sciences.com/maison/questions-reponses/batiment-faut-il-aerer-maison-7237/">Futura Sciences</a>
+                            </div>                            
+                            
+                            <br>
+                            <div>                                
+                                <div>
+                                Il suffit d’ouvrir grand les fenêtres pendant 5 à 10 minutes par jour, le matin directement après votre réveil par exemple.
+                                <br>
+                                Certaines heures sont défavorables par rapport à la qualité de l’air, surtout en ville :
+                                <br>
+                                L’hiver, évitez d’ouvrir vos fenêtres entre 14h et 18h. Aérez votre logement entre 8h et 11h le matin ou entre 22h et minuit le soir. 
+                                <br>
+                                Concernant l’été, évitez d’ouvrir vos fenêtres entre 11h et 17h. L'aération de votre logement est préférable entre 21h et 10h, quand l’air est le plus frais.                        
+                                </div>
+                                Source : <a href="https://www.compteco2.com/article/pourquoi-aerer-pieces-logement">CompteCO2</a>
+                            </div>
+
+                            <br>
+                            <div>
+                                <div>
+                                5 à 10 minutes, 2 à 3 fois par jour, suffisent pour faire entrer de l’air frais et sain et à évacuer l’air chaud et vicié. Sans perte de chaleur ! En si peu de temps, les murs n’ont pas le temps de refroidir, seul l’air circule. Mieux vaut ouvrir en grand 10 minutes que laisser une fenêtre ouverte en oscillo-battant toute la journée en hiver.
+                                </div>
+                                <div>
+                                L’hiver, la pollution extérieure est au plus haut entre 14 h et 18h. Bref, évitez d’aérer à ce moment-là. Préférez le matin entre 8 h et 11 h ou le soir après 22 h, histoire de dormir dans un environnement sain. 
+                                <br>
+                                Lorsqu’il fait plus chaud, comme en été, l’idéal est d’aérer entre 21h et 10h lorsque l’air est plus frais. On évite entre 11h et 17h.
+                                </div>
+                                Source : <a href="https://www.engie.be/fr/blog/conseils-energie/aerer-sa-maison-en-hiver-pourquoi-comment-quand/">Engie</a>
+                            </div>
+                            <br>
+                            <legend>Règles</legend>
+                            <div>
+                            Les actions seront réalisées selone la saison.
+                                <br>
+                                HIVER :
+                                <ul>
+                                    <li>Fermer sur durée et temp. int < consigne</li>
+                                    <li>Fermer si temp. int < temp. mini (consigne - seuil) quelque soit la durée</li>
+                                </ul>
+                                <br>
+                                ETE :
+                                <ul>
+                                <li>Ouvrir température ext < temp. int.</li>
+                                <li>Fermer sur durée</li>
+                                </ul>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <!-- Onglet Sonde -->
             <div role="tabpanel" class="tab-pane" id="sondetab">
                 <br>
                 <div class="row">
                     <div class="col-lg-7">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal">                            
                             <fieldset>
                                 <legend><i class="fas fa-thermometer-empty" aria-hidden="true"></i> {{Sonde de température}}</legend>
                                 <div class="form-group">
@@ -167,10 +232,17 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                 </div>
 
+                                <div>
+                                    <u>Gestion de la présence</u> :
+                                    <ul>
+                                        <li>  Si non renseigné : Toujours vérifié l'état des ouvertures</li>
+                                        <li>Si renseigné : Vérification uniquement si une présence est indiquée</li>
+                                    </ul>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Présence (optionnel)}}
-                                        <br />Si pas renseigné : toujours calculé
-                                        <br />Si renseigné : calculé que si présent
+                                        
                                     </label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
@@ -214,7 +286,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                             <fieldset>
                                 <legend><i class="fas fa-clock" aria-hidden="true"></i> {{Calcul sur température}}</legend>
-                                Optionnel : Utilisé pour rester au plus près de la consigne du thermostat
+                                <div>
+                                <u>Optionnel</u> : Utilisé pour rester au plus près de la consigne du thermostat                                                                
+                                </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{ Consigne Thermostat}}</label>
@@ -254,7 +328,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <fieldset>
                                 <legend><i class="fas fa-sun" aria-hidden="true"></i> {{Température Saison}}</legend>
 
-                                Optionnel : Rechercher la saison par rapport à la température minimum et maximum prévue dans la journée
+                                <u>Optionnel</u> : Rechercher la saison par rapport à la température minimum et maximum prévue dans la journée
                                 <br />
                                 Comparer Température maxi et hiver, et Température maxi et été
                                 <div class="form-group">
@@ -288,18 +362,28 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Température hiver (°C)}}</label>
+                                    13°C recommandée
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="temperature_winter" data-concat="1" />
+                                            <input type="text"
+                                                 class="eqLogicAttr form-control tooltips" 
+                                                 placeholder="13"
+                                                 data-l1key="configuration" data-l2key="temperature_winter" data-concat="1"
+                                            />
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Température été (°C)}}</label>
+                                    25°C recommandée
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="temperature_summer" data-concat="1" />
+                                            <input type="text" 
+                                                class="eqLogicAttr form-control tooltips" 
+                                                placeholder="25"
+                                                data-l1key="configuration" data-l2key="temperature_summer" data-concat="1" 
+                                            />
                                         </div>
                                     </div>
                                 </div>
