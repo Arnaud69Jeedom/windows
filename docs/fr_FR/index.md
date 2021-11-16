@@ -21,6 +21,7 @@ Source : Engie
 # Règles retenues 
 
 Les actions seront réalisées selone la saison.
+
 HIVER :
 
     Fermer sur durée et temp. int < consigne
@@ -62,7 +63,7 @@ Listes des sondes pour suivre la santé de la pièce
     Température extérieure : Commande pour la température extérieure
     Température intérieure : Commande pour la température intérieure
 
-    Présence : ce champ est optionel
+    Présence : ce champ est optionnel
         Si le champs est non renseigné : le plugin vérifiera toujours l'état des ouvertures
         Si le champs est renseigne : le plugin vérifiera uniquement si la présence est à 1
     
@@ -70,18 +71,51 @@ Listes des sondes pour suivre la santé de la pièce
     Durée été : durée souhaité d'aération en été (5 minutes par exemple)
     Notifier : permet d'envoyer une notification s'il faut ouvrir ou fermer une fenêtre
 
+    Calcul sur température : ce champ est optionnel
+        Le but est de garder la pièce dans une température acceptable. i.e : garder la pièce au alenture de la température de consigne d'un thermostat
+        Consigne Thermostat : consigne du thermostat
+        Seuil hiver : dépassement acceptable de la température de la pièce par rapport à la consigne
+        Seuil été : A VOIR
+    
+    Température Saison : section optionnelle
+        Le plugin cherche à réguler la température par rapport à la saison
+        La saison est calculé par rapport à la date, ou mieux selon la température maxi selon la météo.
+        En effet, il peut y avoir des périodes plus chaude en hiver, et la règle doit s'adapter pour profiter de ces moments plus chaud.
 
+        Température maxi : Commande du plugin météo indiquant la température maximum du jour
+        Température hiver (°C) : température minimum indiquant que le calcul passe sur le mode Hiver
+        Température été (°C) : température minimum pour l'Eté
+
+        S'il n'y a pas de température renseignée, alors le calcul se base sur les dates :
+        Hivers : jour compris entre le 21 septembre et le 21 mars (période plus ou moins fraiche)
+        Eté : jour entre le 21 juin et le 21 septembre (période plus ou moins chaude)
+        Sinon on prend les règle de la saison intermédiaire
 
 ## Ouvertures
 
-Listes des fenêtres à suivre
+Listes des fenêtres à suivre.
+    
+    1 sera consédéré comme fermé,
+    0 comme ouvert
 
 
 ## Actions
 
 Actions et scénario à déclencher
+Lorsque le plugin detectera qu'il serait bien d'ouvrir ou de fermer une fenêtre, alors les actions seront déclenchées.
+Il est possible d'utiliser un scénario ou des commandes.
+Il est possible d'utiliser des commandes de type PushBullet. Il est alors demandé un Titre et un Message
+
+Actuellement, il existe quelques variables qui peuvent être utilisées :
+    
+    #name# = Nom de l'objet
+    #message# = NomMessage à afficher  = 'il faut ouvrir' ou 'il faut fermer'
 
 
 ## Commandes
 
-Commandes pour afficher l'Etat et Rafraichir
+Commandes créées pour voir des informations :
+
+    Action : affiche 1 si une action est souhaitée, 0 sinon
+    Rafraichir : relance le calcul
+

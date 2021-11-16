@@ -2,3 +2,5 @@ Lsite des choses à faire :
 - Gestion des horaires de notifications
   But : Eviter de notifier la nuit d'ouvrir la fenêtre en été
 - Créer la documentation
+- Gestion "inverser" sur les ouvertures
+- Ajouter variable #parent# pour avoir le nom de la pièce
