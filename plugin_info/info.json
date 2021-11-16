@@ -1,6 +1,6 @@
 {
   "id": "windows",
-  "name": "Windows",
+  "name": "Gestion Ouvrants",
   "author": "Arnaud_69",
   "description":{
     "fr_FR": "Plugin template pour la gestion des fenêtres"
