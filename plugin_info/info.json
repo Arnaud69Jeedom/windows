@@ -6,7 +6,7 @@
     "fr_FR": "Plugin template pour la gestion des fenêtres"
   },
   "licence": "AGPL",
-  "require": "3.2",
+  "require": "4.1",
   "version": "1.0",
   "category": "wellness",
   "hasDependency": false,
