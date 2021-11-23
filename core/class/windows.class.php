@@ -73,7 +73,7 @@ class windows extends eqLogic
         if (!is_object($info)) {
             $info = new windowsCmd();
             $info->setLogicalId('window_action');
-            $info->setName(__('Action', __FILE__));
+            $info->setName(__('Etat', __FILE__));
             $info->setIsVisible(1);
             $info->setIsHistorized(0);
             //$info->setTemplate('dashboard', 'line');
@@ -87,6 +87,7 @@ class windows extends eqLogic
         $value = false;
         $info->setValue($value);
         $info->save();
+        unset($info);
 
         // refresh
         $refresh = $this->getCmd(null, 'refresh');
@@ -101,6 +102,23 @@ class windows extends eqLogic
         $refresh->setType('action');
         $refresh->setSubType('other');
         $refresh->save();
+        unset($refresh);
+
+        // counter
+        $counter = $this->getCmd(null, 'counter');
+        if (!is_object($counter)) {
+            $counter = new windowsCmd();
+            $counter->setLogicalId('counter');
+            $counter->setIsVisible(1);
+            $counter->setName(__('Compteur', __FILE__));
+        }
+        $counter->setEqLogic_id($this->getId());
+        $counter->setType('info');
+        $counter->setSubType('numeric');
+        $counter->setDisplay('generic_type', 'GENERIC_INFO');
+        $counter->setUnite('min');
+        $counter->save();
+        unset($counter);
     }
 
     public function preUpdate()
@@ -467,7 +485,7 @@ class windowsCmd extends cmd
         $configuration->isOpened = false;
         $configuration->durationOpened = 0;
 
-        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+        $eqlogic = $this->getEqLogic(); //récupère l'eqlogic de la commande $this
 
         log::add('windows', 'debug', ' Liste des ouvertures :');
         $windows = $eqlogic->getConfiguration('window');
@@ -490,6 +508,14 @@ class windowsCmd extends cmd
             // 1 = fermé
             $isWindowOpened = ($windowState == 0);
 
+            $date = new DateTime('NOW');
+            if ($date->format( 'H') == 0 && $date->format( 'i') == 0) {
+                log::add('windows', 'debug', '       minuit. Réinitialisation');
+                $cmdCounter = $eqlogic->getCmd(null, 'counter');
+                $value = $cmdCounter->execCmd();
+                $cmdCounter->event(0);
+            }
+
             if ($isWindowOpened) {
                 // si ouvert
 
@@ -501,6 +527,19 @@ class windowsCmd extends cmd
 
                 $configuration->isOpened = true;
                 $configuration->durationOpened = max($configuration->durationOpened, $interval);
+
+                $cmdCounter = $eqlogic->getCmd(null, 'counter');
+                $value = $cmdCounter->execCmd();
+                log::add('windows', 'debug', '       value:' . $value);
+
+                if (!is_numeric($value)) {
+                    log::add('windows', 'debug', '       value: pas un nombre');
+
+                    $value = 0;
+                }
+                $durationOpen = $value + 1;
+                log::add('windows', 'debug', '       durationOpen:' . $durationOpen);
+                $cmdCounter->event($durationOpen);
             }
         }
     }
@@ -686,10 +725,7 @@ class windowsCmd extends cmd
                         $options[$key] = $option;
                     }
 
-                    if (
-                        $option['title'] == ''
-                        || $option['message'] == ''
-                    ) {
+                    if ($option['title'] == '' || $option['message'] == '') {
                         log::add('windows', 'error', 'Action sans titre ou message');
                         break;
                     }
