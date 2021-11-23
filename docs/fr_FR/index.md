@@ -116,6 +116,7 @@ Actuellement, il existe quelques variables qui peuvent être utilisées :
 
 Commandes créées pour voir des informations :
 
-    Action : affiche 1 si une action est souhaitée, 0 sinon
+    Etat : affiche 1 si une action est souhaitée, 0 sinon
     Rafraichir : relance le calcul
+    Compteur : Temps d'aération dans la journée
 

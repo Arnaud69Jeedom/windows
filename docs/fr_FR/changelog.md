@@ -7,3 +7,7 @@
 # 16/11/2021
 
 - Première version
+
+# 23/11/2021
+
+- Gestion du temps cumulé d'aération d'une pièce dans la journée
