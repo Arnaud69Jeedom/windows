@@ -429,7 +429,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <div class="alert-info bg-success">
                     A mettre dans <b>Titre</b> ou dans <b>Message</b> pour y récupérer la valeur</br>
                     <b>#name#</b> = Nom de l'objet</br>
-                    <b>#message#</b> = NomMessage à afficher.</br>
+                    <b>#message#</b> = NomMessage à afficher</br>
+                    <b>#temperature_indoor#</b> = température intérieure</br>
+                    <b>#parent#</b> = nom de l'objet parent (la pièce par exemple)
                 </div>
                 <br />
 
