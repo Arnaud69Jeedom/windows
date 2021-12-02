@@ -109,7 +109,9 @@ Il est possible d'utiliser des commandes de type PushBullet. Il est alors demand
 Actuellement, il existe quelques variables qui peuvent être utilisées :
     
     #name# = Nom de l'objet
-    #message# = NomMessage à afficher  = 'il faut ouvrir' ou 'il faut fermer'
+    #message# = Message à afficher  = 'il faut ouvrir' ou 'il faut fermer'
+    #temperature_indoor# = température intérieure
+    #parent# = nom de l'objet parent (la pièce par exemple) 
 
 
 ## Commandes

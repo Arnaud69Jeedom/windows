@@ -231,6 +231,7 @@ class windowsCmd extends cmd
             $temperature_indoor = $cmd->execCmd();
             if (is_numeric($temperature_indoor)) {
                 $configuration->temperature_indoor = $temperature_indoor;
+                $configuration->temperature_unit = $cmd->getunite();
                 // log::add('windows', 'debug', ' temperature_indoor: '. $configuration->temperature_indoor, __FILE__);
             } else {
                 log::add('windows', 'error', ' Mauvaise temperature_indoor :' . $temperature_indoor, __FILE__);
@@ -722,6 +723,9 @@ class windowsCmd extends cmd
                     foreach ($options as $key => $option) {
                         $option = str_replace('#name#', $eqlogic->getName(), $option);
                         $option = str_replace('#message#', $result->messageWindows, $option);
+                        $option = str_replace('#temperature_indoor#', "$configuration->temperature_indoor $configuration->temperature_unit", $option);
+                        $option = str_replace('#parent#', $eqlogic->getObject()->getName(), $option);
+
                         $options[$key] = $option;
                     }
 

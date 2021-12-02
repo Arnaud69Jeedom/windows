@@ -257,7 +257,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Durée hiver}}</label>
+                                    <label class="col-sm-3 control-label">{{Durée hiver (min)}}</label>
                                     <div class="col-sm-2">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
@@ -266,7 +266,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Durée été}}</label>
+                                    <label class="col-sm-3 control-label">{{Durée été (min)}}</label>
                                     <div class="col-sm-2">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
@@ -305,7 +305,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Seuil hiver}}</label>
+                                    <label class="col-sm-3 control-label">{{Seuil hiver (°C)}}</label>
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
@@ -315,7 +315,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Seuil été}}</label>
+                                    <label class="col-sm-3 control-label">{{Seuil été (°C)}}</label>
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
@@ -401,8 +401,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <a class="btn btn-success addAction pull-right" id="bt_addWindowEqLogic" data-type="failureActuator" style="position: relative;top: -7px;">
                     <i class="fas fa-plus-circle"></i> {{Ajouter une ouverture}}
                 </a>
-                <br />
-                <br />
 
                 <form class="form-horizontal">
                     <fieldset>
@@ -431,7 +429,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <div class="alert-info bg-success">
                     A mettre dans <b>Titre</b> ou dans <b>Message</b> pour y récupérer la valeur</br>
                     <b>#name#</b> = Nom de l'objet</br>
-                    <b>#message#</b> = NomMessage à afficher.</br>
+                    <b>#message#</b> = Message à afficher</br>
+                    <b>#temperature_indoor#</b> = température intérieure</br>
+                    <b>#parent#</b> = nom de l'objet parent (la pièce par exemple)
                 </div>
                 <br />
 
