@@ -33,6 +33,7 @@ ETE :
     Fermer sur durée
 
 INTERMEDIAIRE : 
+
     Pas d'alerte
 
 # Configuration du plugin
