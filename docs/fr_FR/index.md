@@ -32,9 +32,36 @@ ETE :
     Ouvrir température ext < temp. int.
     Fermer sur durée
 
+INTERMEDIAIRE : 
+
+    Pas d'alerte
+
 # Configuration du plugin
 
-La configuration est très simple, après téléchargement du plugin, il vous suffit de l’activer et c’est tout.
+La configuration est très simple, après téléchargement du plugin, il vous suffit de renseigner quelques sondes.
+
+Sonde de température
+    Température extérieure : Commande pour la température extérieure
+    
+Sonde de présence 
+    Présence : ce champ est optionnel
+        Si le champs est non renseigné : le plugin vérifiera toujours l'état des ouvertures
+        Si le champs est renseigne : le plugin vérifiera uniquement si la présence est à 1
+
+Température Saison
+    Température Saison : section optionnelle
+        Le plugin cherche à réguler la température par rapport à la saison
+        La saison est calculé par rapport à la date, ou mieux selon la température maxi selon la météo.
+        En effet, il peut y avoir des périodes plus chaude en hiver, et la règle doit s'adapter pour profiter de ces moments plus chaud.
+
+        Température maxi : Commande du plugin météo indiquant la température maximum du jour
+        Température hiver (°C) : température minimum indiquant que le calcul passe sur le mode Hiver
+        Température été (°C) : température minimum pour l'Eté
+
+        S'il n'y a pas de température renseignée, alors le calcul se base sur les dates :
+        Hivers : jour compris entre le 21 septembre et le 21 mars (période plus ou moins fraiche)
+        Eté : jour entre le 21 juin et le 21 septembre (période plus ou moins chaude)
+        Sinon on prend les règle de la saison intermédiaire
 
 # Configuration des équipements
 
@@ -60,15 +87,10 @@ Cet onglet récapitules les informations sur la nécessité d'aérer. Il donne a
 
 Listes des sondes pour suivre la santé de la pièce
 
-    Température extérieure : Commande pour la température extérieure
     Température intérieure : Commande pour la température intérieure
-
-    Présence : ce champ est optionnel
-        Si le champs est non renseigné : le plugin vérifiera toujours l'état des ouvertures
-        Si le champs est renseigne : le plugin vérifiera uniquement si la présence est à 1
     
-    Durée hiver : durée souhaité d'aération en hiver (5 minutes par exemple)
-    Durée été : durée souhaité d'aération en été (5 minutes par exemple)
+    Durée hiver : durée souhaitée d'aération en hiver (5 minutes par exemple)
+    Durée été : durée souhaitée d'aération en été (5 minutes par exemple)
     Notifier : permet d'envoyer une notification s'il faut ouvrir ou fermer une fenêtre
 
     Calcul sur température : ce champ est optionnel
@@ -76,20 +98,7 @@ Listes des sondes pour suivre la santé de la pièce
         Consigne Thermostat : consigne du thermostat
         Seuil hiver : dépassement acceptable de la température de la pièce par rapport à la consigne
         Seuil été : A VOIR
-    
-    Température Saison : section optionnelle
-        Le plugin cherche à réguler la température par rapport à la saison
-        La saison est calculé par rapport à la date, ou mieux selon la température maxi selon la météo.
-        En effet, il peut y avoir des périodes plus chaude en hiver, et la règle doit s'adapter pour profiter de ces moments plus chaud.
 
-        Température maxi : Commande du plugin météo indiquant la température maximum du jour
-        Température hiver (°C) : température minimum indiquant que le calcul passe sur le mode Hiver
-        Température été (°C) : température minimum pour l'Eté
-
-        S'il n'y a pas de température renseignée, alors le calcul se base sur les dates :
-        Hivers : jour compris entre le 21 septembre et le 21 mars (période plus ou moins fraiche)
-        Eté : jour entre le 21 juin et le 21 septembre (période plus ou moins chaude)
-        Sinon on prend les règle de la saison intermédiaire
 
 ## Ouvertures
 
@@ -118,7 +127,7 @@ Actuellement, il existe quelques variables qui peuvent être utilisées :
 
 Commandes créées pour voir des informations :
 
-    Etat : affiche 1 si une action est souhaitée, 0 sinon
+    Action : affiche 1 si une action est souhaitée, 0 sinon
     Rafraichir : relance le calcul
     Compteur : Temps d'aération dans la journée
 
