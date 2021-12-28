@@ -126,6 +126,7 @@ function addConfWindows(_window) {
   div += '</div>';
   div += '</div>';
   div += '<div class="col-sm-1">';
+  div += '<label class="checkbox-inline"><input type="checkbox" class="expressionAttr cmdInfo" data-l1key="invert"/>{{Inverser}}</label></span>';
   div += '</div>';
   div += '</div>';
 

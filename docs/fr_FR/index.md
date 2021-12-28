@@ -102,11 +102,12 @@ Listes des sondes pour suivre la santé de la pièce
 
 ## Ouvertures
 
-Listes des fenêtres à suivre.
+Listes des fenêtres à surveiller.
     
-    1 sera consédéré comme fermé,
-    0 comme ouvert
+    0 sera consédéré comme fermé,
+    1 comme ouvert
 
+Utiliser la cocher "Inverser" si votre module renvoie la valeur inverse.
 
 ## Actions
 
