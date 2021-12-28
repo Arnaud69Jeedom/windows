@@ -85,7 +85,6 @@ $(".eqLogic").delegate(".listCmdInfo", 'click', function () {
   });
 });
 
-
 // ***** Windows ****************
 /**
  * Bouton Ajout d'une ouverture
