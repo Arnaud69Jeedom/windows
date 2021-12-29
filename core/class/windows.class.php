@@ -581,7 +581,7 @@ class windowsCmd extends cmd
             $result->messageWindows = 'il faut ouvrir';
             $result->actionToExecute = true;
             log::add('windows', 'info', $result->messageWindows);
-            log::add('windows', 'debug', ' result hivers temperature:' . json_encode((array)$result));
+            log::add('windows', 'debug', ' result hiver temperature:' . json_encode((array)$result));
         }
 
         // Vérifier s'il faut fermer      
@@ -600,17 +600,22 @@ class windowsCmd extends cmd
                 log::add('windows', 'debug', ' result hiver durée :' . json_encode((array)$result));
             }
 
+            log::add('windows', 'debug', ' result hiver apres durée:' . json_encode((array)$result));
+
             // Vérification sur consigne
             if (isset($configuration->consigne) && $configuration->consigne != '') {
                 log::add('windows', 'debug', '    calcul sur consigne: ' . $configuration->consigne);
+                log::add('windows', 'debug', ' result hiver avant consigne :' . json_encode((array)$result));
 
                 $temp_mini = $configuration->consigne - $configuration->threshold_winter;
                 log::add('windows', 'debug', '    température mini :' . $temp_mini . ', température:' . $configuration->temperature_indoor);
 
                 // Si durée longue mais tout de même chaude dedans
-                if ($result->actionToExecute = true
+                if ($result->actionToExecute == true
                     && $configuration->temperature_indoor >= $configuration->consigne
                 ) {
+                    log::add('windows', 'debug', ' result hiver avant trop chaud :' . json_encode((array)$result));
+
                     $result->actionToExecute = false;
                     $result->messageWindows = '';
                     log::add('windows', 'info', '     > plus la peine de fermer sur durée');
