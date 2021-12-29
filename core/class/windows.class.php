@@ -696,6 +696,8 @@ class windowsCmd extends cmd
      */
     private function action($configuration, $result)
     {
+        log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
 
         // Icone sur le widget
@@ -706,6 +708,7 @@ class windowsCmd extends cmd
             $window_action->event(1);
         }
 
+        log::add('windows', 'debug', ' avant Notification');
         // Notification
         if ($configuration->notifyko == 1 && $result->actionToExecute) {
             log::add('windows', 'debug', ' Notification:' . $configuration->notifyko);
@@ -717,9 +720,12 @@ class windowsCmd extends cmd
             $messageToSend = str_replace('#parent#', $eqlogic->getObject()->getName(), $messageToSend);
             
             message::add('windows', $messageToSend, '', '' . $this->getId());
+        } else {
+            log::add('windows', 'debug', ' Notification désactivée');
         }
 
         // Actions
+        log::add('windows', 'debug', ' avant Execute');
         if ($result->actionToExecute) {
             $actions = $eqlogic->getConfiguration('action');
             log::add('windows', 'debug', ' Lancement des actions :');
