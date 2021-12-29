@@ -581,7 +581,7 @@ class windowsCmd extends cmd
             $result->messageWindows = 'il faut ouvrir';
             $result->actionToExecute = true;
             log::add('windows', 'info', $result->messageWindows);
-            log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+            log::add('windows', 'debug', ' result hivers temperature:' . json_encode((array)$result));
         }
 
         // Vérifier s'il faut fermer      
@@ -597,7 +597,7 @@ class windowsCmd extends cmd
                 $result->actionToExecute = true;
                 $result->messageWindows = 'il faut fermer';
                 log::add('windows', 'info', '     > il faudra fermer sur durée');
-                log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+                log::add('windows', 'debug', ' result hiver durée :' . json_encode((array)$result));
             }
 
             // Vérification sur consigne
@@ -614,7 +614,7 @@ class windowsCmd extends cmd
                     $result->actionToExecute = false;
                     $result->messageWindows = '';
                     log::add('windows', 'info', '     > plus la peine de fermer sur durée');
-                    log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+                    log::add('windows', 'debug', ' result hiver pas top froid :' . json_encode((array)$result));
                 }
 
                 // Si température plus froide que le mini autorisé
@@ -622,10 +622,11 @@ class windowsCmd extends cmd
                     $result->actionToExecute = true;
                     $result->messageWindows = 'il faut fermer';
                     log::add('windows', 'info', '     > il faudra fermer sur température');
-                    log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+                    log::add('windows', 'debug', ' result hiver trop froid:' . json_encode((array)$result));
                 }
             }
         }
+        log::add('windows', 'debug', ' result A :' . json_encode((array)$result));
 
         /*** ETE***/
         // Eté, fenetre fermée
@@ -641,8 +642,10 @@ class windowsCmd extends cmd
             $result->messageWindows = 'il faut ouvrir';
             $result->actionToExecute = true;
             log::add('windows', 'info', $result->messageWindows);
-            log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+            log::add('windows', 'debug', ' result été température :' . json_encode((array)$result));
         }
+
+        log::add('windows', 'debug', ' result B :' . json_encode((array)$result));
 
         // Vérifier s'il faut fermer      
         // si été et ouvert
@@ -656,7 +659,7 @@ class windowsCmd extends cmd
                 $result->actionToExecute = true;
                 $result->messageWindows = 'il faut fermer';
                 log::add('windows', 'info', '    il faudra fermer sur durée');
-                log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+                log::add('windows', 'debug', ' result été durée :' . json_encode((array)$result));
             }
 
             // // Vérification sur consigne
