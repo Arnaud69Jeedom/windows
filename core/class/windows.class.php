@@ -488,9 +488,9 @@ class windowsCmd extends cmd
         log::add('windows', 'debug', ' Liste des ouvertures :');
         $windows = $eqlogic->getConfiguration('window');
         foreach ($windows as $window) {
-            $window = str_replace('#', '', $window['cmd']);
-            if ($window != '') {
-                $cmd = cmd::byId($window);
+            $window_cmd = str_replace('#', '', $window['cmd']);
+            if ($window_cmd != '') {
+                $cmd = cmd::byId($window_cmd);
             } else {
                 log::add('windows', 'error', ' Pas de window', __FILE__);
                 return;
@@ -503,8 +503,14 @@ class windowsCmd extends cmd
             $windowState = $cmd->execCmd();
             log::add('windows', 'debug', '    ' . $cmd->getEqLogic()->getHumanName() . '[' . $cmd->getName() . '] : ' . $windowState);
 
-            // 1 = fermé
-            $isWindowOpened = ($windowState == 0);
+            // 0 = fermé
+            // 1 = ouvert
+            // inverser
+            if (isset($window['invert']) && $window['invert'] == 1) {
+                $windowState = ($windowState == 0) ? 1 : 0;
+                log::add('windows', 'debug', '     inversion de l\'état de l\'ouverture');
+            }
+            $isWindowOpened = ($windowState == 1);
 
             $date = new DateTime('NOW');
             if ($date->format('H') == 0 && $date->format('i') == 0) {
@@ -521,7 +527,7 @@ class windowsCmd extends cmd
                 $lastDateValue = $cmd->getValueDate();
                 $time = strtotime($lastDateValue);
                 $interval = (time() - $time) / 60; // en minutes
-                log::add('windows', 'debug', '       lastDateValue:' . $lastDateValue . ' windowState:' . $windowState . ', timediff:' . $interval . ', duration:' . $configuration->duration);
+                log::add('windows', 'debug', '       lastDateValue:' . $lastDateValue . ' isWindowOpened:' . $isWindowOpened . ', timediff:' . $interval . ', duration:' . $configuration->duration);
 
                 $configuration->isOpened = true;
                 $configuration->durationOpened = max($configuration->durationOpened, $interval);
