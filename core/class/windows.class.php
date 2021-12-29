@@ -703,7 +703,14 @@ class windowsCmd extends cmd
         // Notification
         if ($configuration->notifyko == 1 && $result->actionToExecute) {
             log::add('windows', 'debug', ' Notification:' . $configuration->notifyko);
-            message::add('windows', $result->messageWindows, '', '' . $this->getId());
+            
+            $messageToSend = "$result->messageWindows : #parent# (#temperature_indoor#)";
+            $messageToSend = str_replace('#name#', $eqlogic->getName(), $messageToSend);
+            $messageToSend = str_replace('#message#', $result->messageWindows, $messageToSend);
+            $messageToSend = str_replace('#temperature_indoor#', "$configuration->temperature_indoor $configuration->temperature_unit", $messageToSend);
+            $messageToSend = str_replace('#parent#', $eqlogic->getObject()->getName(), $messageToSend);
+            
+            message::add('windows', $messageToSend, '', '' . $this->getId());
         }
 
         // Actions
