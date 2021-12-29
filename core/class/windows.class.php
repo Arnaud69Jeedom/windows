@@ -690,6 +690,8 @@ class windowsCmd extends cmd
                 . ', actionToExecute:' . ($result->actionToExecute ? 'true' : 'false')
                 . ', messageWindows:' . $result->messageWindows
         );
+        log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+
         unset($value);
 
         return $result;
