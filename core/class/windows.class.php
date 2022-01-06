@@ -512,6 +512,7 @@ class windowsCmd extends cmd
             }
             $isWindowOpened = ($windowState == 1);
 
+            // réinitialisation à minuit
             $date = new DateTime('NOW');
             if ($date->format('H') == 0 && $date->format('i') == 0) {
                 log::add('windows', 'debug', '       minuit. Réinitialisation');
@@ -703,10 +704,14 @@ class windowsCmd extends cmd
 
         // Icone sur le widget
         $window_action = $eqlogic->getCmd(null, 'window_action');
-        if ($result->actionToExecute) {
-            $window_action->event(0);
-        } else {
+        if ($result->actionToExecute === true) {
+            log::add('windows', 'debug', '       window_action: action !');
+
             $window_action->event(1);
+        } else {
+            log::add('windows', 'debug', '       window_action: rien à faire');
+
+            $window_action->event(0);
         }
 
         log::add('windows', 'debug', ' avant Notification');

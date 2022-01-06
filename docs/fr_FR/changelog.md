@@ -4,6 +4,10 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 06/01/2022
+
+Correction sur la commande Etat
+
 # 28/12/2021
 
 Paramétrage en commun déplacé dans la configuration du plugin
