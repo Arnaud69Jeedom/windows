@@ -488,9 +488,9 @@ class windowsCmd extends cmd
         log::add('windows', 'debug', ' Liste des ouvertures :');
         $windows = $eqlogic->getConfiguration('window');
         foreach ($windows as $window) {
-            $window = str_replace('#', '', $window['cmd']);
-            if ($window != '') {
-                $cmd = cmd::byId($window);
+            $window_cmd = str_replace('#', '', $window['cmd']);
+            if ($window_cmd != '') {
+                $cmd = cmd::byId($window_cmd);
             } else {
                 log::add('windows', 'error', ' Pas de window', __FILE__);
                 return;
@@ -503,9 +503,16 @@ class windowsCmd extends cmd
             $windowState = $cmd->execCmd();
             log::add('windows', 'debug', '    ' . $cmd->getEqLogic()->getHumanName() . '[' . $cmd->getName() . '] : ' . $windowState);
 
-            // 1 = fermé
-            $isWindowOpened = ($windowState == 0);
+            // 0 = fermé
+            // 1 = ouvert
+            // inverser
+            if (isset($window['invert']) && $window['invert'] == 1) {
+                $windowState = ($windowState == 0) ? 1 : 0;
+                log::add('windows', 'debug', '     inversion de l\'état de l\'ouverture');
+            }
+            $isWindowOpened = ($windowState == 1);
 
+            // réinitialisation à minuit
             $date = new DateTime('NOW');
             if ($date->format('H') == 0 && $date->format('i') == 0) {
                 log::add('windows', 'debug', '       minuit. Réinitialisation');
@@ -521,7 +528,7 @@ class windowsCmd extends cmd
                 $lastDateValue = $cmd->getValueDate();
                 $time = strtotime($lastDateValue);
                 $interval = (time() - $time) / 60; // en minutes
-                log::add('windows', 'debug', '       lastDateValue:' . $lastDateValue . ' windowState:' . $windowState . ', timediff:' . $interval . ', duration:' . $configuration->duration);
+                log::add('windows', 'debug', '       lastDateValue:' . $lastDateValue . ' isWindowOpened:' . $isWindowOpened . ', timediff:' . $interval . ', duration:' . $configuration->duration);
 
                 $configuration->isOpened = true;
                 $configuration->durationOpened = max($configuration->durationOpened, $interval);
@@ -600,7 +607,7 @@ class windowsCmd extends cmd
                 log::add('windows', 'debug', '    température mini :' . $temp_mini . ', température:' . $configuration->temperature_indoor);
 
                 // Si durée longue mais tout de même chaude dedans
-                if ($result->actionToExecute = true
+                if ($result->actionToExecute
                     && $configuration->temperature_indoor >= $configuration->consigne
                 ) {
                     $result->actionToExecute = false;
@@ -677,6 +684,7 @@ class windowsCmd extends cmd
                 . ', actionToExecute:' . ($result->actionToExecute ? 'true' : 'false')
                 . ', messageWindows:' . $result->messageWindows
         );
+
         unset($value);
 
         return $result;
@@ -690,23 +698,40 @@ class windowsCmd extends cmd
      */
     private function action($configuration, $result)
     {
+        log::add('windows', 'debug', ' action(): result :' . json_encode((array)$result));
+
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
 
         // Icone sur le widget
         $window_action = $eqlogic->getCmd(null, 'window_action');
-        if ($result->actionToExecute) {
-            $window_action->event(0);
-        } else {
+        if ($result->actionToExecute === true) {
+            log::add('windows', 'debug', '       window_action: action !');
+
             $window_action->event(1);
+        } else {
+            log::add('windows', 'debug', '       window_action: rien à faire');
+
+            $window_action->event(0);
         }
 
+        log::add('windows', 'debug', ' avant Notification');
         // Notification
         if ($configuration->notifyko == 1 && $result->actionToExecute) {
             log::add('windows', 'debug', ' Notification:' . $configuration->notifyko);
-            message::add('windows', $result->messageWindows, '', '' . $this->getId());
+            
+            $messageToSend = "$result->messageWindows : #parent# (#temperature_indoor#)";
+            $messageToSend = str_replace('#name#', $eqlogic->getName(), $messageToSend);
+            $messageToSend = str_replace('#message#', $result->messageWindows, $messageToSend);
+            $messageToSend = str_replace('#temperature_indoor#', "$configuration->temperature_indoor $configuration->temperature_unit", $messageToSend);
+            $messageToSend = str_replace('#parent#', $eqlogic->getObject()->getName(), $messageToSend);
+            
+            message::add('windows', $messageToSend, '', '' . $this->getId());
+        } else {
+            log::add('windows', 'debug', ' Notification désactivée');
         }
 
         // Actions
+        log::add('windows', 'debug', ' avant Execute');
         if ($result->actionToExecute) {
             $actions = $eqlogic->getConfiguration('action');
             log::add('windows', 'debug', ' Lancement des actions :');
