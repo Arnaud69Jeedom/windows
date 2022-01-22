@@ -82,7 +82,7 @@ class windows extends eqLogic
         $info->setType('info');
         $info->setSubType('boolean');
         $info->setSubType('binary');
-        $info->setDisplay('generic_type', 'GENERIC_INFO');
+        $info->setGeneric_type('GENERIC_INFO');
 
         $value = false;
         $info->setValue($value);
@@ -115,7 +115,7 @@ class windows extends eqLogic
         $counter->setEqLogic_id($this->getId());
         $counter->setType('info');
         $counter->setSubType('numeric');
-        $counter->setDisplay('generic_type', 'GENERIC_INFO');
+        $counter->setGeneric_type('GENERIC_INFO');
         $counter->setUnite('min');
         $counter->save();
         unset($counter);
@@ -534,15 +534,15 @@ class windowsCmd extends cmd
                 $configuration->durationOpened = max($configuration->durationOpened, $interval);
 
                 $cmdCounter = $eqlogic->getCmd(null, 'counter');
-                $value = $cmdCounter->execCmd();
-                log::add('windows', 'debug', '       value:' . $value);
+                // $value = $cmdCounter->execCmd();
+                // log::add('windows', 'debug', '       value:' . $value);
 
-                if (!is_numeric($value)) {
-                    log::add('windows', 'debug', '       value: pas un nombre');
+                // if (!is_numeric($value)) {
+                //     log::add('windows', 'debug', '       value: pas un nombre');
 
-                    $value = 0;
-                }
-                $durationOpen = $value + 1;
+                //     $value = 0;
+                // }
+                $durationOpen = intval($interval);//$value + 1;
                 log::add('windows', 'debug', '       durationOpen:' . $durationOpen);
                 $cmdCounter->event($durationOpen);
             }
