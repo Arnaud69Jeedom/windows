@@ -31,12 +31,7 @@ class windows extends eqLogic
 
     /*     * ***********************Methode static*************************** */
 
-    /*
-     * Fonction exécutée automatiquement toutes les minutes par Jeedom
-     * */
-    public static function cron()
-    {
-        log::add('windows', 'debug', '*** cron ***');
+    public static function cronLaunch() {
 
         foreach (eqLogic::byType(__CLASS__, true) as $window) {
             if ($window->getIsEnable() == 1) {
@@ -47,6 +42,26 @@ class windows extends eqLogic
                 $cmd->execCmd();
             }
         }
+    } 
+
+    // /*
+    //  * Fonction exécutée automatiquement toutes les minutes par Jeedom
+    //  * */
+    // public static function cron()
+    // {
+    //     log::add('windows', 'debug', '*** cron ***');
+
+    //     $windows->cronLaunch();
+    // }
+
+    /*
+     * Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
+     * */
+    public static function cron5()
+    {
+        log::add('windows', 'debug', '*** cron5 ***');
+
+        $windows->cronLaunch();
     }
 
     /*     * *********************Méthodes d'instance************************* */
@@ -533,16 +548,8 @@ class windowsCmd extends cmd
                 $configuration->isOpened = true;
                 $configuration->durationOpened = max($configuration->durationOpened, $interval);
 
-                $cmdCounter = $eqlogic->getCmd(null, 'counter');
-                // $value = $cmdCounter->execCmd();
-                // log::add('windows', 'debug', '       value:' . $value);
-
-                // if (!is_numeric($value)) {
-                //     log::add('windows', 'debug', '       value: pas un nombre');
-
-                //     $value = 0;
-                // }
-                $durationOpen = intval($interval);//$value + 1;
+                $cmdCounter = $eqlogic->getCmd(null, 'counter');                
+                $durationOpen = intval($interval);
                 log::add('windows', 'debug', '       durationOpen:' . $durationOpen);
                 $cmdCounter->event($durationOpen);
             }
