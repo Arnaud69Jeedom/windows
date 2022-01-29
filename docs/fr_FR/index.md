@@ -5,7 +5,7 @@ Plugin permettant de créer une gestion des ouvrants et de déclencher des actio
 # Introduction
 
 Pour éviter une augmentation de l'humidité relative, l'apparition de moisissures, de spores de champignons ou bien la rétention d'allergènes ou de produits chimiques polluants, les médecins recommandent d'aérer sa maison entre 15 et 30 minutes par jour. Mieux vaut le faire en plusieurs fois, en début ou en fin de jour, aux heures où la pollution extérieure est la plus faible.
-Source: Futura Sciences
+Source : Futura Sciences
 
 Il suffit d’ouvrir grand les fenêtres pendant 5 à 10 minutes par jour, le matin directement après votre réveil par exemple.
 Certaines heures sont défavorables par rapport à la qualité de l’air, surtout en ville :
@@ -20,16 +20,18 @@ Source : Engie
 
 # Règles retenues 
 
-Les actions seront réalisées selone la saison.
+Si la valeur de présence est 0, alors il n'y aura pas de vérification ni d'action réalisée.
+
+Les actions seront réalisées selon la saison.
 
 HIVER :
 
     Fermer sur durée et temp. int < consigne
-    Fermer si temp. int < temp. mini (consigne - seuil) quelque soit la durée
+    Fermer si temp. int. < temp. Mini. (consigne - seuil) quel que soit la durée
 
 ETE :
 
-    Ouvrir température ext < temp. int.
+    Ouvrir température ext. < temp. int.
     Fermer sur durée
 
 INTERMEDIAIRE : 
@@ -45,14 +47,14 @@ Sonde de température
     
 Sonde de présence 
     Présence : ce champ est optionnel
-        Si le champs est non renseigné : le plugin vérifiera toujours l'état des ouvertures
-        Si le champs est renseigne : le plugin vérifiera uniquement si la présence est à 1
+        Si le champ est non renseigné : le plugin vérifiera toujours l'état des ouvertures
+        Si le champ est renseigné : le plugin vérifiera uniquement si la présence est à 1
 
 Température Saison
     Température Saison : section optionnelle
         Le plugin cherche à réguler la température par rapport à la saison
-        La saison est calculé par rapport à la date, ou mieux selon la température maxi selon la météo.
-        En effet, il peut y avoir des périodes plus chaude en hiver, et la règle doit s'adapter pour profiter de ces moments plus chaud.
+        La saison est calculée par rapport à la date, ou mieux selon la température maxi selon la météo.
+        En effet, il peut y avoir des périodes plus chaudes en hiver, et la règle doit s'adapter pour profiter de ces moments plus chauds.
 
         Température maxi : Commande du plugin météo indiquant la température maximum du jour
         Température hiver (°C) : température minimum indiquant que le calcul passe sur le mode Hiver
@@ -61,7 +63,7 @@ Température Saison
         S'il n'y a pas de température renseignée, alors le calcul se base sur les dates :
         Hivers : jour compris entre le 21 septembre et le 21 mars (période plus ou moins fraiche)
         Eté : jour entre le 21 juin et le 21 septembre (période plus ou moins chaude)
-        Sinon on prend les règle de la saison intermédiaire
+        Sinon on prend les règles de la saison intermédiaire
 
 # Configuration des équipements
 
@@ -81,7 +83,7 @@ Vous retrouvez ici toute la configuration de votre équipement :
     
 ## Informations
 
-Cet onglet récapitules les informations sur la nécessité d'aérer. Il donne aussi des conseils sur la durée et les horaires.
+Cet onglet récapitule les informations sur la nécessité d'aérer. Il prodigue aussi des conseils sur la durée et les horaires.
 
 ## Sondes
 
@@ -94,17 +96,16 @@ Listes des sondes pour suivre la santé de la pièce
     Notifier : permet d'envoyer une notification s'il faut ouvrir ou fermer une fenêtre
 
     Calcul sur température : ce champ est optionnel
-        Le but est de garder la pièce dans une température acceptable. i.e : garder la pièce au alenture de la température de consigne d'un thermostat
+        Le but est de garder la pièce dans une température acceptable. i.e : garder la pièce aux alentours de la température de consigne d'un thermostat
         Consigne Thermostat : consigne du thermostat
         Seuil hiver : dépassement acceptable de la température de la pièce par rapport à la consigne
         Seuil été : A VOIR
-
 
 ## Ouvertures
 
 Listes des fenêtres à surveiller.
     
-    0 sera consédéré comme fermé,
+    0 sera considéré comme fermé,
     1 comme ouvert
 
 Utiliser la cocher "Inverser" si votre module renvoie la valeur inverse.
@@ -112,17 +113,16 @@ Utiliser la cocher "Inverser" si votre module renvoie la valeur inverse.
 ## Actions
 
 Actions et scénario à déclencher
-Lorsque le plugin detectera qu'il serait bien d'ouvrir ou de fermer une fenêtre, alors les actions seront déclenchées.
+Lorsque le plugin détectera qu'il serait bien d'ouvrir ou de fermer une fenêtre, alors les actions seront déclenchées.
 Il est possible d'utiliser un scénario ou des commandes.
 Il est possible d'utiliser des commandes de type PushBullet. Il est alors demandé un Titre et un Message
 
 Actuellement, il existe quelques variables qui peuvent être utilisées :
     
     #name# = Nom de l'objet
-    #message# = Message à afficher  = 'il faut ouvrir' ou 'il faut fermer'
+    #message# = Message à afficher = 'il faut ouvrir' ou 'il faut fermer'
     #temperature_indoor# = température intérieure
     #parent# = nom de l'objet parent (la pièce par exemple) 
-
 
 ## Commandes
 
@@ -130,5 +130,7 @@ Commandes créées pour voir des informations :
 
     Action : affiche 1 si une action est souhaitée, 0 sinon
     Rafraichir : relance le calcul
-    Compteur : Temps d'aération dans la journée
+    Compteur : temps d'aération dans la journée
+    Message : affiche le message lié à l’action
+
 

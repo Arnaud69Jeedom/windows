@@ -2,10 +2,9 @@
 
 Plugin pour Jeedom permettant la gestion des ouvrants.
 
-
 # Informations
 Pour éviter une augmentation de l'humidité relative, l'apparition de moisissures, de spores de champignons ou bien la rétention d'allergènes ou de produits chimiques polluants, les médecins recommandent d'aérer sa maison entre 15 et 30 minutes par jour. Mieux vaut le faire en plusieurs fois, en début ou en fin de jour, aux heures où la pollution extérieure est la plus faible.
-Source: Futura Sciences
+Source : Futura Sciences
 
 Il suffit d’ouvrir grand les fenêtres pendant 5 à 10 minutes par jour, le matin directement après votre réveil par exemple.
 Certaines heures sont défavorables par rapport à la qualité de l’air, surtout en ville :
@@ -19,15 +18,13 @@ Lorsqu’il fait plus chaud, comme en été, l’idéal est d’aérer entre 21h
 Source : Engie
 
 # Règles de calcul
-Les actions seront réalisées selone la saison.
+Les actions seront réalisées selon la saison.
 HIVER :
 
     Fermer sur durée et temp. int < consigne
-    Fermer si temp. int < temp. mini (consigne - seuil) quelque soit la durée
-
+    Fermer si temp. int. < temp. mini. (consigne - seuil) quel que soit la durée
 
 ETE :
 
-    Ouvrir température ext < temp. int.
+    Ouvrir température ext. < temp. int.
     Fermer sur durée
-
