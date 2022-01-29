@@ -898,11 +898,15 @@ class windowsCmd extends cmd
     {
         log::add('windows', 'debug', ' action(): result :' . json_encode((array)$result));
 
+        if ($result->actionToExecute == false) {
+            log::add('windows', 'info', 'rien à faire');
+            return;
+        }
+
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
 
-        log::add('windows', 'debug', ' avant Notification');
         // Notification
-        if ($configuration->notifyko == 1 && $result->actionToExecute) {
+        if ($configuration->notifyko == 1) {
             log::add('windows', 'debug', ' Notification:' . $configuration->notifyko);
 
             $messageToSend = "$result->messageWindows : #parent# (#temperature_indoor#)";
@@ -917,35 +921,30 @@ class windowsCmd extends cmd
         }
 
         // Actions
-        log::add('windows', 'debug', ' avant Execute');
-        if ($result->actionToExecute) {
-            $actions = $eqlogic->getConfiguration('action');
-            log::add('windows', 'debug', ' Lancement des actions :');
-            foreach ($actions as $action) {
-                log::add('windows', 'debug', $action['cmd']);
+        $actions = $eqlogic->getConfiguration('action');
+        log::add('windows', 'debug', ' Lancement des actions :');
+        foreach ($actions as $action) {
+            log::add('windows', 'debug', $action['cmd']);
 
-                $options = array();
-                if (isset($action['options'])) {
-                    $options = $action['options'];
+            $options = array();
+            if (isset($action['options'])) {
+                $options = $action['options'];
 
-                    foreach ($options as $key => $option) {
-                        $option = str_replace('#name#', $eqlogic->getName(), $option);
-                        $option = str_replace('#message#', $result->messageWindows, $option);
-                        $option = str_replace('#temperature_indoor#', "$configuration->temperature_indoor $configuration->temperature_unit", $option);
-                        $option = str_replace('#parent#', $eqlogic->getObject()->getName(), $option);
+                foreach ($options as $key => $option) {
+                    $option = str_replace('#name#', $eqlogic->getName(), $option);
+                    $option = str_replace('#message#', $result->messageWindows, $option);
+                    $option = str_replace('#temperature_indoor#', "$configuration->temperature_indoor $configuration->temperature_unit", $option);
+                    $option = str_replace('#parent#', $eqlogic->getObject()->getName(), $option);
 
-                        $options[$key] = $option;
-                    }
-
-                    if ($option['title'] == '' || $option['message'] == '') {
-                        log::add('windows', 'error', 'Action sans titre ou message');
-                        break;
-                    }
+                    $options[$key] = $option;
                 }
-                scenarioExpression::createAndExec('action', $action['cmd'], $options);
+
+                if ($option['title'] == '' || $option['message'] == '') {
+                    log::add('windows', 'error', 'Action sans titre ou message');
+                    break;
+                }
             }
-        } else {
-            log::add('windows', 'info', 'rien à faire');
+            scenarioExpression::createAndExec('action', $action['cmd'], $options);
         }
     }
 

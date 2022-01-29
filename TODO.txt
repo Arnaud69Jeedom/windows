@@ -6,4 +6,5 @@ Liste des choses à faire :
   But : Eviter de notifier la nuit d'ouvrir la fenêtre en été
 - Meileurs gestion du temps : avoir un temps global et un temps ouvert actuellement ?
 - Paramètre pour la durée entre les actions
-
+- Gestion de la pluie
+- Gestion de conditions personnalisées
