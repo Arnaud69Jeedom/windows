@@ -50,22 +50,6 @@ class windows extends eqLogic
         }
     }
 
-    // /*
-    //  * Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
-    //  * Vérifie si action à réaliser
-    //  * */
-    // public static function cron()
-    // {
-    //     log::add('windows', 'debug', '*** cron5 ***');
-
-    //     foreach (eqLogic::byType(__CLASS__, true) as $window) {
-    //         if ($window->getIsEnable() == 1) {
-    //             $cmd = $window->getCmd(null, 'refresh');
-
-    //             $cmd->launchAction();
-    //         }
-    //     }
-    // }
 
     /*     * *********************Méthodes d'instance************************* */
 
@@ -217,9 +201,9 @@ class windowsCmd extends cmd
      * Récupérer la configuration de l'équipement & validation 
      * Récupération de la configuration du plugin
      */
-    private function getMyConfiguration(): ?StdClass
+    private function getMyConfiguration(): ?stdClass
     {
-        $configuration = new StdClass();
+        $configuration = new stdClass();
 
         // Paramètre global
         $isOK = windowsCmd::getTemperatureOutdoor($configuration);
@@ -291,7 +275,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer la valeur Durée pour hiver
      */
-    private function getDurationWinter($eqlogic, StdClass $configuration): bool
+    private function getDurationWinter($eqlogic, stdClass $configuration): bool
     {
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
@@ -313,7 +297,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer la valeur Durée pour été
      */
-    private function getDurationSummer($eqlogic, StdClass $configuration): bool
+    private function getDurationSummer($eqlogic, stdClass $configuration): bool
     {
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
@@ -335,7 +319,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer le seuil hiver
      */
-    private function getThresholdWinter($eqlogic, StdClass $configuration): bool
+    private function getThresholdWinter($eqlogic, stdClass $configuration): bool
     {
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
@@ -361,7 +345,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer le seuil été
      */
-    private function getThresholdSummer($eqlogic, StdClass $configuration): bool
+    private function getThresholdSummer($eqlogic, stdClass $configuration): bool
     {
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
@@ -388,7 +372,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer la consigne
      */
-    private function getConsigne($eqlogic, StdClass $configuration): bool
+    private function getConsigne($eqlogic, stdClass $configuration): bool
     {
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
@@ -438,7 +422,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer la température extérieure
      */
-    private static function getTemperatureOutdoor(StdClass $configuration): bool
+    private static function getTemperatureOutdoor(stdClass $configuration): bool
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -473,7 +457,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer la température maximum
      */
-    private static function getTemperatureMaxi(StdClass $configuration): bool
+    private static function getTemperatureMaxi(stdClass $configuration): bool
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -507,7 +491,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer la température Hiver
      */
-    private static function getTemperatureWinter(StdClass $configuration): bool
+    private static function getTemperatureWinter(stdClass $configuration): bool
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -596,7 +580,7 @@ class windowsCmd extends cmd
     /**
      * Choix de la saison
      */
-    private static function setSeason(StdClass $configuration)
+    private static function setSeason(stdClass $configuration)
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -651,7 +635,7 @@ class windowsCmd extends cmd
     /**
      * Mise à jour de la durée retenu
      */
-    private static function setDuration(StdClass $configuration)
+    private static function setDuration(stdClass $configuration)
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -668,7 +652,7 @@ class windowsCmd extends cmd
      * Récupérer la configuration sur les fenêtres
      * Récupère l'état des fenêtres (et la durée si ouverte)
      */
-    private function getWindowsInformation(StdClass $configuration)
+    private function getWindowsInformation(stdClass $configuration)
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -687,7 +671,7 @@ class windowsCmd extends cmd
     /**
      * Calcul le temps ouverture le plus grand
      */
-    private function computeByWindow(array $window, StdClass $configuration)
+    private function computeByWindow(array $window, stdClass $configuration)
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -720,7 +704,7 @@ class windowsCmd extends cmd
             // Vérification de la durée
             $lastDateValue = $cmd->getValueDate();
             $time = strtotime($lastDateValue);
-            $interval = (time() - $time) / 60; // en minutes
+            $interval = intval((time() - $time) / 60); // en minutes
             log::add('windows', 'debug', '       lastDateValue:' . $lastDateValue . ' isWindowOpened:' . $isWindowOpened . ', timediff:' . $interval . ', duration:' . $configuration->duration);
 
             $configuration->isOpened = true;
@@ -728,16 +712,12 @@ class windowsCmd extends cmd
         }
     }
 
-
-
-
-
     /**
      * Vérifie l'action à réaliser et le message à afficher associé
      */
-    private function checkAction($configuration)
+    private function checkAction(stdClass $configuration) : stdClass
     {
-        if ($configuration == null) return;
+        if ($configuration == null) throw new ErrorException('configuration null');
 
         $result = new stdClass();
         $result->actionToExecute = false;
@@ -878,15 +858,13 @@ class windowsCmd extends cmd
 
     /**
      * Mise à jour des commandes
-     * * @param StdClass result Action et message
+     * * @param stdClass result Action et message
      */
-    private function updateCommands($result)
+    private function updateCommands(stdClass $result)
     {
-        log::add('windows', 'debug', ' updateCommands(): result :' . json_encode((array)$result));
-
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
 
-        // Icone sur le widget
+        // Icone sur le widget (actionToExecute)
         $window_action = $eqlogic->getCmd(null, 'window_action');
         if ($result->actionToExecute === true) {
             log::add('windows', 'debug', '       window_action: action !');
@@ -916,28 +894,11 @@ class windowsCmd extends cmd
      *  - Notification
      *  - Actions diverses
      */
-    private function action($configuration, $result)
+    private function action(stdClass $configuration, stdClass $result)
     {
         log::add('windows', 'debug', ' action(): result :' . json_encode((array)$result));
 
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
-
-        // // Icone sur le widget
-        // $window_action = $eqlogic->getCmd(null, 'window_action');
-        // if ($result->actionToExecute === true) {
-        //     log::add('windows', 'debug', '       window_action: action !');
-
-        //     $window_action->event(1);
-        // } else {
-        //     log::add('windows', 'debug', '       window_action: rien à faire');
-
-        //     $window_action->event(0);
-        // }
-
-        // // Message sur le widget
-        // $message = $eqlogic->getCmd(null, 'message');
-        // log::add('windows', 'debug', '       message');
-        // $message->event($result->messageWindows);
 
         log::add('windows', 'debug', ' avant Notification');
         // Notification
@@ -1007,7 +968,13 @@ class windowsCmd extends cmd
 
                     $result = $this->checkAction($configuration);
                     $this->updateCommands($result);
-                    //$this->action($configuration, $result);
+
+                    // Limiter les actions toutes les 5 minutes
+                    if ( ($result->durationOpened % 5) == 0) {
+                        $this->action($configuration, $result);
+                    } else {
+                        log::add('windows', 'debug', ' pas action : '. ($result->durationOpened % 5), __FILE__);
+                    }
                 } else {
                     log::add('windows', 'error', ' >>> Vérifier le paramétrage');
                 }
@@ -1016,31 +983,6 @@ class windowsCmd extends cmd
         }
     }
 
-    public function launchAction()
-    {
-        log::add('windows', 'debug', ' launchAction', __FILE__);
-
-        // window_action
-        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
-        log::add('windows', 'info', ' Objet : ' . $eqlogic->getName(), __FILE__);
-
-        $result = new stdClass();
-        $cmd = $eqlogic->getCmd(null, 'window_action');
-        $result->actionToExecute = $cmd->execCmd();
-
-        $cmd = $eqlogic->getCmd(null, 'message');
-        $result->messageWindows = $cmd->execCmd();
-        log::add('windows', 'debug', ' result :' . json_encode((array)$result));
-
-
-        // Lecture et Analyse de la configuration
-        //$configuration = $this->getMyConfiguration();
-        $configuration = new StdClass();
-        //$this->getWindowsInformation($configuration);
-        log::add('windows', 'debug', ' configuration :' . json_encode((array)$configuration));
-
-        //$this->action($configuration, $result);
-    }
 
     /*     * **********************Getteur Setteur*************************** */
 }

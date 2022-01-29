@@ -1,4 +1,5 @@
 Lsite des choses à faire :
 - Gestion des horaires de notifications
   But : Eviter de notifier la nuit d'ouvrir la fenêtre en été
-- Meileurs gestion du temps : utiliser $interval, et peut-être avoir un temps global et un temps ouvert actuellement
+- Meileurs gestion du temps : avoir un temps global et un temps ouvert actuellement ?
+- Paramètre pour la durée entre les actions
