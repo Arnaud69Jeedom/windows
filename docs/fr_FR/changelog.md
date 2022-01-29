@@ -4,7 +4,7 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
-29/01/2022
+# 29/01/2022
 
 Réecriture du code pour faciliter la maintenance
 Execution des actions toutes les 5 minutes (non paramétrable)
