@@ -105,15 +105,15 @@ class windows extends eqLogic
         $refresh->save();
         unset($refresh);
 
-        // counter
-        // Renommer counter en duration
-        $counter = $this->getCmd(null, 'counter');
-        if (is_object($counter)) {
-            $counter->setLogicalId('duration');
-            $counter->setName(__('Durée', __FILE__));
-            $counter->save();
-        }
-        unset($counter);
+        // // counter
+        // // Renommer counter en duration
+        // $counter = $this->getCmd(null, 'counter');
+        // if (is_object($counter)) {
+        //     $counter->setLogicalId('duration');
+        //     $counter->setName(__('Durée', __FILE__));
+        //     $counter->save();
+        // }
+        // unset($counter);
 
         // duration
         $duration = $this->getCmd(null, 'duration');
@@ -139,7 +139,7 @@ class windows extends eqLogic
             $durationDaily = new windowsCmd();
             $durationDaily->setLogicalId('durationDaily');
             $durationDaily->setIsVisible(1);
-            $durationDaily->setName(__('durée du jour', __FILE__));
+            $durationDaily->setName(__('Durée du jour', __FILE__));
             $durationDaily->setOrder(2);
         }
         $durationDaily->setEqLogic_id($this->getId());

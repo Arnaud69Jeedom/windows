@@ -27,7 +27,7 @@ function windows_install() {
 function windows_update() {
     log::add('windows','debug','=============  mise à jour des equipements suite à update plugin =============');
 
-    foreach (eqLogic::byType('windows', true) as $eqLogic) {
+    foreach (eqLogic::byType('windows') as $eqLogic) {
         log::add('windows','debug', 'mise à jour de '.$eqLogic->getHumanName());
         
         // modif des commandes déjà renseignée
@@ -44,39 +44,20 @@ function windows_update() {
         }
         unset($counter);
 
-        // message => suppression de l'unité
-        $message = $eqLogic->getCmd(null, 'message');
-        if (!is_object($message)) {
-            log::add('windows', 'debug', '------ modif message from'.$eqLogic->getHumanName().' to '.$message->getName()); 
+        // // message => suppression de l'unité
+        // $message = $eqLogic->getCmd(null, 'message');
+        // if (is_object($message)) {
+        //     log::add('windows', 'debug', '------ modif message from'.$eqLogic->getHumanName().' to '.$message->getName()); 
 
-            $message->setUnite(null);
-            $message->save();
-        }
-        else {
-            log::add('windows', 'debug', '------ modif message not found in '.$eqLogic->getHumanName());
-        }
-        unset($message);
+        //     $message->setUnite(null);
+        //     $message->save();
+        // }
+        // else {
+        //     log::add('windows', 'debug', '------ modif message not found in '.$eqLogic->getHumanName());
+        // }
+        // unset($message);
 
-        // création de nouvelle commande
-        // durationDaily
-        $durationDaily = $eqLogic->getCmd(null, 'durationDaily');
-        if (!is_object($durationDaily)) {
-            log::add('windows', 'debug', '------ creation durationDaily from'.$eqLogic->getHumanName().' to '.$durationDaily->getName()); 
-
-            $durationDaily = new windowsCmd();
-            $durationDaily->setLogicalId('durationDaily');
-            $durationDaily->setIsVisible(1);
-            $durationDaily->setName(__('durée du jour', __FILE__));
-            $durationDaily->setOrder(2);
-
-            $durationDaily->setEqLogic_id($this->getId());
-            $durationDaily->setType('info');
-            $durationDaily->setSubType('numeric');
-            $durationDaily->setGeneric_type('GENERIC_INFO');
-            $durationDaily->setUnite('min');
-            $durationDaily->save();
-            unset($durationDaily);
-        }
+        $eqLogic->postSave();
     }
 }
 
