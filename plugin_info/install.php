@@ -32,22 +32,28 @@ function windows_update() {
         
         // modif des commandes déjà renseignée
         // modif counter => duration
-        $motifType = $eqLogic->getCmd(null, 'counter');
-        if (is_object($motifType)) {
-            $motifType->setName(__('durée', __FILE__));
-            $motifType->setLogicalId('duration');
+        $counter = $eqLogic->getCmd(null, 'counter');
+        if (is_object($counter)) {
+            $counter->setName(__('durée', __FILE__));
+            $counter->setLogicalId('duration');
             
-            log::add('windows', 'debug', '------ rename duration from'.$eqLogic->getHumanName().' to '.$motifType->getName()); 
-            $motifType->save(true);
-        }else{
-            log::add('windows', 'debug', '------ motif duration not found in '.$eqLogic->getHumanName());
+            log::add('windows', 'debug', '------ rename counter from'.$eqLogic->getHumanName().' to '.$counter->getName()); 
+            $counter->save(true);
+        } else {
+            log::add('windows', 'debug', '------ modif counter not found in '.$eqLogic->getHumanName());
         }
+        unset($counter);
 
         // message => suppression de l'unité
         $message = $eqLogic->getCmd(null, 'message');
         if (!is_object($message)) {
+            log::add('windows', 'debug', '------ modif message from'.$eqLogic->getHumanName().' to '.$message->getName()); 
+
             $message->setUnite(null);
             $message->save();
+        }
+        else {
+            log::add('windows', 'debug', '------ modif message not found in '.$eqLogic->getHumanName());
         }
         unset($message);
 
@@ -55,6 +61,8 @@ function windows_update() {
         // durationDaily
         $durationDaily = $eqLogic->getCmd(null, 'durationDaily');
         if (!is_object($durationDaily)) {
+            log::add('windows', 'debug', '------ creation durationDaily from'.$eqLogic->getHumanName().' to '.$durationDaily->getName()); 
+
             $durationDaily = new windowsCmd();
             $durationDaily->setLogicalId('durationDaily');
             $durationDaily->setIsVisible(1);
