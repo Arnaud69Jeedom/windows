@@ -945,6 +945,18 @@ class windowsCmd extends cmd
                 }
             }
             
+            // // Gestion des tags
+            // log::add('windows', 'debug', '$options["tags"]:'.json_decode($options['tags']));
+
+            // $tags = array();
+            // if (isset($options['tags'])) {
+            //     $options['tags'] = arg2array($options['tags']);
+            //     foreach ($options['tags'] as $key => $value) {
+            //         $tags['#' . trim(trim($key), '#') . '#'] = scenarioExpression::setTags(trim($value));
+            //     }
+            // }
+            // $options['tags'] = $tags;
+            
             scenarioExpression::createAndExec('action', $action['cmd'], $options);
         }
     }
