@@ -29,6 +29,7 @@ function windows_update() {
 
     foreach (eqLogic::byType('windows', true) as $eqLogic) {
         log::add('windows','debug', 'mise à jour de '.$eqLogic->getHumanName());
+        
         // modif des commandes déjà renseignée
         // modif counter => duration
         $motifType = $eqLogic->getCmd(null, 'counter');
@@ -40,6 +41,33 @@ function windows_update() {
             $motifType->save(true);
         }else{
             log::add('windows', 'debug', '------ motif duration not found in '.$eqLogic->getHumanName());
+        }
+
+        // message => suppression de l'unité
+        $message = $eqLogic->getCmd(null, 'message');
+        if (!is_object($message)) {
+            $message->setUnite(null);
+            $message->save();
+        }
+        unset($message);
+
+        // création de nouvelle commande
+        // durationDaily
+        $durationDaily = $eqLogic->getCmd(null, 'durationDaily');
+        if (!is_object($durationDaily)) {
+            $durationDaily = new windowsCmd();
+            $durationDaily->setLogicalId('durationDaily');
+            $durationDaily->setIsVisible(1);
+            $durationDaily->setName(__('durée du jour', __FILE__));
+            $durationDaily->setOrder(2);
+
+            $durationDaily->setEqLogic_id($this->getId());
+            $durationDaily->setType('info');
+            $durationDaily->setSubType('numeric');
+            $durationDaily->setGeneric_type('GENERIC_INFO');
+            $durationDaily->setUnite('min');
+            $durationDaily->save();
+            unset($durationDaily);
         }
     }
 }
