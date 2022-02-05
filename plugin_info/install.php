@@ -18,18 +18,34 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-// Fonction exécutée automatiquement après l'installation du plugin
+// Fonction exÃ©cutÃ©e automatiquement aprÃ¨s l'installation du plugin
 function windows_install() {
 
 }
 
-// Fonction exécutée automatiquement après la mise à jour du plugin
+// Fonction exÃ©cutÃ©e automatiquement aprÃ¨s la mise Ã  jour du plugin
 function windows_update() {
+    log::add('windows','debug','=============  mise Ã  jour des equipements suite Ã  update plugin =============');
 
+    foreach (eqLogic::byType('windows', true) as $eqLogic) {
+        log::add('windows','debug', 'mise Ã  jour de '.$eqLogic->getHumanName());
+        // modif des commandes dÃ©jÃ  renseignÃ©e
+        // modif counter => duration
+        $motifType = $eqLogic->getCmd(null, 'counter');
+        if (is_object($motifType)) {
+            $motifType->setName(__('durÃ©e', __FILE__));
+            $motifType->setLogicalId('duration');
+            
+            log::add('windows', 'debug', '------ rename duration from'.$eqLogic->getHumanName().' to '.$motifType->getName()); 
+            $motifType->save(true);
+        }else{
+            log::add('windows', 'debug', '------ motif duration not found in '.$eqLogic->getHumanName());
+        }
+    }
 }
 
 
-// Fonction exécutée automatiquement après la suppression du plugin
+// Fonction exÃ©cutÃ©e automatiquement aprÃ¨s la suppression du plugin
 function windows_remove() {
     
 }

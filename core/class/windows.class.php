@@ -67,10 +67,9 @@ class windows extends eqLogic
 
     public function postSave()
     {
-        // window_action
-
         log::add('windows', 'debug', 'postSave');
 
+        // windows_action
         $info = $this->getCmd(null, 'window_action');
         if (!is_object($info)) {
             $info = new windowsCmd();
@@ -107,20 +106,49 @@ class windows extends eqLogic
         unset($refresh);
 
         // counter
+        // Renommer counter en duration
         $counter = $this->getCmd(null, 'counter');
-        if (!is_object($counter)) {
-            $counter = new windowsCmd();
-            $counter->setLogicalId('counter');
-            $counter->setIsVisible(1);
-            $counter->setName(__('Compteur', __FILE__));
+        if (is_object($counter)) {
+            $counter->setLogicalId('duration');
+            $counter->setName(__('Durée', __FILE__));
+            $counter->save();
         }
-        $counter->setEqLogic_id($this->getId());
-        $counter->setType('info');
-        $counter->setSubType('numeric');
-        $counter->setGeneric_type('GENERIC_INFO');
-        $counter->setUnite('min');
-        $counter->save();
         unset($counter);
+
+        // duration
+        $duration = $this->getCmd(null, 'duration');
+        if (!is_object($duration)) {
+            $duration = new windowsCmd();
+            $duration->setLogicalId('duration');
+            $duration->setIsVisible(1);
+            $duration->setName(__('Durée', __FILE__));
+            $duration->setOrder(1);
+        }
+        $duration->setName(__('Durée', __FILE__));
+        $duration->setEqLogic_id($this->getId());
+        $duration->setType('info');
+        $duration->setSubType('numeric');
+        $duration->setGeneric_type('GENERIC_INFO');
+        $duration->setUnite('min');
+        $duration->save();
+        unset($duration);
+
+        // durationDaily
+        $durationDaily = $this->getCmd(null, 'durationDaily');
+        if (!is_object($durationDaily)) {
+            $durationDaily = new windowsCmd();
+            $durationDaily->setLogicalId('durationDaily');
+            $durationDaily->setIsVisible(1);
+            $durationDaily->setName(__('durée du jour', __FILE__));
+            $durationDaily->setOrder(2);
+        }
+        $durationDaily->setEqLogic_id($this->getId());
+        $durationDaily->setType('info');
+        $durationDaily->setSubType('numeric');
+        $durationDaily->setGeneric_type('GENERIC_INFO');
+        $durationDaily->setUnite('min');
+        $durationDaily->save();
+        unset($durationDaily);
 
         // message
         $message = $this->getCmd(null, 'message');
@@ -129,6 +157,7 @@ class windows extends eqLogic
             $message->setLogicalId('message');
             $message->setIsVisible(1);
             $message->setName(__('Message', __FILE__));
+            $message->setOrder(3);
         }
         $message->setEqLogic_id($this->getId());
         $message->setType('info');
@@ -658,6 +687,7 @@ class windowsCmd extends cmd
 
         $configuration->isOpened = false;
         $configuration->durationOpened = 0;
+        $configuration->durationDailyOpened = 0;
 
         $eqlogic = $this->getEqLogic(); //récupère l'eqlogic de la commande $this
 
@@ -702,7 +732,7 @@ class windowsCmd extends cmd
         if ($isWindowOpened) {
             // si ouvert
             // Vérification de la durée
-            $lastDateValue = $cmd->getValueDate();
+            $lastDateValue = $cmd->getValueDate();  // Date de l'ouverture de la fenêtre
             $time = strtotime($lastDateValue);
             $interval = intval((time() - $time) / 60); // en minutes
             log::add('windows', 'debug', '       lastDateValue:' . $lastDateValue . ' isWindowOpened:' . $isWindowOpened . ', timediff:' . $interval . ', duration:' . $configuration->duration);
@@ -710,6 +740,16 @@ class windowsCmd extends cmd
             $configuration->isOpened = true;
             $configuration->durationOpened = max($configuration->durationOpened, $interval);
         }
+
+        // duration daily Opened
+        $valueOpen = ($window['invert'] == 1) ? 1 : 0;
+        $durationDaily = scenarioExpression::duration($window_cmd, $valueOpen, 'today');
+        log::add('windows', 'debug', '       durationDaily:' . $durationDaily);
+        log::add('windows', 'debug', '       $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
+        log::add('windows', 'debug', '       Max');
+        $configuration->durationDailyOpened = max($configuration->durationDailyOpened, $durationDaily);
+        log::add('windows', 'debug', '       $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
+        
     }
 
     /**
@@ -719,10 +759,12 @@ class windowsCmd extends cmd
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
+        // Initialisation
         $result = new stdClass();
         $result->actionToExecute = false;
         $result->messageWindows = '';
         $result->durationOpened = $configuration->durationOpened;
+        $result->durationDailyOpened = $configuration->durationDailyOpened;
 
         log::add('windows', 'debug', ' Analyse métier');
 
@@ -882,10 +924,16 @@ class windowsCmd extends cmd
         $message->event($result->messageWindows);
 
         // duree
-        $cmdCounter = $eqlogic->getCmd(null, 'counter');
+        $cmdDuration = $eqlogic->getCmd(null, 'duration');
         $durationOpen = intval($result->durationOpened);
         log::add('windows', 'debug', '       durationOpen:' . $durationOpen);
-        $cmdCounter->event($durationOpen);
+        $cmdDuration->event($durationOpen);
+
+        // duration daily
+        $cmdDurationDaily = $eqlogic->getCmd(null, 'durationDaily');
+        $durationDailyOpened = intval($result->durationDailyOpened);
+        log::add('windows', 'debug', '       $durationDailyOpened:' . $durationDailyOpened);
+        $cmdDurationDaily->event($durationDailyOpened);
     }
 
     /**
@@ -945,8 +993,9 @@ class windowsCmd extends cmd
                 }
             }
             
-            // // Gestion des tags
-            // log::add('windows', 'debug', '$options["tags"]:'.json_decode($options['tags']));
+            // Gestion des tags
+            // $tags = scenarioExpression::getTags();
+            // log::add('windows', 'debug', '$tags:'.json_decode($tags));
 
             // $tags = array();
             // if (isset($options['tags'])) {
@@ -956,7 +1005,7 @@ class windowsCmd extends cmd
             //     }
             // }
             // $options['tags'] = $tags;
-            
+
             scenarioExpression::createAndExec('action', $action['cmd'], $options);
         }
     }
