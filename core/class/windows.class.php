@@ -742,8 +742,12 @@ class windowsCmd extends cmd
         }
 
         // duration daily Opened
-        $valueOpen = ($window['invert'] == 1) ? 1 : 0;
-        $durationDaily = scenarioExpression::duration($window_cmd, $valueOpen, 'today');
+        $valueOpen = ($window['invert'] == 1) ? 0 : 1;
+        $durationDaily = intval(scenarioExpression::duration($window_cmd, $valueOpen, 'today') / 60);
+        
+        log::add('windows', 'debug', '       ***valeur CMD:' . $cmd->getName());
+        
+        
         log::add('windows', 'debug', '       durationDaily:' . $durationDaily);
         log::add('windows', 'debug', '       $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
         log::add('windows', 'debug', '       Max');
