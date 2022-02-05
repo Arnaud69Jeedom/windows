@@ -134,7 +134,7 @@ class windows extends eqLogic
         $message->setType('info');
         $message->setSubType('string');
         $message->setGeneric_type('GENERIC_INFO');
-        $message->setUnite('min');
+        $message->setUnite(null);
         $message->save();
         unset($message);
     }
@@ -944,6 +944,7 @@ class windowsCmd extends cmd
                     break;
                 }
             }
+            
             scenarioExpression::createAndExec('action', $action['cmd'], $options);
         }
     }
