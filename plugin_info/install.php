@@ -18,18 +18,51 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-// Fonction exécutée automatiquement après l'installation du plugin
+// Fonction exÃ©cutÃ©e automatiquement aprÃ¨s l'installation du plugin
 function windows_install() {
 
 }
 
-// Fonction exécutée automatiquement après la mise à jour du plugin
+// Fonction exÃ©cutÃ©e automatiquement aprÃ¨s la mise Ã  jour du plugin
 function windows_update() {
+    log::add('windows','debug','=============  mise Ã  jour des equipements suite Ã  update plugin =============');
 
+    foreach (eqLogic::byType('windows') as $eqLogic) {
+        log::add('windows','debug', 'mise Ã  jour de '.$eqLogic->getHumanName());
+        
+        // modif des commandes dÃ©jÃ  renseignÃ©e
+        // modif counter => duration
+        $counter = $eqLogic->getCmd(null, 'counter');
+        if (is_object($counter)) {
+            $counter->setName(__('durÃ©e', __FILE__));
+            $counter->setLogicalId('duration');
+            
+            log::add('windows', 'debug', '------ rename counter from'.$eqLogic->getHumanName().' to '.$counter->getName()); 
+            $counter->save(true);
+        } else {
+            log::add('windows', 'debug', '------ modif counter not found in '.$eqLogic->getHumanName());
+        }
+        unset($counter);
+
+        // // message => suppression de l'unitÃ©
+        // $message = $eqLogic->getCmd(null, 'message');
+        // if (is_object($message)) {
+        //     log::add('windows', 'debug', '------ modif message from'.$eqLogic->getHumanName().' to '.$message->getName()); 
+
+        //     $message->setUnite(null);
+        //     $message->save();
+        // }
+        // else {
+        //     log::add('windows', 'debug', '------ modif message not found in '.$eqLogic->getHumanName());
+        // }
+        // unset($message);
+
+        $eqLogic->postSave();
+    }
 }
 
 
-// Fonction exécutée automatiquement après la suppression du plugin
+// Fonction exÃ©cutÃ©e automatiquement aprÃ¨s la suppression du plugin
 function windows_remove() {
     
 }

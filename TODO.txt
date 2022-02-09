@@ -1,4 +1,11 @@
-Lsite des choses à faire :
+Bugs connus :
+- Les tags ne sont pas gérés lors d'appel de scenario
+
+Liste des choses à faire :
 - Gestion des horaires de notifications
   But : Eviter de notifier la nuit d'ouvrir la fenêtre en été
-- Meileurs gestion du temps : utiliser $interval, et peut-être avoir un temps global et un temps ouvert actuellement
+- Meileurs gestion du temps : avoir un temps global et un temps ouvert actuellement ?
+- Paramètre pour la durée entre 2 executions des actions
+- Gestion de la pluie
+- Gestion de conditions personnalisées (si pluie, si trop chaud...)
+- Action triable
