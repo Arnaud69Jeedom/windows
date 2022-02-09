@@ -734,7 +734,7 @@ class windowsCmd extends cmd
             // Vérification de la durée
             $lastDateValue = $cmd->getValueDate();  // Date de l'ouverture de la fenêtre
             $time = strtotime($lastDateValue);
-            $interval = intval((time() - $time) / 60); // en minutes
+            $interval = round((time() - $time) / 60); // en minutes
             log::add('windows', 'debug', '       lastDateValue:' . $lastDateValue . ' isWindowOpened:' . $isWindowOpened . ', timediff:' . $interval . ', duration:' . $configuration->duration);
 
             $configuration->isOpened = true;
@@ -743,16 +743,14 @@ class windowsCmd extends cmd
 
         // duration daily Opened
         $valueOpen = ($window['invert'] == 1) ? 0 : 1;
-        $durationDaily = intval(scenarioExpression::duration($window_cmd, $valueOpen, 'today') / 60);
         
-        log::add('windows', 'debug', '       ***valeur CMD:' . $cmd->getName());
-        
-        
+        $windowName = '#'.$cmd->getEqLogic()->getHumanName() . '[' . $cmd->getName().']#';
+        $durationDaily = intval(scenarioExpression::durationbetween($windowName, $valueOpen, 'today 00:00', 'today 23:59', 60));
+
         log::add('windows', 'debug', '       durationDaily:' . $durationDaily);
-        log::add('windows', 'debug', '       $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
-        log::add('windows', 'debug', '       Max');
+        log::add('windows', 'debug', '       Avant : $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
         $configuration->durationDailyOpened = max($configuration->durationDailyOpened, $durationDaily);
-        log::add('windows', 'debug', '       $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
+        log::add('windows', 'debug', '       Max => $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
         
     }
 
