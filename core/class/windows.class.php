@@ -731,6 +731,8 @@ class windowsCmd extends cmd
 
         if ($isWindowOpened) {
             // si ouvert
+            log::add('windows', 'debug', '       fenêtre ouverte');
+
             // Vérification de la durée
             $lastDateValue = $cmd->getValueDate();  // Date de l'ouverture de la fenêtre
             $time = strtotime($lastDateValue);
@@ -741,17 +743,20 @@ class windowsCmd extends cmd
             $configuration->durationOpened = max($configuration->durationOpened, $interval);
         }
 
-        // duration daily Opened
-        $valueOpen = ($window['invert'] == 1) ? 0 : 1;
-        
-        $windowName = '#'.$cmd->getEqLogic()->getHumanName() . '[' . $cmd->getName().']#';
-        $durationDaily = intval(scenarioExpression::durationbetween($windowName, $valueOpen, 'today 00:00', 'today 23:59', 60));
+        try {
+            // duration daily Opened
+            $valueOpen = ($window['invert'] == 1) ? 0 : 1;
+            
+            $windowName = '#'.$cmd->getEqLogic()->getHumanName() . '[' . $cmd->getName().']#';
+            $durationDaily = intval(scenarioExpression::durationbetween($windowName, $valueOpen, 'today 00:00', 'today 23:59', 60));
 
-        log::add('windows', 'debug', '       durationDaily:' . $durationDaily);
-        log::add('windows', 'debug', '       Avant : $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
-        $configuration->durationDailyOpened = max($configuration->durationDailyOpened, $durationDaily);
-        log::add('windows', 'debug', '       Max => $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
-        
+            log::add('windows', 'debug', '       durationDaily:' . $durationDaily);
+            log::add('windows', 'debug', '       Avant : $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
+            $configuration->durationDailyOpened = max($configuration->durationDailyOpened, $durationDaily);
+            log::add('windows', 'debug', '       Max => $configuration->durationDailyOpened:' . $configuration->durationDailyOpened);
+        } catch (Exception $e) {
+            log::add('windows', 'debug', '       Exception reçue : ',  $e->getMessage());
+        }
     }
 
     /**
