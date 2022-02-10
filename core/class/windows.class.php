@@ -812,12 +812,15 @@ class windowsCmd extends cmd
             // Vérification sur durée
             log::add('windows', 'debug', '    calcul sur durée');
             // Hiver et trop longtemps
-            if ($configuration->duration != 0
-                && $configuration->durationOpened >=  $configuration->duration) {
-                $result->actionToExecute = true;
-                $result->messageWindows =  __('il faut fermer', __FILE__);
-                $result->reason = __('durée', __FILE__);
-                log::add('windows', 'info', '     > il faudra fermer sur durée');
+            if ($configuration->duration != 0) {
+                if ($configuration->durationOpened >=  $configuration->duration) {
+                    $result->actionToExecute = true;
+                    $result->messageWindows =  __('il faut fermer', __FILE__);
+                    $result->reason = __('durée', __FILE__);
+                    log::add('windows', 'info', '     > il faudra fermer sur durée');
+                }
+            } else {
+                log::add('windows', 'info', '     > pas de limite sur durée');
             }
         }
 
@@ -878,12 +881,15 @@ class windowsCmd extends cmd
             // Vérification sur durée
             log::add('windows', 'debug', '    calcul sur durée');
             // Hiver et trop longtemps
-            if ($configuration->duration != 0
-                && $configuration->durationOpened >= $configuration->duration) {
-                $result->actionToExecute = true;
-                $result->messageWindows = __('il faut fermer', __FILE__);
-                $result->reason = __('durée', __FILE__);
-                log::add('windows', 'info', '    il faudra fermer sur durée');
+            if ($configuration->duration != 0) {
+                if ($configuration->durationOpened >= $configuration->duration) {
+                    $result->actionToExecute = true;
+                    $result->messageWindows = __('il faut fermer', __FILE__);
+                    $result->reason = __('durée', __FILE__);
+                    log::add('windows', 'info', '    il faudra fermer sur durée');
+                }
+            } else {
+                log::add('windows', 'info', '     > pas de limite sur durée');
             }
 
             // // Vérification sur consigne
