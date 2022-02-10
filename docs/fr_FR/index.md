@@ -36,7 +36,7 @@ ETE :
 
 INTERMEDIAIRE : 
 
-    Pas d'alerte
+    Fermer si temp. int. < temp. Mini. (consigne - seuil hiver) quelque soit la durée
 
 # Configuration du plugin
 
@@ -121,6 +121,7 @@ Actuellement, il existe quelques variables qui peuvent être utilisées :
     
     #name# = Nom de l'objet
     #message# = Message à afficher = 'il faut ouvrir' ou 'il faut fermer'
+    #reason# = Raison de l'action (durée ou température)
     #temperature_indoor# = température intérieure
     #parent# = nom de l'objet parent (la pièce par exemple) 
 
@@ -131,7 +132,12 @@ Commandes créées pour voir des informations :
     Action : affiche 1 si une action est souhaitée, 0 sinon
     Rafraichir : relance le calcul
     Durée : temps d'aération dans la journée
-    Durée du jour : temps quotidien cumulé
+    Durée du jour : temps quotidien cumulé (nécessite que l'état de la fenêtre soit historisé)
     Message : affiche le message lié à l’action
 
 
+## NOTE
+
+Le plugin a été testé principalement sur la saison hivernale.
+Il reste donc à peaufiné les périodes où la température s'adoucit (saison intermédiaire)
+Il n'a pas encore pu être mis à l'épreuve concernant la saison Eté.

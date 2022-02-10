@@ -979,7 +979,7 @@ class windowsCmd extends cmd
         if ($configuration->notifyko == 1) {
             log::add('windows', 'debug', ' Notification:' . $configuration->notifyko);
 
-            $messageToSend = "$result->messageWindows : #parent# (#temperature_indoor#)";
+            $messageToSend = "$result->messageWindows : #parent# (#temperature_indoor#) (#reason#)";
             $messageToSend = str_replace('#name#', $eqlogic->getName(), $messageToSend);
             $messageToSend = str_replace('#message#', $result->messageWindows, $messageToSend);
             $messageToSend = str_replace('#reason#', $result->reason, $messageToSend);
@@ -1004,6 +1004,7 @@ class windowsCmd extends cmd
                 foreach ($options as $key => $option) {
                     $option = str_replace('#name#', $eqlogic->getName(), $option);
                     $option = str_replace('#message#', $result->messageWindows, $option);
+                    $option = str_replace('#reason#', $result->reason, $option);
                     $option = str_replace('#temperature_indoor#', "$configuration->temperature_indoor $configuration->temperature_unit", $option);
                     $option = str_replace('#parent#', $eqlogic->getObject()->getName(), $option);
 

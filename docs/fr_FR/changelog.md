@@ -7,12 +7,12 @@
 # 10/02/2022
 
 Durée d'ouverture gérée en option. Durée = 0
-Ajout de la raison
+Ajout de la raison dans les notifications & actions
 Correction sur gestion de la saison intermédiaire
 
 # 09/02/2022
 
-Ajout du temps cumulé d'ouverture sur la journée
+Ajout du temps cumulé d'ouverture sur la journée (nécessite que l'état de la fenêtre soit historisé)
 
 # 29/01/2022
 
