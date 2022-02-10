@@ -4,6 +4,12 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 10/02/2022
+
+Durée d'ouverture gérée en option. Durée = 0
+Ajout de la raison
+Correction sur gestion de la saison intermédiaire
+
 # 09/02/2022
 
 Ajout du temps cumulé d'ouverture sur la journée

@@ -130,7 +130,8 @@ Commandes créées pour voir des informations :
 
     Action : affiche 1 si une action est souhaitée, 0 sinon
     Rafraichir : relance le calcul
-    Compteur : temps d'aération dans la journée
+    Durée : temps d'aération dans la journée
+    Durée du jour : temps quotidien cumulé
     Message : affiche le message lié à l’action
 
 
