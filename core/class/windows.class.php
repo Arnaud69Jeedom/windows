@@ -693,9 +693,14 @@ class windowsCmd extends cmd
 
         log::add('windows', 'debug', ' Liste des ouvertures :');
         $windows = $eqlogic->getConfiguration('window');
+
+log::add('windows', 'debug', '      >>> ICI ?');
+log::add('windows', 'debug', '      >>> isOpened:'.$configuration->isOpened ? 'true' : 'false');
+
         foreach ($windows as $window) {
             $this->computeByWindow($window, $configuration);
         }
+log::add('windows', 'debug', '      >>> isOpened:'.$configuration->isOpened ? 'true' : 'false');
     }
 
     /**
@@ -741,6 +746,9 @@ class windowsCmd extends cmd
 
             $configuration->isOpened = true;
             $configuration->durationOpened = max($configuration->durationOpened, $interval);
+        }
+        else {
+            log::add('windows', 'debug', '      fenêtre fermée');
         }
 
         try {
@@ -818,8 +826,9 @@ class windowsCmd extends cmd
         }
 
         // Hiver et saison intermédiaire : sur consigne
-        if ($configuration->isWinter
-            || (!$configuration->isWinter && !$configuration->isSummer)) {
+        if ($configuration->isOpened
+            && ($configuration->isWinter
+            || (!$configuration->isWinter && !$configuration->isSummer))) {
             // Vérification sur consigne
             if (isset($configuration->consigne) && $configuration->consigne != '') {
                 log::add('windows', 'debug', '    calcul sur consigne: ' . $configuration->consigne);
