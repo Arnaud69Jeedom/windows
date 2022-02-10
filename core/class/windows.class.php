@@ -694,13 +694,9 @@ class windowsCmd extends cmd
         log::add('windows', 'debug', ' Liste des ouvertures :');
         $windows = $eqlogic->getConfiguration('window');
 
-log::add('windows', 'debug', '      >>> ICI ?');
-log::add('windows', 'debug', '      >>> isOpened:'.$configuration->isOpened ? 'true' : 'false');
-
         foreach ($windows as $window) {
             $this->computeByWindow($window, $configuration);
         }
-log::add('windows', 'debug', '      >>> isOpened:'.$configuration->isOpened ? 'true' : 'false');
     }
 
     /**
