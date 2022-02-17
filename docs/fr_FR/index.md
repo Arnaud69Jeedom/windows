@@ -36,7 +36,7 @@ ETE :
 
 INTERMEDIAIRE : 
 
-    Pas d'alerte
+    Fermer si temp. int. < temp. Mini. (consigne - seuil hiver) quelque soit la durée
 
 # Configuration du plugin
 
@@ -57,8 +57,8 @@ Température Saison
         En effet, il peut y avoir des périodes plus chaudes en hiver, et la règle doit s'adapter pour profiter de ces moments plus chauds.
 
         Température maxi : Commande du plugin météo indiquant la température maximum du jour
-        Température hiver (°C) : température minimum indiquant que le calcul passe sur le mode Hiver
-        Température été (°C) : température minimum pour l'Eté
+        Température hiver (°C) : température minimum indiquant que le calcul passe sur le mode Hiver (13°C par défaut)
+        Température été (°C) : température minimum pour l'Eté (25°C par défaut)
 
         S'il n'y a pas de température renseignée, alors le calcul se base sur les dates :
         Hivers : jour compris entre le 21 septembre et le 21 mars (période plus ou moins fraiche)
@@ -91,8 +91,11 @@ Listes des sondes pour suivre la santé de la pièce
 
     Température intérieure : Commande pour la température intérieure
     
-    Durée hiver : durée souhaitée d'aération en hiver (5 minutes par exemple)
-    Durée été : durée souhaitée d'aération en été (5 minutes par exemple)
+Liste de durée par saison :
+La durée est optionnelle. Si non renseignée ou à 0, pas de message sur durée ouvert.
+    Durée hiver : durée souhaitée d'aération en hiver (5 minutes par exemple, 0 par défaut)
+    Durée été : durée souhaitée d'aération en été (5 minutes par exemple, 0 par défaut)
+
     Notifier : permet d'envoyer une notification s'il faut ouvrir ou fermer une fenêtre
 
     Calcul sur température : ce champ est optionnel
@@ -121,6 +124,7 @@ Actuellement, il existe quelques variables qui peuvent être utilisées :
     
     #name# = Nom de l'objet
     #message# = Message à afficher = 'il faut ouvrir' ou 'il faut fermer'
+    #reason# = Raison de l'action (durée ou température)
     #temperature_indoor# = température intérieure
     #parent# = nom de l'objet parent (la pièce par exemple) 
 
@@ -130,7 +134,13 @@ Commandes créées pour voir des informations :
 
     Action : affiche 1 si une action est souhaitée, 0 sinon
     Rafraichir : relance le calcul
-    Compteur : temps d'aération dans la journée
+    Durée : temps d'aération dans la journée
+    Durée du jour : temps quotidien cumulé (nécessite que l'état de la fenêtre soit historisé)
     Message : affiche le message lié à l’action
 
 
+## NOTE
+
+Le plugin a été testé principalement sur la saison hivernale.
+Il reste donc à peaufiné les périodes où la température s'adoucit (saison intermédiaire)
+Il n'a pas encore pu être mis à l'épreuve concernant la saison Eté.
