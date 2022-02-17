@@ -4,6 +4,10 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 17/02/2022
+
+Gestion de la température hivers et été par défaut si non renseigné (13°C et 25°C)
+
 # 10/02/2022
 
 Durée d'ouverture gérée en option. Durée = 0
