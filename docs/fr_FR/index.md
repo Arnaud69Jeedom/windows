@@ -91,9 +91,10 @@ Listes des sondes pour suivre la santé de la pièce
 
     Température intérieure : Commande pour la température intérieure
     
+Liste de durée par saison :
+La durée est optionnelle. Si non renseignée ou à 0, pas de message sur durée ouvert.
     Durée hiver : durée souhaitée d'aération en hiver (5 minutes par exemple)
     Durée été : durée souhaitée d'aération en été (5 minutes par exemple)
-    Une durée à 0 indique qu'il n'y a pas de notification sur durée d'ouverture.
 
     Notifier : permet d'envoyer une notification s'il faut ouvrir ou fermer une fenêtre
 

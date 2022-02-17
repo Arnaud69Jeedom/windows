@@ -205,8 +205,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <fieldset>
                                 <legend><i class="fas fa-thermometer-empty" aria-hidden="true"></i> {{Sonde de température}}</legend>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Température intérieure}}</label>
-                                    <div class="col-xs-11 col-sm-7">
+                                    <label class="col-sm-4 control-label">{{Température intérieure}}</label>
+                                    <div class="col-xs-11 col-sm-6">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="temperature_indoor" data-concat="1" />
                                             <span class="input-group-btn">
@@ -219,7 +219,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Durée hiver (min)}}</label>
+                                    <label class="col-sm-4 control-label">{{Durée hiver (min) (optionnel)}}</label>
                                     0 pour une durée illimitée
                                     <div class="col-sm-2">
                                         <div class="input-group">
@@ -229,7 +229,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Durée été (min)}}</label>
+                                    <label class="col-sm-4 control-label">{{Durée été (min) (optionnel)}}</label>
                                     0 pour une durée illimitée
                                     <div class="col-sm-2">
                                         <div class="input-group">
@@ -239,7 +239,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Notifier}}</label>
+                                    <label class="col-sm-4 control-label">{{Notifier}}</label>
                                     <div class="col-sm-2">
                                         <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="notifyifko" />
                                     </div>
@@ -255,7 +255,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{ Consigne Thermostat}}</label>
+                                    <label class="col-sm-4 control-label">{{ Consigne Thermostat}}</label>
                                     <div class="col-xs-11 col-sm-7">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="consigne" data-concat="1" />
@@ -269,7 +269,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Seuil hiver (°C)}}</label>
+                                    <label class="col-sm-4 control-label">{{Seuil hiver (°C)}}</label>
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
