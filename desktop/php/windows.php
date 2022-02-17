@@ -220,6 +220,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Durée hiver (min)}}</label>
+                                    0 pour une durée illimitée
                                     <div class="col-sm-2">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
@@ -229,6 +230,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">{{Durée été (min)}}</label>
+                                    0 pour une durée illimitée
                                     <div class="col-sm-2">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />

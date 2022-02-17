@@ -813,6 +813,7 @@ class windowsCmd extends cmd
             log::add('windows', 'debug', '    calcul sur durée');
             // Hiver et trop longtemps
             if ($configuration->duration != 0) {
+                // Durée non illimitée
                 if ($configuration->durationOpened >=  $configuration->duration) {
                     $result->actionToExecute = true;
                     $result->messageWindows =  __('il faut fermer', __FILE__);
