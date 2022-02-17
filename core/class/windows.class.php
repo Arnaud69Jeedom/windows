@@ -542,15 +542,15 @@ class windowsCmd extends cmd
 
         // log::add('windows', 'debug', ' Analyse température hivers', __FILE__);
         $temperature_winter = config::byKey('temperature_winter', 'windows');
-        if ($temperature_winter != '') {
-            if (!is_numeric($temperature_winter)) {
-                log::add('windows', 'error', '  > Mauvaise temperature_winter: ' . $temperature_winter, __FILE__);
-            } else {
-                $configuration->temperature_winter = $temperature_winter;
-                $isOK = true;
-            }
+        if ($temperature_winter == '') {
+            log::add('windows', 'debug', '  > Pas de temperature_winter : valeur par défaut = 13', __FILE__);
+            $configuration->temperature_winter = 13;
+            $isOK = true;
+        } else if (!is_numeric($temperature_winter)) {
+            log::add('windows', 'error', '  > Mauvaise temperature_winter:' . $temperature_winter, __FILE__);
         } else {
-            log::add('windows', 'debug', '  > Pas de temperature_winter', __FILE__);
+            $configuration->temperature_winter = $temperature_winter;
+            $isOK = true;
         }
 
         return $isOK;
@@ -567,16 +567,15 @@ class windowsCmd extends cmd
 
         // log::add('windows', 'debug', ' Analyse température été', __FILE__);
         $temperature_summer = config::byKey('temperature_summer', 'windows');
-        if ($temperature_summer != '') {
-            if (!is_numeric($temperature_summer)) {
-                log::add('windows', 'error', '  > Mauvaise temperature_summer:' . $temperature_summer, __FILE__);
-                return false;
-            } else {
-                $configuration->temperature_summer = $temperature_summer;
-                $isOK = true;
-            }
+        if ($temperature_summer == '') {
+            log::add('windows', 'debug', '  > Pas de temperature_summer : valeur par défaut = 25', __FILE__);
+            $configuration->temperature_summer = 13;
+            $isOK = true;
+        } else if (!is_numeric($temperature_summer)) {
+            log::add('windows', 'error', '  > Mauvaise temperature_summer:' . $temperature_summer, __FILE__);
         } else {
-            log::add('windows', 'debug', '  > Pas de temperature_summer', __FILE__);
+            $configuration->temperature_summer = $temperature_summer;
+            $isOK = true;
         }
 
         return $isOK;

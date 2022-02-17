@@ -223,7 +223,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 pour une durée illimitée
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="duration_winter" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -233,7 +233,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 pour une durée illimitée
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="duration_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -273,17 +273,17 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips"  placeholder="0" data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{Seuil été (°C)}}</label>
+                                    <label class="col-sm-4 control-label">{{Seuil été (°C)}}</label>
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips"  placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>

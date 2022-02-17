@@ -57,8 +57,8 @@ Température Saison
         En effet, il peut y avoir des périodes plus chaudes en hiver, et la règle doit s'adapter pour profiter de ces moments plus chauds.
 
         Température maxi : Commande du plugin météo indiquant la température maximum du jour
-        Température hiver (°C) : température minimum indiquant que le calcul passe sur le mode Hiver
-        Température été (°C) : température minimum pour l'Eté
+        Température hiver (°C) : température minimum indiquant que le calcul passe sur le mode Hiver (13°C par défaut)
+        Température été (°C) : température minimum pour l'Eté (25°C par défaut)
 
         S'il n'y a pas de température renseignée, alors le calcul se base sur les dates :
         Hivers : jour compris entre le 21 septembre et le 21 mars (période plus ou moins fraiche)
@@ -93,8 +93,8 @@ Listes des sondes pour suivre la santé de la pièce
     
 Liste de durée par saison :
 La durée est optionnelle. Si non renseignée ou à 0, pas de message sur durée ouvert.
-    Durée hiver : durée souhaitée d'aération en hiver (5 minutes par exemple)
-    Durée été : durée souhaitée d'aération en été (5 minutes par exemple)
+    Durée hiver : durée souhaitée d'aération en hiver (5 minutes par exemple, 0 par défaut)
+    Durée été : durée souhaitée d'aération en été (5 minutes par exemple, 0 par défaut)
 
     Notifier : permet d'envoyer une notification s'il faut ouvrir ou fermer une fenêtre
 
