@@ -440,8 +440,9 @@ class windowsCmd extends cmd
                 $isOK = true;
             }
         } else {
-            log::add('windows', 'error', '  > Pas de consigne', __FILE__);
-            return false;
+            log::add('windows', 'debug', '  > Pas de consigne', __FILE__);
+            $isOK = true;
+            // return false;
         }
         unset($cmd);
 
