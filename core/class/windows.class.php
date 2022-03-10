@@ -251,6 +251,11 @@ class windowsCmd extends cmd
         $isOK &= $this->getThresholdSummer($eqlogic, $configuration);
         $isOK &= $this->getConsigne($eqlogic, $configuration);
         $isOK &= $this->getNotify($eqlogic, $configuration);
+        $isOK &= $this->getCo2($eqlogic, $configuration);
+        if (isset($configuration->co2)) {
+            $isOK &= $this->getThresholdMaxiCo2($eqlogic, $configuration);
+            $isOK &= $this->getThresholdNormalCo2($eqlogic, $configuration);
+        }
 
         if ($isOK == false) {
             return null;
@@ -442,7 +447,6 @@ class windowsCmd extends cmd
         } else {
             log::add('windows', 'debug', '  > Pas de consigne', __FILE__);
             $isOK = true;
-            // return false;
         }
         unset($cmd);
 
@@ -576,6 +580,96 @@ class windowsCmd extends cmd
             log::add('windows', 'error', '  > Mauvaise temperature_summer:' . $temperature_summer, __FILE__);
         } else {
             $configuration->temperature_summer = $temperature_summer;
+            $isOK = true;
+        }
+
+        return $isOK;
+    }
+
+    /**
+     * Récupérer la sonde de CO2
+     */
+    private static function getCo2($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = true;
+
+        //log::add('windows', 'debug', ' Analyse co2', __FILE__);
+        $co2 = $eqlogic->getConfiguration('co2');
+        $co2 = str_replace('#', '', $co2);
+        if ($co2 != '') {
+            $cmd = cmd::byId($co2);
+            if ($cmd == null) {
+                log::add('windows', 'error', '  > Mauvaise co2 :' . $co2, __FILE__);
+                return false;
+            }
+            $co2 = $cmd->execCmd();
+            if (is_numeric($co2)) {
+                $configuration->co2 = $co2;
+                $isOK = true;
+            } else {
+                log::add('windows', 'error', '  > Mauvaise co2 :' . $co2, __FILE__);
+                return false;
+            }
+        } else {
+            log::add('windows', 'debug', '  > Pas de co2', __FILE__);
+            $isOK = true;
+        }
+        unset($cmd);
+
+        return $isOK;
+    }
+
+    /**
+     * Récupérer le seuil maxi co2
+     */
+    private function getThresholdMaxiCo2($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = false;
+
+        // Seuil été
+        // log::add('windows', 'debug', ' Analyse seuil maxi co2', __FILE__);
+        $threshold_maxi_co2 = $eqlogic->getConfiguration('threshold_maxi_co2');
+        if ($threshold_maxi_co2 == '') {
+            log::add('windows', 'debug', '  > Pas de threshold_maxi_co2 : valeur par défaut = 1000', __FILE__);
+            $configuration->threshold_maxi_co2 = 1000;
+            $isOK = true;
+        } else if (!is_numeric($threshold_maxi_co2)) {
+            log::add('windows', 'error', '  > Mauvaise threshold_maxi_co2:' . $threshold_maxi_co2, __FILE__);
+        } else {
+            $configuration->threshold_maxi_co2 = $threshold_maxi_co2;
+            $isOK = true;
+        }
+
+        return $isOK;
+    }
+
+    /**
+     * Récupérer le seuil maxi co2
+     */
+    private function getThresholdNormalCo2($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = false;
+
+        // Seuil été
+        // log::add('windows', 'debug', ' Analyse seuil normal co2', __FILE__);
+        $threshold_normal_co2 = $eqlogic->getConfiguration('threshold_normal_co2');
+        if ($threshold_normal_co2 == '') {
+            log::add('windows', 'debug', '  > Pas de threshold_normal_co2 : valeur par défaut = 800', __FILE__);
+            $configuration->threshold_normal_co2 = 800;
+            $isOK = true;
+        } else if (!is_numeric($threshold_normal_co2)) {
+            log::add('windows', 'error', '  > Mauvaise threshold_normal_co2:' . $threshold_normal_co2, __FILE__);
+        } else {
+            $configuration->threshold_normal_co2 = $threshold_normal_co2;
             $isOK = true;
         }
 
@@ -814,10 +908,10 @@ class windowsCmd extends cmd
         ) {
             log::add('windows', 'debug', '    test hiver sur température');
 
-            $result->messageWindows = __('il faut ouvrir', __FILE__);
-            $result->reason = '';
             $result->actionToExecute = true;
-            log::add('windows', 'info', $result->messageWindows);
+            $result->messageWindows = __('il faut ouvrir', __FILE__);
+            $result->reason = __('température', __FILE__);
+            log::add('windows', 'info', '     > il faudra ouvrir sur température');
         }
 
         // Vérifier s'il faut fermer      
@@ -885,10 +979,10 @@ class windowsCmd extends cmd
         ) {
             log::add('windows', 'debug', '    test été sur température');
 
-            $result->messageWindows = __('il faut ouvrir', __FILE__);
-            $result->reason = '';
             $result->actionToExecute = true;
-            log::add('windows', 'info', $result->messageWindows);
+            $result->messageWindows = __('il faut ouvrir', __FILE__);
+            $result->reason = __('température', __FILE__);
+            log::add('windows', 'info', '     > il faudra ouvrir sur température');
         }
 
         // Vérifier s'il faut fermer      
@@ -927,6 +1021,32 @@ class windowsCmd extends cmd
             // }
         }
 
+        // CO2
+        if (isset($configuration->co2) && $configuration->co2 != '') {
+            log::add('windows', 'debug', '    test sur co2: '.$configuration->co2);
+            // log::add('windows', 'debug', '      $configuration->threshold_maxi_co2: '.$configuration->threshold_maxi_co2);
+            // log::add('windows', 'debug', '      $configuration->threshold_normal_co2: '.$configuration->threshold_normal_co2);
+
+            // Fenêtre fermée et niveau CO2 trop important             
+            if (!$configuration->isOpened
+                && $configuration->co2 >= $configuration->threshold_maxi_co2) {
+                $result->actionToExecute = true;
+                $result->messageWindows = __('il faut ouvrir', __FILE__);
+                $result->reason = __('co2', __FILE__);                
+                log::add('windows', 'info', '    il faudra ouvrir sur co2');
+            }
+
+            // Fenêtre ouverte et action de fermeture 
+            // Mais niveau de CO2 trop éleve
+            if ($configuration->isOpened
+                && $result->actionToExecute == true
+                && $configuration->co2 >= $configuration->threshold_normal_co2) {
+                    $result->actionToExecute = false;
+                    $result->messageWindows = '';
+                    $result->reason = '';
+                    log::add('windows', 'info', '    il faudra continuer à laisser ouvert cause co2');
+                }
+        }            
 
         // Log de résumé        
         log::add(
