@@ -441,7 +441,8 @@ class windowsCmd extends cmd
             }
         } else {
             log::add('windows', 'debug', '  > Pas de consigne', __FILE__);
-            return false;
+            $isOK = true;
+            // return false;
         }
         unset($cmd);
 
@@ -1089,11 +1090,11 @@ class windowsCmd extends cmd
                     elseif (!$configuration->isOpened && time() % 5) {
                         // Pas ouvert, time % 5 ?
                         // A TESTER
-                        log::add('windows', 'debug', ' Action sur fenêtre fermée', __FILE__);
+                        log::add('windows', 'info', ' Action sur fenêtre fermée', __FILE__);
                         $this->action($configuration, $result);
                     } 
                     else {
-                        log::add('windows', 'debug', ' pas action : '. ($result->durationOpened % 5), __FILE__);
+                        log::add('windows', 'info', ' pas action : '. ($result->durationOpened % 5), __FILE__);
                     }
                 } else {
                     log::add('windows', 'error', ' >>> Vérifier le paramétrage');
