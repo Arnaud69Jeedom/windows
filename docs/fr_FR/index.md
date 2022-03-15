@@ -25,7 +25,7 @@ Source : Engie
 Mesurer la concentration de CO2 est donc un moyen pour mieux aérer les locaux en indiquant quand l'aération est nécessaire. C'est une mesure standard, utilisée actuellement dans certaines constructions modernes pour contrôler le fonctionnement des ventilations mécaniques (VMC). Une mesure, basée sur une réaction chimique,  a été utilisée dès le 19ème siècle pour lutter contre les épidémies respiratoires dans les habitats insalubres. La concentration en CO2 de l'air extérieur est d'environ 0,04%, usuellement noté 400 ppm (partie par millions). Le lien entre la qualité de l'air d'une pièce et la concentration en CO2 est donnée par les valeurs caractéristiques suivantes :
 
 **< 800 ppm** : correspond à une qualité d'air excellente selon la norme NF EN 13779 et c'est une recommandation du Haut Conseil de la Santé publique. Cela constitue donc une valeur "cible" à atteindre.
-**entre 800 et 1000 ppm** : correspond à une qualité d'air moyenne selon la norme NF EN 13779
+**entre 800 et 1000 ppm** : correspond à une qualité d'air moyenne selon la norme NF EN 13779.
 **entre 1000 et 1500 ppm** : correspond à une qualité d'air modérée selon la norme NF EN 13779. Cela correspond à des valeurs trop élevées en contexte Covid-19.
 **> 1500 ppm** : correspond à une qualité d'air basse selon la norme NF EN 13779. Cela correspond à des valeurs beaucoup trop élevées en contexte Covid-19.
 
