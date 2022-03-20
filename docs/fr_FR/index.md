@@ -57,6 +57,9 @@ TOUTES SAISONS :
 
 La configuration est très simple, après téléchargement du plugin, il vous suffit de renseigner quelques sondes.
 
+![Configuration Plugin](../images/Param_Plugin.png)
+
+
 Sonde de température
 - Température extérieure : Commande pour la température extérieure
 
@@ -90,17 +93,17 @@ Une fois dessus vous retrouvez alors la liste de vos Ouvrants.
 
 Vous retrouvez ici toute la configuration de votre équipement :
 
+![Général](../images/Onglet_1.png.png)
+
 - Nom de l’équipement : nom de votre pièce.
     Objet parent : indique l’objet parent auquel appartient l’équipement.
 - Catégorie : les catégories de l’équipement (il peut appartenir à plusieurs catégories).
 - Activer : permet de rendre votre équipement actif.
 - Visible : le rend visible sur le dashboard.
-    
-## Informations
-
-Cet onglet récapitule les informations sur la nécessité d'aérer. Il prodigue aussi des conseils sur la durée et les horaires.
 
 ## Température
+
+![Température](../images/Onglet_2.png.png)
 
 ### Sonde de température
 
@@ -124,6 +127,8 @@ Listes des sondes pour suivre la température de la pièce
 ## AQI
 Listes des sondes pour suivre la qualité de l'air de la pièce
 
+![AQI](../images/Onglet_3.png.png)
+
 ### Sonde de CO2 
 
 - CO2 : Commande pour le taux de CO2 intérieur
@@ -135,6 +140,8 @@ Listes des sondes pour suivre la qualité de l'air de la pièce
 
 Listes des fenêtres à surveiller.
 
+![Ouvertures](../images/Onglet_4.png.png)
+
 - 0 sera considéré comme fermé,
 - 1 comme ouvert
 
@@ -142,7 +149,10 @@ Utiliser la cocher "Inverser" si votre module renvoie la valeur inverse.
 
 ## Actions
 
-Actions et scénario à déclencher
+Actions et scénario à déclencher :
+
+![Actions](../images/Onglet_5.png.png)
+
 Lorsque le plugin détectera qu'il serait bien d'ouvrir ou de fermer une fenêtre, alors les actions seront déclenchées.
 Il est possible d'utiliser un scénario ou des commandes.
 Il est possible d'utiliser des commandes de type PushBullet. Il est alors demandé un Titre et un Message
@@ -157,6 +167,8 @@ Actuellement, il existe quelques variables qui peuvent être utilisées :
 ## Commandes
 
 Commandes créées pour voir des informations :
+
+![Commandes](../images/Onglet_6.png.png)
 
 - Action : affiche 1 si une action est souhaitée, 0 sinon
 - Rafraichir : relance le calcul

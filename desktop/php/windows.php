@@ -387,6 +387,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     A mettre dans <b>Titre</b> ou dans <b>Message</b> pour y récupérer la valeur</br>
                     <b>#name#</b> = Nom de l'objet</br>
                     <b>#message#</b> = Message à afficher</br>
+                    <b>#reason#</b> = Raison de l'action (durée ou température)</br>
                     <b>#temperature_indoor#</b> = température intérieure</br>
                     <b>#parent#</b> = nom de l'objet parent (la pièce par exemple)
                 </div>
