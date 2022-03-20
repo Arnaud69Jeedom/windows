@@ -27,12 +27,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <span>{{Configuration}}</span>
             </div>
         </div>
-        <legend><i class="fas fa-table"></i> {{Mes équipements}}</legend>
+        <legend><i class="fa fa-table"></i> {{Mes Equipemnts}}</legend>
         <!-- Champ de recherche -->
-        <div class="input-group" style="margin:5px;">
-            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
+        <div class="input-group" style="margin-bottom:5px;">
+            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>
             <div class="input-group-btn">
-                <a id="bt_resetSearch" class="btn roundedRight" style="width:30px"><i class="fas fa-times"></i></a>
+            <a id="bt_resetObjectSearch" class="btn" style="width:30px"><i class="fas fa-times"></i>
+            </a><a class="btn roundedRight hidden" id="bt_pluginDisplayAsTable" data-coreSupport="1" data-state="0"><i class="fas fa-grip-lines"></i></a>
             </div>
         </div>
         <!-- Liste des équipements du plugin -->
