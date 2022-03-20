@@ -4,6 +4,10 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 10/03/2022
+
+ADD : Gestion du niveau de CO2
+
 # 08/03/2022
 
 DEBUG : Consigne optionnelle

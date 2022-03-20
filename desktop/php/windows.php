@@ -27,12 +27,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <span>{{Configuration}}</span>
             </div>
         </div>
-        <legend><i class="fas fa-table"></i> {{Mes équipements}}</legend>
+        <legend><i class="fa fa-table"></i> {{Mes Equipements}}</legend>
         <!-- Champ de recherche -->
-        <div class="input-group" style="margin:5px;">
-            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
+        <div class="input-group" style="margin-bottom:5px;">
+            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>
             <div class="input-group-btn">
-                <a id="bt_resetSearch" class="btn roundedRight" style="width:30px"><i class="fas fa-times"></i></a>
+            <a id="bt_resetObjectSearch" class="btn" style="width:30px"><i class="fas fa-times"></i>
+            </a><a class="btn roundedRight hidden" id="bt_pluginDisplayAsTable" data-coreSupport="1" data-state="0"><i class="fas fa-grip-lines"></i></a>
             </div>
         </div>
         <!-- Liste des équipements du plugin -->
@@ -67,8 +68,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
             <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
-            <li role="presentation"><a href="#infotab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-info"></i><span class="hidden-xs"> {{Informations}}</span></a></li>
-            <li role="presentation"><a href="#sondetab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-thermometer-empty"></i><span class="hidden-xs"> {{Sondes}}</span></a></li>
+            <!-- <li role="presentation"><a href="#infotab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-info"></i><span class="hidden-xs"> {{Informations}}</span></a></li> -->
+            <li role="presentation"><a href="#temperaturetab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-thermometer-empty"></i><span class="hidden-xs"> {{Température}}</span></a></li>
+
+            <li role="presentation"><a href="#aqitab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-cloud"></i><span class="hidden-xs"> {{AQI}}</span></a></li>
+
             <li role="presentation"><a href="#configureWindowstab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas jeedom-fenetre-ouverte"></i><span class="hidden-xs"> {{Ouvertures}}</span></a></li>
             <li role="presentation"><a href="#actiontab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list-alt"></i><span class="hidden-xs"> {{Actions}}</span></a></li>
             <li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i><span class="hidden-xs"> {{Commandes}}</span></a></li>
@@ -133,7 +137,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
             </div><!-- /.tabpanel #eqlogictab-->
 
             <!-- Onglet Info -->
-            <div role="tabpanel" class="tab-pane" id="infotab">
+            <!-- <div role="tabpanel" class="tab-pane" id="infotab">
                 <br>
                 <div class="row">
                     <div class="col-lg-7">
@@ -194,10 +198,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- Onglet Sonde -->
-            <div role="tabpanel" class="tab-pane" id="sondetab">
+            <!-- Onglet Température -->
+            <div role="tabpanel" class="tab-pane" id="temperaturetab">
                 <br>
                 <div class="row">
                     <div class="col-lg-7">
@@ -288,13 +292,65 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                 </div>
                             </fieldset>
-
-
                         </form>
                     </div>
                 </div>
                 <hr>
-            </div><!-- /.tabpanel #sondetab-->
+            </div><!-- /.tabpanel #temperaturetab-->
+
+
+            <!-- Onglet AQI -->
+            <div role="tabpanel" class="tab-pane" id="aqitab">
+                <br>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <form class="form-horizontal">
+                      
+                            <fieldset>
+                                <legend><i class="icon kiko-cloud" aria-hidden="true"></i> {{Sonde de CO2}}</legend>
+                                <div>
+                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air  
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{CO2}}</label>
+                                    <div class="col-xs-11 col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="co2" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fas fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Seuil maxi (ppm)}}</label>
+                                    1000 ppm par défaut
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="1000" data-l1key="configuration" data-l2key="threshold_maxi_co2" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Seuil normal (ppm)}}</label>
+                                    800 ppm par défaut
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="800" data-l1key="configuration" data-l2key="threshold_normal_co2" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <hr>
+            </div><!-- /.tabpanel #aqitab-->
 
             <div role="tabpanel" class="tab-pane" id="configureWindowstab">
                 <br />
@@ -331,6 +387,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     A mettre dans <b>Titre</b> ou dans <b>Message</b> pour y récupérer la valeur</br>
                     <b>#name#</b> = Nom de l'objet</br>
                     <b>#message#</b> = Message à afficher</br>
+                    <b>#reason#</b> = Raison de l'action (durée ou température)</br>
                     <b>#temperature_indoor#</b> = température intérieure</br>
                     <b>#parent#</b> = nom de l'objet parent (la pièce par exemple)
                 </div>
