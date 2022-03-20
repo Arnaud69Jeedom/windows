@@ -103,6 +103,8 @@ Vous retrouvez ici toute la configuration de votre équipement :
 
 ## Température
 
+Information pour la sonde de température et les règles à suivre :
+
 ![Température](../images/Onglet_2.png)
 
 ### Sonde de température
