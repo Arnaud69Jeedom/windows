@@ -93,7 +93,7 @@ Une fois dessus vous retrouvez alors la liste de vos Ouvrants.
 
 Vous retrouvez ici toute la configuration de votre équipement :
 
-![Général](../images/Onglet_1.png.png)
+![Général](../images/Onglet_1.png)
 
 - Nom de l’équipement : nom de votre pièce.
     Objet parent : indique l’objet parent auquel appartient l’équipement.
@@ -103,7 +103,7 @@ Vous retrouvez ici toute la configuration de votre équipement :
 
 ## Température
 
-![Température](../images/Onglet_2.png.png)
+![Température](../images/Onglet_2.png)
 
 ### Sonde de température
 
@@ -127,7 +127,7 @@ Listes des sondes pour suivre la température de la pièce
 ## AQI
 Listes des sondes pour suivre la qualité de l'air de la pièce
 
-![AQI](../images/Onglet_3.png.png)
+![AQI](../images/Onglet_3.png)
 
 ### Sonde de CO2 
 
@@ -140,7 +140,7 @@ Listes des sondes pour suivre la qualité de l'air de la pièce
 
 Listes des fenêtres à surveiller.
 
-![Ouvertures](../images/Onglet_4.png.png)
+![Ouvertures](../images/Onglet_4.png)
 
 - 0 sera considéré comme fermé,
 - 1 comme ouvert
@@ -151,7 +151,7 @@ Utiliser la cocher "Inverser" si votre module renvoie la valeur inverse.
 
 Actions et scénario à déclencher :
 
-![Actions](../images/Onglet_5.png.png)
+![Actions](../images/Onglet_5.png)
 
 Lorsque le plugin détectera qu'il serait bien d'ouvrir ou de fermer une fenêtre, alors les actions seront déclenchées.
 Il est possible d'utiliser un scénario ou des commandes.
@@ -168,7 +168,7 @@ Actuellement, il existe quelques variables qui peuvent être utilisées :
 
 Commandes créées pour voir des informations :
 
-![Commandes](../images/Onglet_6.png.png)
+![Commandes](../images/Onglet_6.png)
 
 - Action : affiche 1 si une action est souhaitée, 0 sinon
 - Rafraichir : relance le calcul
