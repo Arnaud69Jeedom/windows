@@ -27,7 +27,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <span>{{Configuration}}</span>
             </div>
         </div>
-        <legend><i class="fa fa-table"></i> {{Mes Equipemnts}}</legend>
+        <legend><i class="fa fa-table"></i> {{Mes Equipements}}</legend>
         <!-- Champ de recherche -->
         <div class="input-group" style="margin-bottom:5px;">
             <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>
