@@ -1207,8 +1207,8 @@ class windowsCmd extends cmd
                     if ($configuration->isOpened && ($result->durationOpened % 5) == 0) {
                         $this->action($configuration, $result);
                     }
-                    elseif (!$configuration->isOpened && time() % 5) {
-                        // Pas ouvert, time % 5 ?
+                    elseif (!$configuration->isOpened && time() % 300) {
+                        // Pas ouvert, time % 300 ?
                         // A TESTER
                         log::add('windows', 'info', ' Action sur fenêtre fermée', __FILE__);
                         $this->action($configuration, $result);
