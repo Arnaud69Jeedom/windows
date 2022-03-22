@@ -1204,10 +1204,11 @@ class windowsCmd extends cmd
                     $this->updateCommands($result);
 
                     // Limiter les actions toutes les 5 minutes
+                    $minutes = date('i');
                     if ($configuration->isOpened && ($result->durationOpened % 5) == 0) {
                         $this->action($configuration, $result);
                     }
-                    elseif (!$configuration->isOpened && time() % 300) {
+                    elseif (!$configuration->isOpened && ($minutes % 5 == 0)) {
                         // Pas ouvert, time % 300 ?
                         // A TESTER
                         log::add('windows', 'info', ' Action sur fenêtre fermée', __FILE__);
