@@ -251,6 +251,7 @@ class windowsCmd extends cmd
         $isOK &= $this->getThresholdSummer($eqlogic, $configuration);
         $isOK &= $this->getConsigne($eqlogic, $configuration);
         $isOK &= $this->getNotify($eqlogic, $configuration);
+        $isOK &= $this->getFrequency($eqlogic, $configuration);
         $isOK &= $this->getCo2($eqlogic, $configuration);
         if (isset($configuration->co2)) {
             $isOK &= $this->getThresholdMaxiCo2($eqlogic, $configuration);
@@ -709,6 +710,33 @@ class windowsCmd extends cmd
             $isOK = true;
         }
         unset($cmd);
+
+        return $isOK;
+    }
+
+    /**
+     * Récupérer le seuil maxi co2
+     */
+    private function getFrequency($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = false;
+
+        // Frequence
+        // log::add('windows', 'debug', ' Analyse frequence', __FILE__);
+        $frequency = $eqlogic->getConfiguration('frequency');
+        if ($frequency == '') {
+            log::add('windows', 'debug', '  > Pas de frequency : valeur par défaut = 5', __FILE__);
+            $configuration->frequency = 5;
+            $isOK = true;
+        } else if (!is_numeric($frequency)) {
+            log::add('windows', 'error', '  > Mauvaise frequency:' . $frequency, __FILE__);
+        } else {
+            $configuration->frequency = $frequency;
+            $isOK = true;
+        }
 
         return $isOK;
     }
@@ -1205,17 +1233,17 @@ class windowsCmd extends cmd
 
                     // Limiter les actions toutes les 5 minutes
                     $minutes = date('i');
-                    if ($configuration->isOpened && ($result->durationOpened % 5) == 0) {
+                    if ($configuration->isOpened && ($result->durationOpened % $configuration->frequency) == 0) {
                         $this->action($configuration, $result);
                     }
-                    elseif (!$configuration->isOpened && ($minutes % 5 == 0)) {
+                    elseif (!$configuration->isOpened && ($minutes % $configuration->frequency == 0)) {
                         // Pas ouvert, time % 300 ?
                         // A TESTER
                         log::add('windows', 'info', ' Action sur fenêtre fermée', __FILE__);
                         $this->action($configuration, $result);
                     } 
                     else {
-                        log::add('windows', 'info', ' pas action : '. ($result->durationOpened % 5), __FILE__);
+                        log::add('windows', 'info', ' pas action : '. ($result->durationOpened % $configuration->frequency), __FILE__);
                     }
                 } else {
                     log::add('windows', 'error', ' >>> Vérifier le paramétrage');

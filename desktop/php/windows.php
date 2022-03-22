@@ -376,14 +376,27 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <!-- Onglet Action -->
             <div role="tabpanel" class="tab-pane" id="actiontab">
                 <br />
-
-                <a class="btn btn-success addAction pull-right" id="bt_addActionEqLogic" data-type="failureActuator" style="position: relative;top: -7px;">
-                    <i class="fas fa-plus-circle"></i> {{Ajouter une action}}
-                </a>
-                <br />
-                <br />
-
-                <div class="alert-info bg-success">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                    <legend><i class="icon kiko-clock" aria-hidden="true"></i> {{Fréquence}}</legend>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">{{Fréquence des actions (min.)}}</label>
+                                        5 minutes par défaut
+                                        <div class="col-sm-2">
+                                            <div class="input-group">
+                                                <input type="text" class="eqLogicAttr form-control tooltips" placeholder="5" data-l1key="configuration" data-l2key="frequency" data-concat="1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                
+                                <br />
+                <div class="alert-info">
                     A mettre dans <b>Titre</b> ou dans <b>Message</b> pour y récupérer la valeur</br>
                     <b>#name#</b> = Nom de l'objet</br>
                     <b>#message#</b> = Message à afficher</br>
@@ -391,6 +404,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <b>#temperature_indoor#</b> = température intérieure</br>
                     <b>#parent#</b> = nom de l'objet parent (la pièce par exemple)
                 </div>
+
+                <br />
+                <a class="btn btn-success addAction pull-right" id="bt_addActionEqLogic" data-type="failureActuator" style="position: relative;top: -7px;">
+                    <i class="fas fa-plus-circle"></i> {{Ajouter une action}}
+                </a>
+                <br />
+                <br />
+
                 <br />
 
                 <form class="form-horizontal">
