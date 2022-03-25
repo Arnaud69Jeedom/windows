@@ -772,7 +772,7 @@ class windowsCmd extends cmd
                 log::add('windows', 'debug', ' Saison : Eté', __FILE__);
                 $configuration->Season = Seasons::Summer;
             } else {
-                log::add('windows', 'debug', ' Saison : Intérmédiaire', __FILE__);
+                log::add('windows', 'debug', ' Saison : Intersaison', __FILE__);
                 $configuration->Season = Seasons::interSeason;
             }
         } else {
@@ -791,7 +791,7 @@ class windowsCmd extends cmd
                 log::add('windows', 'debug', ' Saison : Eté', __FILE__);
                 $configuration->Season = Seasons::Summer;
             } else {
-                log::add('windows', 'debug', ' Saison : Intérmédiaire', __FILE__);
+                log::add('windows', 'debug', ' Saison : Intersaison', __FILE__);
                 $configuration->Season = Seasons::interSeason;
             }
         }
@@ -910,6 +910,8 @@ class windowsCmd extends cmd
         if ($configuration == null) throw new ErrorException('configuration null');
         if ($result == null) throw new ErrorException('result null');
 
+        log::add('windows', 'debug', ' > Analyse hiver');
+
         // Hiver, fenetre fermée
         // Température
         // mais il fait plus chaud dehors tout de même
@@ -949,7 +951,7 @@ class windowsCmd extends cmd
             }
         }
 
-        // Hiver (ou intermédiaire?) et fenêtre ouverte
+        // Hiver (ou intersaison?) et fenêtre ouverte
         // Consigne
         // il fait bon dedans : pas la peine de fermer sur durée
         // il fait froid dedans : il faut fermer
@@ -994,7 +996,7 @@ class windowsCmd extends cmd
         if ($configuration == null) throw new ErrorException('configuration null');
         if ($result == null) throw new ErrorException('result null');
 
-        log::add('windows', 'debug', '     Analyse été');
+        log::add('windows', 'debug', ' > Analyse été');
 
         // Eté et fenetre fermée
         // Température
@@ -1064,7 +1066,7 @@ class windowsCmd extends cmd
         if ($configuration == null) throw new ErrorException('configuration null');
         if ($result == null) throw new ErrorException('result null');
 
-        log::add('windows', 'debug', '     Analyse intersaison');
+        log::add('windows', 'debug', ' > Analyse intersaison');
 
         // Vérification sur consigne
         if (isset($configuration->consigne) && $configuration->consigne != '') {
@@ -1086,7 +1088,7 @@ class windowsCmd extends cmd
             //         log::add('windows', 'info', '     > il faudra ouvrir sur température');
             // }
 
-            // Intermédiaire et fenêtre ouverte
+            // Intersaison et fenêtre ouverte
             // Température
             // il fait trop chaud ou trop froid dedans : il faut fermer
             if (
@@ -1112,7 +1114,7 @@ class windowsCmd extends cmd
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
-        log::add('windows', 'debug', '     Analyse hiver');
+        log::add('windows', 'debug', ' Analyse métier');
 
         // Initialisation
         $result = new stdClass();
@@ -1121,8 +1123,6 @@ class windowsCmd extends cmd
         $result->reason = '';
         $result->durationOpened = $configuration->durationOpened;
         $result->durationDailyOpened = $configuration->durationDailyOpened;
-
-        log::add('windows', 'debug', ' Analyse métier');
 
         // Vérification sur Présence
         if (!$configuration->presence) {
@@ -1135,7 +1135,7 @@ class windowsCmd extends cmd
             $result = $this->checkActionWinter($configuration, $result);
         }
 
-        // INTERMEDIAIRE
+        // Intersaison
         if ($configuration->Season == Seasons::interSeason) {
             $result = $this->checkActionInterseason($configuration, $result);
         }
