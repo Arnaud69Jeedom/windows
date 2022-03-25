@@ -30,10 +30,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
         <legend><i class="fa fa-table"></i> {{Mes Equipements}}</legend>
         <!-- Champ de recherche -->
         <div class="input-group" style="margin-bottom:5px;">
-            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>
+            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
             <div class="input-group-btn">
-            <a id="bt_resetObjectSearch" class="btn" style="width:30px"><i class="fas fa-times"></i>
-            </a><a class="btn roundedRight hidden" id="bt_pluginDisplayAsTable" data-coreSupport="1" data-state="0"><i class="fas fa-grip-lines"></i></a>
+                <a id="bt_resetObjectSearch" class="btn" style="width:30px"><i class="fas fa-times"></i>
+                </a><a class="btn roundedRight hidden" id="bt_pluginDisplayAsTable" data-coreSupport="1" data-state="0"><i class="fas fa-grip-lines"></i></a>
             </div>
         </div>
         <!-- Liste des équipements du plugin -->
@@ -277,7 +277,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"  placeholder="0" data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -287,7 +287,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"  placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -305,11 +305,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <div class="row">
                     <div class="col-lg-7">
                         <form class="form-horizontal">
-                      
+
                             <fieldset>
                                 <legend><i class="icon kiko-cloud" aria-hidden="true"></i> {{Sonde de CO2}}</legend>
                                 <div>
-                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air  
+                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air
                                 </div>
 
                                 <div class="form-group">
@@ -380,22 +380,22 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <div class="col-lg-7">
                         <form class="form-horizontal">
                             <fieldset>
-                                    <legend><i class="icon kiko-clock" aria-hidden="true"></i> {{Fréquence}}</legend>
-                                    <div class="form-group">
-                                        <label class="col-sm-4 control-label">{{Fréquence des actions (min.)}}</label>
-                                        5 minutes par défaut
-                                        <div class="col-sm-2">
-                                            <div class="input-group">
-                                                <input type="text" class="eqLogicAttr form-control tooltips" placeholder="5" data-l1key="configuration" data-l2key="frequency" data-concat="1" />
-                                            </div>
+                                <legend><i class="icon kiko-clock" aria-hidden="true"></i> {{Fréquence}}</legend>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Fréquence des actions (min.)}}</label>
+                                    5 minutes par défaut
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="5" data-l1key="configuration" data-l2key="frequency" data-concat="1" />
                                         </div>
                                     </div>
+                                </div>
                             </fieldset>
                         </form>
                     </div>
                 </div>
-                
-                                <br />
+
+                <br />
                 <div class="alert-info">
                     A mettre dans <b>Titre</b> ou dans <b>Message</b> pour y récupérer la valeur</br>
                     <b>#name#</b> = Nom de l'objet</br>
