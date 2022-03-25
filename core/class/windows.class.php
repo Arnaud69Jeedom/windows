@@ -22,7 +22,7 @@ abstract class Seasons
 {
     const Winter = 1;
     const Summer = 2;
-    const interSeason =3;
+    const interSeason = 3;
 }
 
 class windows extends eqLogic
@@ -902,36 +902,20 @@ class windowsCmd extends cmd
     }
 
     /**
-     * Vérifie l'action à réaliser et le message à afficher associé
+     * Vérifie l'action à réaliser en hiver
+     * et le message à afficher associé
      */
-    private function checkAction(stdClass $configuration): stdClass
+    private function checkActionWinter(stdClass $configuration, stdClass $result): stdClass
     {
         if ($configuration == null) throw new ErrorException('configuration null');
+        if ($result == null) throw new ErrorException('result null');
 
-        // Initialisation
-        $result = new stdClass();
-        $result->actionToExecute = false;
-        $result->messageWindows = '';
-        $result->reason = '';
-        $result->durationOpened = $configuration->durationOpened;
-        $result->durationDailyOpened = $configuration->durationDailyOpened;
-
-        log::add('windows', 'debug', ' Analyse métier');
-
-        // Vérification sur Présence
-        if (!$configuration->presence) {
-            log::add('windows', 'debug', '    Pas présent : rien à faire');
-            return $result;
-        }
-
-        /*** HIVER ***/
         // Hiver, fenetre fermée
         // Température
         // mais il fait plus chaud dehors tout de même
         // il faut donc ouvrir
         if (
-            $configuration->Season == Seasons::Winter
-            && !$configuration->isOpened
+            !$configuration->isOpened
             && $configuration->temperature_outdoor > $configuration->temperature_indoor
         ) {
             log::add('windows', 'debug', '    test hiver sur température');
@@ -946,10 +930,7 @@ class windowsCmd extends cmd
         // Durée
         // mais le temps d'ouverture mini est atteinte
         // Vérifier s'il faut fermer
-        if (
-            $configuration->Season == Seasons::Winter
-            && $configuration->isOpened
-        ) {
+        if ($configuration->isOpened) {
             log::add('windows', 'debug', '    test hiver sur durée');
 
             // Vérification sur durée
@@ -972,11 +953,7 @@ class windowsCmd extends cmd
         // Consigne
         // il fait bon dedans : pas la peine de fermer sur durée
         // il fait froid dedans : il faut fermer
-        if (($configuration->Season == Seasons::Winter
-               // || ($configuration->Season == Seasons::interSeason)
-            )
-            && $configuration->isOpened
-        ) {
+        if ($configuration->isOpened) {
             // Vérification sur consigne
             if (isset($configuration->consigne) && $configuration->consigne != '') {
                 log::add('windows', 'debug', '    calcul sur consigne: ' . $configuration->consigne);
@@ -1005,45 +982,20 @@ class windowsCmd extends cmd
             }
         }
 
-        /*** INTERMEDIAIRE ***/
-        if ($configuration->Season == Seasons::interSeason) {
-            // Vérification sur consigne
-            if (isset($configuration->consigne) && $configuration->consigne != '') {
-                log::add('windows', 'debug', '    calcul sur consigne: ' . $configuration->consigne);
+        return $result;
+    }
 
-                $temp_mini = $configuration->consigne - $configuration->threshold_winter;
-                $temp_maxi = $configuration->consigne + $configuration->threshold_summer;
-                log::add('windows', 'debug', '    température mini :' . $temp_mini . ', température:' . $configuration->temperature_indoor);
-                log::add('windows', 'debug', '    température maxi :' . $temp_maxi . ', température:' . $configuration->temperature_indoor);
+    /**
+     * Vérifie l'action à réaliser en été
+     * et le message à afficher associé
+     */
+    private function checkActionSummer(stdClass $configuration, stdClass $result): stdClass
+    {
+        if ($configuration == null) throw new ErrorException('configuration null');
+        if ($result == null) throw new ErrorException('result null');
 
-                // // ARRIVERA la nuit, s'il pleut, toutes les 5 minutes...
-                // // Température exterieure idéale
-                // if (!$configuration->isOpened
-                //     && $configuration->temperature_outdoor <= $temp_maxi
-                //     && $configuration->temperature_outdoor >= $temp_mini) {
-                //         $result->actionToExecute = true;
-                //         $result->messageWindows = __('il faut ouvrir', __FILE__);
-                //         $result->reason = __('température', __FILE__);
-                //         log::add('windows', 'info', '     > il faudra ouvrir sur température');
-                // }
+        log::add('windows', 'debug', '     Analyse été');
 
-                // Intermédiaire et fenêtre ouverte
-                // Température
-                // il fait trop chaud ou trop froid dedans : il faut fermer
-                if (
-                    $configuration->isOpened
-                    && ($configuration->temperature_indoor > $temp_maxi)
-                    || ($configuration->temperature_indoor < $temp_mini)
-                ) {
-                    $result->actionToExecute = true;
-                    $result->messageWindows = __('il faut fermer', __FILE__);
-                    $result->reason = __('température', __FILE__);
-                    log::add('windows', 'info', '     > il faudra fermer sur température');
-                }
-            }
-        }
-
-        /*** ETE***/
         // Eté et fenetre fermée
         // Température
         // mais il fait plus frais dehors tout de même : il faut ouvrir
@@ -1098,6 +1050,99 @@ class windowsCmd extends cmd
             //         log::add('windows', 'info', '    il faudra fermer sur température');
             //     }
             // }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Vérifie l'action à réaliser en intersaison
+     * et le message à afficher associé
+     */
+    private function checkActionInterseason(stdClass $configuration, stdClass $result): stdClass
+    {
+        if ($configuration == null) throw new ErrorException('configuration null');
+        if ($result == null) throw new ErrorException('result null');
+
+        log::add('windows', 'debug', '     Analyse intersaison');
+
+        // Vérification sur consigne
+        if (isset($configuration->consigne) && $configuration->consigne != '') {
+            log::add('windows', 'debug', '    calcul sur consigne: ' . $configuration->consigne);
+
+            $temp_mini = $configuration->consigne - $configuration->threshold_winter;
+            $temp_maxi = $configuration->consigne + $configuration->threshold_summer;
+            log::add('windows', 'debug', '    température mini :' . $temp_mini . ', température:' . $configuration->temperature_indoor);
+            log::add('windows', 'debug', '    température maxi :' . $temp_maxi . ', température:' . $configuration->temperature_indoor);
+
+            // // ARRIVERA la nuit, s'il pleut, toutes les 5 minutes...
+            // // Température exterieure idéale
+            // if (!$configuration->isOpened
+            //     && $configuration->temperature_outdoor <= $temp_maxi
+            //     && $configuration->temperature_outdoor >= $temp_mini) {
+            //         $result->actionToExecute = true;
+            //         $result->messageWindows = __('il faut ouvrir', __FILE__);
+            //         $result->reason = __('température', __FILE__);
+            //         log::add('windows', 'info', '     > il faudra ouvrir sur température');
+            // }
+
+            // Intermédiaire et fenêtre ouverte
+            // Température
+            // il fait trop chaud ou trop froid dedans : il faut fermer
+            if (
+                $configuration->isOpened
+                && ($configuration->temperature_indoor > $temp_maxi)
+                || ($configuration->temperature_indoor < $temp_mini)
+            ) {
+                $result->actionToExecute = true;
+                $result->messageWindows = __('il faut fermer', __FILE__);
+                $result->reason = __('température', __FILE__);
+                log::add('windows', 'info', '     > il faudra fermer sur température');
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Vérifie l'action à réaliser 
+     * et le message à afficher associé
+     */
+    private function checkAction(stdClass $configuration): stdClass
+    {
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        log::add('windows', 'debug', '     Analyse hiver');
+
+        // Initialisation
+        $result = new stdClass();
+        $result->actionToExecute = false;
+        $result->messageWindows = '';
+        $result->reason = '';
+        $result->durationOpened = $configuration->durationOpened;
+        $result->durationDailyOpened = $configuration->durationDailyOpened;
+
+        log::add('windows', 'debug', ' Analyse métier');
+
+        // Vérification sur Présence
+        if (!$configuration->presence) {
+            log::add('windows', 'debug', '    Pas présent : rien à faire');
+            return $result;
+        }
+
+        // Hiver
+        if ($configuration->Season == Seasons::Winter) {
+            $result = $this->checkActionWinter($configuration, $result);
+        }
+
+        // INTERMEDIAIRE
+        if ($configuration->Season == Seasons::interSeason) {
+            $result = $this->checkActionInterseason($configuration, $result);
+        }
+
+        // ETE
+        if ($configuration->Season == Seasons::Summer) {
+            $result = $this->checkActionSummer($configuration, $result);
         }
 
         // CO2
