@@ -1331,6 +1331,8 @@ class windowsCmd extends cmd
                     log::add('windows', 'debug', ' configuration :' . json_encode((array)$configuration));
 
                     $result = $this->checkAction($configuration);
+                    log::add('windows', 'debug', ' result :' . json_encode((array)$result));
+
                     $this->updateCommands($result);
 
                     // Limiter les actions toutes les 5 minutes
