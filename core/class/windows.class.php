@@ -1093,8 +1093,8 @@ class windowsCmd extends cmd
             // il fait trop chaud ou trop froid dedans : il faut fermer
             if (
                 $configuration->isOpened
-                && ($configuration->temperature_indoor > $temp_maxi)
-                || ($configuration->temperature_indoor < $temp_mini)
+                && (($configuration->temperature_indoor > $temp_maxi)
+                || ($configuration->temperature_indoor < $temp_mini))
             ) {
                 $result->actionToExecute = true;
                 $result->messageWindows = __('il faut fermer', __FILE__);
@@ -1331,8 +1331,6 @@ class windowsCmd extends cmd
                     log::add('windows', 'debug', ' configuration :' . json_encode((array)$configuration));
 
                     $result = $this->checkAction($configuration);
-                    log::add('windows', 'debug', ' result :' . json_encode((array)$result));
-
                     $this->updateCommands($result);
 
                     // Limiter les actions toutes les 5 minutes
