@@ -4,6 +4,14 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 27/03/2022
+
+DEBUG : Correction sur gestion de l'intersaison
+
+# 20/03/2022
+
+Réécriture pour la gestion des actions pour Hiver et Intersaison
+
 # 10/03/2022
 
 ADD : Gestion du niveau de CO2
