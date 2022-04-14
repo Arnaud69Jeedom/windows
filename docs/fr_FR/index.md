@@ -123,6 +123,7 @@ Listes des sondes pour suivre la température de la pièce
 ### Calcul sur température : cette zone est optionnelle
    Le but est de garder la pièce dans une température acceptable. i.e : garder la pièce aux alentours de la température de consigne d'un thermostat
 - Consigne Thermostat : consigne du thermostat
+- Témpérature cible : température souhaitée. Remplacera la valeur de la consigne 
 - Seuil hiver : dépassement acceptable de la température de la pièce par rapport à la consigne
 - Seuil été : A VOIR
 

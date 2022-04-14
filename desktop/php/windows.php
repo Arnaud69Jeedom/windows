@@ -273,6 +273,15 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{ Température cible (°C)}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="target" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label class="col-sm-4 control-label">{{Seuil hiver (°C)}}</label>
                                     0 si non renseigné
                                     <div class="col-sm-2">
@@ -287,7 +296,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
+                                            <input type="text class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>

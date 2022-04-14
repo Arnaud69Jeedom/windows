@@ -256,6 +256,7 @@ class windowsCmd extends cmd
         $isOK &= $this->getThresholdWinter($eqlogic, $configuration);
         $isOK &= $this->getThresholdSummer($eqlogic, $configuration);
         $isOK &= $this->getConsigne($eqlogic, $configuration);
+        $isOK &= $this->getTargetTemperature($eqlogic, $configuration);
         $isOK &= $this->getNotify($eqlogic, $configuration);
         $isOK &= $this->getFrequency($eqlogic, $configuration);
         $isOK &= $this->getCo2($eqlogic, $configuration);
@@ -446,6 +447,35 @@ class windowsCmd extends cmd
             }
         } else {
             log::add('windows', 'debug', '  > Pas de consigne', __FILE__);
+            $isOK = true;
+        }
+        unset($cmd);
+
+        return $isOK;
+    }
+
+    /**
+     * Récupérer la température cible
+     */
+    private function getTargetTemperature($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = false;
+
+        $target = $eqlogic->getConfiguration('target');
+        if ($target != '') {
+            if (!is_numeric($target)) {
+                log::add('windows', 'error', '  > Mauvaise température cible:' . $target, __FILE__);
+                return false;
+            } else {
+                log::add('windows', 'debug', '  > Initialisation de la consigne avec la température cible:' . $target, __FILE__);
+                $configuration->consigne = $target;
+                $isOK = true;
+            }
+        } else {
+            log::add('windows', 'debug', '  > Pas de température cible', __FILE__);
             $isOK = true;
         }
         unset($cmd);
@@ -1302,6 +1332,8 @@ class windowsCmd extends cmd
                 if ($configuration != null) {
                     $this->getWindowsInformation($configuration);
                     log::add('windows', 'debug', ' configuration :' . json_encode((array)$configuration));
+
+
 
                     $result = $this->checkAction($configuration);
                     $this->updateCommands($result);
