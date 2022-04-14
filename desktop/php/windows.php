@@ -296,7 +296,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
