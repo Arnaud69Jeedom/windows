@@ -40,11 +40,11 @@ Les actions seront réalisées selon la saison.
 HIVER :
 - Ouvrir si temp. int < temp. ext.
 - Fermer sur durée et temp. int < consigne
-- Fermer si temp. int. <= temp. Mini. (consigne - seuil) quel que soit la durée
+- Fermer si temp. int. <= temp. Mini. (consigne - seuil) quelque soit la durée
 
 ETE :
 - Ouvrir température ext. < temp. int.
-- Fermer sur durée
+- Fermer sur durée et temp. int. >= temp. maxi (consigne + seuil) quelque soit la durée
 
 INTERMEDIAIRE : 
 - Fermer si temp. int. < temp. Mini. (consigne - seuil hiver) quelque soit la durée
@@ -123,9 +123,10 @@ Listes des sondes pour suivre la température de la pièce
 ### Calcul sur température : cette zone est optionnelle
    Le but est de garder la pièce dans une température acceptable. i.e : garder la pièce aux alentours de la température de consigne d'un thermostat
 - Consigne Thermostat : consigne du thermostat
-- Témpérature cible : température souhaitée. Remplacera la valeur de la consigne 
+- Témpérature cible : température souhaitée. Remplacera la valeur de la consigne.
+  Cela est utile si vous n'avez pas de thermostat par exemple.
 - Seuil hiver : dépassement acceptable de la température de la pièce par rapport à la consigne
-- Seuil été : A VOIR
+- Seuil été : dépassement acceptable de la température de la pièce par rapport à la consigne
 
 ## AQI
 Listes des sondes pour suivre la qualité de l'air de la pièce
