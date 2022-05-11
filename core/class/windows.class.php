@@ -1004,9 +1004,7 @@ class windowsCmd extends cmd
         // Eté et fenetre fermée
         // Température
         // mais il fait plus frais dehors tout de même : il faut ouvrir
-        if (
-            $configuration->Season == Seasons::Summer
-            && !$configuration->isOpened
+        if (!$configuration->isOpened
             && $configuration->temperature_outdoor < $configuration->temperature_indoor
         ) {
             log::add('windows', 'debug', '    test été sur température');
@@ -1020,15 +1018,12 @@ class windowsCmd extends cmd
         // Eté et fenetre ouverte
         // Durée
         // Vérifier s'il faut fermer      
-        if (
-            $configuration->Season == Seasons::Summer
-            && $configuration->isOpened
-        ) {
-            log::add('windows', 'debug', '    test été sur température et durée');
+        if ($configuration->isOpened) {
+            log::add('windows', 'debug', '    test été sur durée');
 
             // Vérification sur durée
             log::add('windows', 'debug', '    calcul sur durée');
-            // Hiver et trop longtemps
+            // Eté et trop longtemps
             if ($configuration->duration != 0) {
                 if ($configuration->durationOpened >= $configuration->duration) {
                     $result->actionToExecute = true;
@@ -1040,21 +1035,37 @@ class windowsCmd extends cmd
                 log::add('windows', 'info', '     > pas de limite sur durée');
             }
 
-            // // Vérification sur consigne
-            // if (isset($configuration->consigne) && $configuration->consigne != '') {
-            //     log::add('windows', 'debug', '    calcul sur consigne: '.$configuration->consigne);
+            // Consigne
+            // il fait bon dedans : pas la peine de fermer sur durée
+            // il fait chaud dehors : il faut fermer
+            if ($configuration->isOpened) {
+                // Vérification sur consigne
+                if (isset($configuration->consigne) && $configuration->consigne != '') {
+                    log::add('windows', 'debug', '    calcul sur consigne: '.$configuration->consigne);
+                    
+                    $temp_maxi = $configuration->consigne + $configuration->threshold_summer;
+                    log::add('windows', 'debug', '    température maxi :'.$temp_maxi.', température:'.$configuration->temperature_indoor);
 
-            //     // Hiver                
-            //     $temp_mini = $configuration->consigne - $configuration->threshold_summer;
-            //     log::add('windows', 'debug', '    température mini :'.$temp_mini.', température:'.$configuration->temperature_indoor);
+                    // Si durée longue mais tout de même frais dedans
+                    if (
+                        $result->actionToExecute
+                        && $configuration->temperature_indoor <= $temp_maxi
+                    ) {
+                        $result->actionToExecute = false;
+                        $result->messageWindows = '';
+                        $result->reason = '';
+                        log::add('windows', 'info', '     > plus la peine de fermer sur durée');
+                    }
 
-            //     if ($configuration->temperature_indoor >= $temp_mini) {
-            //         $result->actionToExecute = true;
-            //         $result->messageWindows = 'il faut fermer';
-            //         $result->reason = __('température', __FILE__);
-            //         log::add('windows', 'info', '    il faudra fermer sur température');
-            //     }
-            // }
+                    // Si température plus chaude que le maxi autorisé
+                    if ($configuration->temperature_indoor >= $temp_maxi) {
+                        $result->actionToExecute = true;
+                        $result->messageWindows = __('il faut fermer', __FILE__);
+                        $result->reason = __('température', __FILE__);
+                        log::add('windows', 'info', '     > il faudra fermer sur température');
+                    }
+                }
+            }
         }
 
         return $result;
