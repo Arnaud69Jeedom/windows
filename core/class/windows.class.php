@@ -1230,7 +1230,7 @@ class windowsCmd extends cmd
         if ($result == null) throw new ErrorException('result null');
 
         if (isset($configuration->co2) && $configuration->co2 != '') {
-            log::add('windows', 'debug', '    test sur co2: ' . $configuration->co2);
+            log::add('windows', 'debug', ' > test sur co2: ' . $configuration->co2);
 
             // Fenêtre fermée et niveau CO2 trop important
             // il faut ouvrir
@@ -1272,7 +1272,7 @@ class windowsCmd extends cmd
         if ($result == null) throw new ErrorException('result null');
 
         if (isset($configuration->cov) && $configuration->cov != '') {
-            log::add('windows', 'debug', '    test sur cov: ' . $configuration->cov);
+            log::add('windows', 'debug', ' > test sur cov: ' . $configuration->cov);
 
             // Fenêtre fermée et niveau COV trop important
             // il faut ouvrir
