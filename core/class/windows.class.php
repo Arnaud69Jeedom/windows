@@ -1103,15 +1103,19 @@ class windowsCmd extends cmd
 
             // Intersaison et fenêtre ouverte
             // Température
-            // il fait trop chaud dedans et encore plus chaud dehors
-            // ou trop froid dedans et aussi dehors
+            // il fait trop chaud dedans,  trop chaud dehors, mais aussi encore plus chaud dehors
+            // ou trop froid dedans, trop froid dehors, mais encore plus froid dehors
             // : il faut fermer
             // sinon ouvrir devrait stabiliser la température
             if (
                 $configuration->isOpened
                 && (
-                    ($configuration->temperature_indoor > $temp_maxi && $configuration->temperature_outdoor > $temp_maxi)
-                    ||  ($configuration->temperature_indoor < $temp_mini && $configuration->temperature_outdoor < $temp_mini)
+                    ($configuration->temperature_indoor > $temp_maxi 
+                        // && $configuration->temperature_outdoor > $temp_maxi
+                        && $configuration->temperature_indoor < $configuration->temperature_outdoor)
+                    ||  ($configuration->temperature_indoor < $temp_mini
+                        // && $configuration->temperature_outdoor < $temp_mini
+                        && $configuration->temperature_outdoor < $configuration->temperature_indoor)
                 )
             ) {
                 $result->actionToExecute = true;
