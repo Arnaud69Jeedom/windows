@@ -3,7 +3,7 @@
   "name": "Gestion Ouvrants",
   "author": "Arnaud_69",
   "description":{
-    "fr_FR": "Plugin template pour la gestion des fenêtres"
+    "fr_FR": "Plugin template pour la gestion des fenêtres : Température, CO2, COV"
   },
   "licence": "AGPL",
   "require": "4.1",
@@ -17,7 +17,6 @@
   
   "changelog_beta": "https://github.com/Arnaud69Jeedom/JeedomWindows/blob/develop/docs/#language#/changelog.md",
   "documentation_beta": "https://github.com/Arnaud69Jeedom/JeedomWindows/blob/develop/docs/#language#/index.md",
-
   
   "link": {
     "forum": "Lien vers le forum",
