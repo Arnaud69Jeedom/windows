@@ -259,10 +259,17 @@ class windowsCmd extends cmd
         $isOK &= $this->getTargetTemperature($eqlogic, $configuration);
         $isOK &= $this->getNotify($eqlogic, $configuration);
         $isOK &= $this->getFrequency($eqlogic, $configuration);
+        // CO2
         $isOK &= $this->getCo2($eqlogic, $configuration);
         if (isset($configuration->co2)) {
             $isOK &= $this->getThresholdMaxiCo2($eqlogic, $configuration);
             $isOK &= $this->getThresholdNormalCo2($eqlogic, $configuration);
+        }
+        // COV
+        $isOK &= $this->getCov($eqlogic, $configuration);
+        if (isset($configuration->cov)) {
+            $isOK &= $this->getThresholdMaxiCov($eqlogic, $configuration);
+            $isOK &= $this->getThresholdNormalCov($eqlogic, $configuration);
         }
 
         if ($isOK == false) {
@@ -672,7 +679,7 @@ class windowsCmd extends cmd
     }
 
     /**
-     * Récupérer le seuil maxi co2
+     * Récupérer le seuil normal co2
      */
     private function getThresholdNormalCo2($eqlogic, stdClass $configuration): bool
     {
@@ -690,6 +697,91 @@ class windowsCmd extends cmd
             log::add('windows', 'error', '  > Mauvaise threshold_normal_co2:' . $threshold_normal_co2, __FILE__);
         } else {
             $configuration->threshold_normal_co2 = $threshold_normal_co2;
+            $isOK = true;
+        }
+
+        return $isOK;
+    }
+
+    /**
+     * Récupérer la sonde de COV
+     */
+    private static function getCov($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = true;
+
+        $cov = $eqlogic->getConfiguration('cov');
+        $cov = str_replace('#', '', $cov);
+        if ($cov != '') {
+            $cmd = cmd::byId($cov);
+            if ($cmd == null) {
+                log::add('windows', 'error', '  > Mauvaise cov :' . $cov, __FILE__);
+                return false;
+            }
+            $cov = $cmd->execCmd();
+            if (is_numeric($cov)) {
+                $configuration->cov = $cov;
+                $isOK = true;
+            } else {
+                log::add('windows', 'error', '  > Mauvaise cov :' . $cov, __FILE__);
+                return false;
+            }
+        } else {
+            log::add('windows', 'debug', '  > Pas de cov', __FILE__);
+            $isOK = true;
+        }
+        unset($cmd);
+
+        return $isOK;
+    }
+
+    /**
+     * Récupérer le seuil maxi cov
+     */
+    private function getThresholdMaxiCov($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = false;
+
+        $threshold_maxi_cov = $eqlogic->getConfiguration('threshold_maxi_cov');
+        if ($threshold_maxi_cov == '') {
+            log::add('windows', 'debug', '  > Pas de threshold_maxi_cov : valeur par défaut = 450', __FILE__);
+            $configuration->threshold_maxi_cov = 450;
+            $isOK = true;
+        } else if (!is_numeric($threshold_maxi_cov)) {
+            log::add('windows', 'error', '  > Mauvaise threshold_maxi_cov:' . $threshold_maxi_cov, __FILE__);
+        } else {
+            $configuration->threshold_maxi_cov = $threshold_maxi_cov;
+            $isOK = true;
+        }
+
+        return $isOK;
+    }
+
+    /**
+     * Récupérer le seuil normal cov
+     */
+    private function getThresholdNormalCov($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = false;
+
+        $threshold_normal_cov = $eqlogic->getConfiguration('threshold_normal_cov');
+        if ($threshold_normal_cov == '') {
+            log::add('windows', 'debug', '  > Pas de threshold_normal_cov : valeur par défaut = 300', __FILE__);
+            $configuration->threshold_normal_cov = 300;
+            $isOK = true;
+        } else if (!is_numeric($threshold_normal_cov)) {
+            log::add('windows', 'error', '  > Mauvaise threshold_normal_cov:' . $threshold_normal_cov, __FILE__);
+        } else {
+            $configuration->threshold_normal_cov = $threshold_normal_cov;
             $isOK = true;
         }
 
@@ -733,7 +825,7 @@ class windowsCmd extends cmd
     }
 
     /**
-     * Récupérer le seuil maxi co2
+     * Récupérer la fréquence
      */
     private function getFrequency($eqlogic, stdClass $configuration): bool
     {
@@ -1129,6 +1221,90 @@ class windowsCmd extends cmd
     }
 
     /**
+     * Vérifie l'action à réaliser pour le CO2
+     * et le message à afficher associé
+     */
+    private function checkActionCo2(stdClass $configuration, stdClass $result): stdClass
+    {
+        if ($configuration == null) throw new ErrorException('configuration null');
+        if ($result == null) throw new ErrorException('result null');
+
+        if (isset($configuration->co2) && $configuration->co2 != '') {
+            log::add('windows', 'debug', '    test sur co2: ' . $configuration->co2);
+
+            // Fenêtre fermée et niveau CO2 trop important
+            // il faut ouvrir
+            if (
+                !$configuration->isOpened
+                && $configuration->co2 >= $configuration->threshold_maxi_co2
+            ) {
+                $result->actionToExecute = true;
+                $result->messageWindows = __('il faut ouvrir', __FILE__);
+                $result->reason = __('co2', __FILE__);
+                log::add('windows', 'info', '     > il faudra ouvrir sur co2');
+            }
+
+            // Fenêtre ouverte et action de fermeture 
+            // Mais niveau de CO2 trop éleve
+            // Il faut laisser ouvert
+            if (
+                $configuration->isOpened
+                && $result->actionToExecute == true
+                && $configuration->co2 >= $configuration->threshold_normal_co2
+            ) {
+                $result->actionToExecute = false;
+                $result->messageWindows = '';
+                $result->reason = '';
+                log::add('windows', 'info', '    il faudra continuer à laisser ouvert cause co2');
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Vérifie l'action à réaliser pour le COV
+     * et le message à afficher associé
+     */
+    private function checkActionCov(stdClass $configuration, stdClass $result): stdClass
+    {
+        if ($configuration == null) throw new ErrorException('configuration null');
+        if ($result == null) throw new ErrorException('result null');
+
+        if (isset($configuration->cov) && $configuration->cov != '') {
+            log::add('windows', 'debug', '    test sur cov: ' . $configuration->cov);
+
+            // Fenêtre fermée et niveau COV trop important
+            // il faut ouvrir
+            if (
+                !$configuration->isOpened
+                && $configuration->cov >= $configuration->threshold_maxi_cov
+            ) {
+                $result->actionToExecute = true;
+                $result->messageWindows = __('il faut ouvrir', __FILE__);
+                $result->reason = __('cov', __FILE__);
+                log::add('windows', 'info', '     > il faudra ouvrir sur cov');
+            }
+
+            // Fenêtre ouverte et action de fermeture 
+            // Mais niveau de COV trop éleve
+            // Il faut laisser ouvert
+            if (
+                $configuration->isOpened
+                && $result->actionToExecute == true
+                && $configuration->cov >= $configuration->threshold_normal_cov
+            ) {
+                $result->actionToExecute = false;
+                $result->messageWindows = '';
+                $result->reason = '';
+                log::add('windows', 'info', '    il faudra continuer à laisser ouvert cause cov');
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Vérifie l'action à réaliser 
      * et le message à afficher associé
      */
@@ -1169,33 +1345,12 @@ class windowsCmd extends cmd
 
         // CO2
         if (isset($configuration->co2) && $configuration->co2 != '') {
-            log::add('windows', 'debug', '    test sur co2: ' . $configuration->co2);
+            $result = $this->checkActionCo2($configuration, $result);
+        }
 
-            // Fenêtre fermée et niveau CO2 trop important
-            // il faut ouvrir
-            if (
-                !$configuration->isOpened
-                && $configuration->co2 >= $configuration->threshold_maxi_co2
-            ) {
-                $result->actionToExecute = true;
-                $result->messageWindows = __('il faut ouvrir', __FILE__);
-                $result->reason = __('co2', __FILE__);
-                log::add('windows', 'info', '    il faudra ouvrir sur co2');
-            }
-
-            // Fenêtre ouverte et action de fermeture 
-            // Mais niveau de CO2 trop éleve
-            // Il faut laisser ouvert
-            if (
-                $configuration->isOpened
-                && $result->actionToExecute == true
-                && $configuration->co2 >= $configuration->threshold_normal_co2
-            ) {
-                $result->actionToExecute = false;
-                $result->messageWindows = '';
-                $result->reason = '';
-                log::add('windows', 'info', '    il faudra continuer à laisser ouvert cause co2');
-            }
+        // COV
+        if (isset($configuration->cov) && $configuration->cov != '') {
+            $result = $this->checkActionCov($configuration, $result);
         }
 
         // Log de résumé        

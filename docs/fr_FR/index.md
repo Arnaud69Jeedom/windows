@@ -31,6 +31,17 @@ Mesurer la concentration de CO2 est donc un moyen pour mieux aérer les locaux e
 
 Source : projetco2
 
+## COV
+Le terme COV correspond aux composés organiques volatils, des gaz à effet de serre provenant généralement de l'ameublement (peinture, colle, vernis), des produits d'entretien, ainsi que des transports et de l'industrie. Les plus connus sont les formaldéhydes, le benzène, et le toluène.
+
+Mesurés en ppb (partie par milliard), les COV sont considérés comme dangereux et peuvent altérer la santé à court terme (migraines) et à long terme : le formaldéhyde a été classé comme cancérogène par le Centre International de Recherche sur le Cancer.
+
+Voici les seuils de pollution COV correspondant aux couleurs des jauges :
+**Blanc / Très bon** : 0-150 ppb
+**Jaune / Bon** : 150-300 ppb
+**Orange / Moyen** : 300-450 ppb
+**Rouge / Mauvais** : 450-600 ppb.
+
 # Règles retenues 
 
 Si la valeur de présence est 0, alors il n'y aura pas de vérification ni d'action réalisée.
@@ -49,9 +60,13 @@ ETE :
 INTERMEDIAIRE : 
 - Fermer si temp. int. < temp. Mini. (consigne - seuil hiver) quelque soit la durée
 
-TOUTES SAISONS :
+Gestion CO2 :
 - Ouvrir si taux co2 >= seuil maxi co2
 - Laisser ouvert si taux co2 >= seuil normal co2
+
+Gestion COV :
+- Ouvrir si taux cov >= seuil maxi cov
+- Laisser ouvert si taux cov >= seuil normal cov
 
 # Configuration du plugin
 

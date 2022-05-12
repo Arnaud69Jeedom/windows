@@ -318,7 +318,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <fieldset>
                                 <legend><i class="icon kiko-cloud" aria-hidden="true"></i> {{Sonde de CO2}}</legend>
                                 <div>
-                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air
+                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air. Dioxyde de carbone (CO2) 
                                 </div>
 
                                 <div class="form-group">
@@ -355,6 +355,49 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                 </div>
                             </fieldset>
+
+
+                            <fieldset>
+                                <legend><i class="icon kiko-cloud" aria-hidden="true"></i> {{Sonde de COV}}</legend>
+                                <div>
+                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air. Composés Organiques Volatils (COV) 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{COV}}</label>
+                                    <div class="col-xs-11 col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cov" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fas fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Seuil maxi (ppm)}}</label>
+                                    450 ppm par défaut
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="450" data-l1key="configuration" data-l2key="threshold_maxi_cov" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Seuil normal (ppm)}}</label>
+                                    300 ppm par défaut
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="300" data-l1key="configuration" data-l2key="threshold_normal_cov" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
                         </form>
                     </div>
                 </div>
