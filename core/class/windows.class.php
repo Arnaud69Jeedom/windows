@@ -1150,7 +1150,9 @@ class windowsCmd extends cmd
                     }
 
                     // Si température plus chaude que le maxi autorisé
-                    if ($configuration->temperature_indoor >= $temp_maxi) {
+                    // et plus chaud dehors que dedans
+                    if ($configuration->temperature_indoor >= $temp_maxi
+                      && $configuration->temperature_indoor <= $configuration->temperature_outdoor) {
                         $result->actionToExecute = true;
                         $result->messageWindows = __('il faut fermer', __FILE__);
                         $result->reason = __('température', __FILE__);
