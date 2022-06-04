@@ -1030,8 +1030,6 @@ class windowsCmd extends cmd
         if ($configuration->isOpened) {
             log::add('windows', 'debug', '    test hiver sur durée');
 
-            // Vérification sur durée
-            log::add('windows', 'debug', '    calcul sur durée');
             // Hiver et trop longtemps
             if ($configuration->duration != 0) {
                 // Durée non illimitée
@@ -1070,7 +1068,9 @@ class windowsCmd extends cmd
                 }
 
                 // Si température plus froide que le mini autorisé
-                if ($configuration->temperature_indoor <= $temp_mini) {
+                // et on ne vient pas d'ouvrir
+                if ($configuration->temperature_indoor <= $temp_mini
+                   && $configuration->durationOpened > 0) {
                     $result->actionToExecute = true;
                     $result->messageWindows = __('il faut fermer', __FILE__);
                     $result->reason = __('température', __FILE__);
@@ -1151,7 +1151,9 @@ class windowsCmd extends cmd
 
                     // Si température plus chaude que le maxi autorisé
                     // et plus chaud dehors que dedans
-                    if ($configuration->temperature_indoor >= $temp_maxi
+                    // et on ne vient pas d'ouvrir
+                    if ($configuration->durationOpened > 0
+                      && $configuration->temperature_indoor >= $temp_maxi
                       && $configuration->temperature_indoor <= $configuration->temperature_outdoor) {
                         $result->actionToExecute = true;
                         $result->messageWindows = __('il faut fermer', __FILE__);
@@ -1197,12 +1199,14 @@ class windowsCmd extends cmd
 
             // Intersaison et fenêtre ouverte
             // Température
-            // il fait trop chaud dedans,  trop chaud dehors, mais aussi encore plus chaud dehors
+            // fenêtre pas ouverte à l'instant
+            // et il fait trop chaud dedans,  trop chaud dehors, mais aussi encore plus chaud dehors
             // ou trop froid dedans, trop froid dehors, mais encore plus froid dehors
             // : il faut fermer
             // sinon ouvrir devrait stabiliser la température
             if (
                 $configuration->isOpened
+                && $configuration->durationOpened > 0
                 && (
                     ($configuration->temperature_indoor > $temp_maxi 
                         // && $configuration->temperature_outdoor > $temp_maxi
@@ -1505,14 +1509,14 @@ class windowsCmd extends cmd
                     $this->getWindowsInformation($configuration);
                     log::add('windows', 'debug', ' configuration :' . json_encode((array)$configuration));
 
-
-
                     $result = $this->checkAction($configuration);
                     $this->updateCommands($result);
 
                     // Limiter les actions toutes les 5 minutes
                     $minutes = date('i');
-                    if ($configuration->isOpened && ($result->durationOpened % $configuration->frequency) == 0) {
+                    if ($configuration->isOpened
+                        && ($configuration->durationOpened !== 0)
+                        && ($result->durationOpened % $configuration->frequency) == 0) {
                         $this->action($configuration, $result);
                     } elseif (!$configuration->isOpened && ($minutes % $configuration->frequency == 0)) {
                         // Pas ouvert, time % 300 ?
