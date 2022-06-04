@@ -1030,10 +1030,11 @@ class windowsCmd extends cmd
         if ($configuration->isOpened) {
             log::add('windows', 'debug', '    test hiver sur durée');
 
-            // Hiver et trop longtemps
+            // Vérification sur durée
             if ($configuration->duration != 0) {
                 // Durée non illimitée
-                if ($configuration->durationOpened >=  $configuration->duration) {
+                // Hiver et trop longtemps
+                if ($configuration->durationOpened >= $configuration->duration) {
                     $result->actionToExecute = true;
                     $result->messageWindows =  __('il faut fermer', __FILE__);
                     $result->reason = __('durée', __FILE__);
@@ -1115,8 +1116,9 @@ class windowsCmd extends cmd
 
             // Vérification sur durée
             log::add('windows', 'debug', '    calcul sur durée');
-            // Eté et trop longtemps
             if ($configuration->duration != 0) {
+                // Durée non illimitée
+                // Eté et trop longtemps
                 if ($configuration->durationOpened >= $configuration->duration) {
                     $result->actionToExecute = true;
                     $result->messageWindows = __('il faut fermer', __FILE__);
@@ -1126,40 +1128,42 @@ class windowsCmd extends cmd
             } else {
                 log::add('windows', 'info', '     > pas de limite sur durée');
             }
+        }
 
-            // Consigne
-            // il fait bon dedans : pas la peine de fermer sur durée
-            // il fait chaud dehors : il faut fermer
-            if ($configuration->isOpened) {
-                // Vérification sur consigne
-                if (isset($configuration->consigne) && $configuration->consigne != '') {
-                    log::add('windows', 'debug', '    calcul sur consigne: '.$configuration->consigne);
-                    
-                    $temp_maxi = $configuration->consigne + $configuration->threshold_summer;
-                    log::add('windows', 'debug', '    température maxi :'.$temp_maxi.', température:'.$configuration->temperature_indoor);
+        // Ete et fenêtre ouverte
+        // Consigne
+        // il fait bon dedans : pas la peine de fermer sur durée
+        // il fait chaud dehors : il faut fermer
+        if ($configuration->isOpened) {
+            // Vérification sur consigne
+            if (isset($configuration->consigne) && $configuration->consigne != '') {
+                log::add('windows', 'debug', '    calcul sur consigne: '.$configuration->consigne);
+                
+                // Calcul temp_maxi autorisé dedans
+                $temp_maxi = $configuration->consigne + $configuration->threshold_summer;
+                log::add('windows', 'debug', '    température maxi :'.$temp_maxi.', température:'.$configuration->temperature_indoor);
 
-                    // Si durée longue mais tout de même frais dedans
-                    if (
-                        $result->actionToExecute
-                        && $configuration->temperature_indoor <= $temp_maxi
-                    ) {
-                        $result->actionToExecute = false;
-                        $result->messageWindows = '';
-                        $result->reason = '';
-                        log::add('windows', 'info', '     > plus la peine de fermer sur durée');
-                    }
+                // Si durée longue mais tout de même frais dehors
+                if (
+                    $result->actionToExecute
+                    && $configuration->temperature_outdoor <= $temp_maxi
+                ) {
+                    $result->actionToExecute = false;
+                    $result->messageWindows = '';
+                    $result->reason = '';
+                    log::add('windows', 'info', '     > plus la peine de fermer sur durée');
+                }
 
-                    // Si température plus chaude que le maxi autorisé
-                    // et plus chaud dehors que dedans
-                    // et on ne vient pas d'ouvrir
-                    if ($configuration->durationOpened > 0
-                      && $configuration->temperature_indoor >= $temp_maxi
-                      && $configuration->temperature_indoor <= $configuration->temperature_outdoor) {
-                        $result->actionToExecute = true;
-                        $result->messageWindows = __('il faut fermer', __FILE__);
-                        $result->reason = __('température', __FILE__);
-                        log::add('windows', 'info', '     > il faudra fermer sur température');
-                    }
+                // Si température plus chaude que le maxi autorisé
+                // et plus chaud dehors que dedans
+                // et on ne vient pas d'ouvrir
+                if ($configuration->durationOpened > 0
+                    && $configuration->temperature_indoor >= $temp_maxi
+                    && $configuration->temperature_indoor <= $configuration->temperature_outdoor) {
+                    $result->actionToExecute = true;
+                    $result->messageWindows = __('il faut fermer', __FILE__);
+                    $result->reason = __('température', __FILE__);
+                    log::add('windows', 'info', '     > il faudra fermer sur température');
                 }
             }
         }
