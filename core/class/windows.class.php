@@ -927,7 +927,7 @@ class windowsCmd extends cmd
 
         $eqlogic = $this->getEqLogic(); //récupère l'eqlogic de la commande $this
 
-        log::add('windows', 'info', ' Liste des ouvertures :');
+        log::add('windows', 'debug', ' Liste des ouvertures :');
         $windows = $eqlogic->getConfiguration('window');
 
         foreach ($windows as $window) {
@@ -955,20 +955,20 @@ class windowsCmd extends cmd
             return;
         }
         $windowState = $cmd->execCmd();
-        log::add('windows', 'info', '    ' . $cmd->getEqLogic()->getHumanName() . '[' . $cmd->getName() . '] : ' . $windowState);
+        log::add('windows', 'debug', '    ' . $cmd->getEqLogic()->getHumanName() . '[' . $cmd->getName() . '] : ' . $windowState);
 
         // 0 = fermé
         // 1 = ouvert
         // inverser
         if (isset($window['invert']) && $window['invert'] == 1) {
             $windowState = ($windowState == 0) ? 1 : 0;
-            log::add('windows', 'debug', '     inversion de l\'état de l\'ouverture');
+            //log::add('windows', 'debug', '     inversion de l\'état de l\'ouverture');
         }
         $isWindowOpened = ($windowState == 1);
 
         if ($isWindowOpened) {
             // si ouvert
-            log::add('windows', 'info', '       fenêtre ouverte');
+            log::add('windows', 'debug', '       fenêtre ouverte');
 
             // Vérification de la durée
             $lastDateValue = $cmd->getValueDate();  // Date de l'ouverture de la fenêtre
@@ -978,7 +978,7 @@ class windowsCmd extends cmd
             $configuration->isOpened = true;
             $configuration->durationOpened = max($configuration->durationOpened, $interval);
         } else {
-            log::add('windows', 'info', '      fenêtre fermée');
+            log::add('windows', 'debug', '      fenêtre fermée');
         }
 
         try {
