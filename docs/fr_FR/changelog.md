@@ -7,7 +7,7 @@
 # 04/06/2022
 
 DEBUG : Pas de message pour fermer si on vient juste d'ouvrir
-DEBUG : Pas de message pour fermer si on ouvre depuis longtemps mais qu'il fait plus frais dehors que dedans et inférieure à la température maximum
+DEBUG : Pas de message pour fermer si on ouvre depuis longtemps mais qu'il fait plus frais dehors que dedans
 
 # 12/05/2022
 

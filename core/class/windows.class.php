@@ -339,7 +339,7 @@ class windowsCmd extends cmd
                 $isOK = true;
             }
         } else {
-            log::add('windows', 'debug', '  > Pas de duration_winter : valeur par défaut = 0', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de duration_winter : valeur par défaut = 0', __FILE__);
             // Valeur par défaut
             $configuration->duration_winter = 0;
             $isOK = true;
@@ -367,7 +367,7 @@ class windowsCmd extends cmd
                 $isOK = true;
             }
         } else {
-            log::add('windows', 'debug', '  > Pas de duration_summer : valeur par défaut = 0', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de duration_summer : valeur par défaut = 0', __FILE__);
             // Valeur par défaut
             $configuration->duration_summer = 0;
             $isOK = true;
@@ -388,7 +388,7 @@ class windowsCmd extends cmd
 
         $threshold_winter = $eqlogic->getConfiguration('threshold_winter');
         if ($threshold_winter == '') {
-            log::add('windows', 'debug', '  > Pas de threshold_winter : valeur par défaut = 0', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de threshold_winter : valeur par défaut = 0', __FILE__);
             $configuration->threshold_winter = 0;
             $isOK = true;
         } else if (!is_numeric($threshold_winter)) {
@@ -413,7 +413,7 @@ class windowsCmd extends cmd
 
         $threshold_summer = $eqlogic->getConfiguration('threshold_summer');
         if ($threshold_summer == '') {
-            log::add('windows', 'debug', '  > Pas de threshold_summer : valeur par défaut = 0', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de threshold_summer : valeur par défaut = 0', __FILE__);
             $configuration->threshold_summer = 0;
             $isOK = true;
         } else if (!is_numeric($threshold_summer)) {
@@ -453,7 +453,7 @@ class windowsCmd extends cmd
                 $isOK = true;
             }
         } else {
-            log::add('windows', 'debug', '  > Pas de consigne', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de consigne', __FILE__);
             $isOK = true;
         }
         unset($cmd);
@@ -477,12 +477,12 @@ class windowsCmd extends cmd
                 log::add('windows', 'error', '  > Mauvaise température cible:' . $target, __FILE__);
                 return false;
             } else {
-                log::add('windows', 'debug', '  > Initialisation de la consigne avec la température cible:' . $target, __FILE__);
+                //log::add('windows', 'debug', '  > Initialisation de la consigne avec la température cible:' . $target, __FILE__);
                 $configuration->consigne = $target;
                 $isOK = true;
             }
         } else {
-            log::add('windows', 'debug', '  > Pas de température cible', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de température cible', __FILE__);
             $isOK = true;
         }
         unset($cmd);
@@ -563,7 +563,7 @@ class windowsCmd extends cmd
                 $isOK = true;
             }
         } else {
-            log::add('windows', 'debug', '  > Pas de temperature_maxi', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de temperature_maxi', __FILE__);
         }
         unset($cmd);
 
@@ -581,7 +581,7 @@ class windowsCmd extends cmd
 
         $temperature_winter = config::byKey('temperature_winter', 'windows');
         if ($temperature_winter == '') {
-            log::add('windows', 'debug', '  > Pas de temperature_winter : valeur par défaut = 13', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de temperature_winter : valeur par défaut = 13', __FILE__);
             $configuration->temperature_winter = 13;
             $isOK = true;
         } else if (!is_numeric($temperature_winter)) {
@@ -605,7 +605,7 @@ class windowsCmd extends cmd
 
         $temperature_summer = config::byKey('temperature_summer', 'windows');
         if ($temperature_summer == '') {
-            log::add('windows', 'debug', '  > Pas de temperature_summer : valeur par défaut = 25', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de temperature_summer : valeur par défaut = 25', __FILE__);
             $configuration->temperature_summer = 25;
             $isOK = true;
         } else if (!is_numeric($temperature_summer)) {
@@ -645,7 +645,7 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            log::add('windows', 'debug', '  > Pas de co2', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de co2', __FILE__);
             $isOK = true;
         }
         unset($cmd);
@@ -665,7 +665,7 @@ class windowsCmd extends cmd
 
         $threshold_maxi_co2 = $eqlogic->getConfiguration('threshold_maxi_co2');
         if ($threshold_maxi_co2 == '') {
-            log::add('windows', 'debug', '  > Pas de threshold_maxi_co2 : valeur par défaut = 1000', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de threshold_maxi_co2 : valeur par défaut = 1000', __FILE__);
             $configuration->threshold_maxi_co2 = 1000;
             $isOK = true;
         } else if (!is_numeric($threshold_maxi_co2)) {
@@ -690,7 +690,7 @@ class windowsCmd extends cmd
 
         $threshold_normal_co2 = $eqlogic->getConfiguration('threshold_normal_co2');
         if ($threshold_normal_co2 == '') {
-            log::add('windows', 'debug', '  > Pas de threshold_normal_co2 : valeur par défaut = 800', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de threshold_normal_co2 : valeur par défaut = 800', __FILE__);
             $configuration->threshold_normal_co2 = 800;
             $isOK = true;
         } else if (!is_numeric($threshold_normal_co2)) {
@@ -730,7 +730,7 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            log::add('windows', 'debug', '  > Pas de cov', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de cov', __FILE__);
             $isOK = true;
         }
         unset($cmd);
@@ -750,7 +750,7 @@ class windowsCmd extends cmd
 
         $threshold_maxi_cov = $eqlogic->getConfiguration('threshold_maxi_cov');
         if ($threshold_maxi_cov == '') {
-            log::add('windows', 'debug', '  > Pas de threshold_maxi_cov : valeur par défaut = 450', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de threshold_maxi_cov : valeur par défaut = 450', __FILE__);
             $configuration->threshold_maxi_cov = 450;
             $isOK = true;
         } else if (!is_numeric($threshold_maxi_cov)) {
@@ -775,7 +775,7 @@ class windowsCmd extends cmd
 
         $threshold_normal_cov = $eqlogic->getConfiguration('threshold_normal_cov');
         if ($threshold_normal_cov == '') {
-            log::add('windows', 'debug', '  > Pas de threshold_normal_cov : valeur par défaut = 300', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de threshold_normal_cov : valeur par défaut = 300', __FILE__);
             $configuration->threshold_normal_cov = 300;
             $isOK = true;
         } else if (!is_numeric($threshold_normal_cov)) {
@@ -814,7 +814,7 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            log::add('windows', 'debug', '  > Pas de presence : valeur par défaut = 1', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de presence : valeur par défaut = 1', __FILE__);
             // Valeur par défaut
             $configuration->presence = 1;
             $isOK = true;
@@ -836,7 +836,7 @@ class windowsCmd extends cmd
 
         $frequency = $eqlogic->getConfiguration('frequency');
         if ($frequency == '') {
-            log::add('windows', 'debug', '  > Pas de frequency : valeur par défaut = 5', __FILE__);
+            //log::add('windows', 'debug', '  > Pas de frequency : valeur par défaut = 5', __FILE__);
             $configuration->frequency = 5;
             $isOK = true;
         } else if (!is_numeric($frequency)) {
@@ -1146,7 +1146,7 @@ class windowsCmd extends cmd
                 // Si durée longue mais tout de même frais dehors
                 if (
                     $result->actionToExecute
-                    && $configuration->temperature_outdoor <= $temp_maxi
+                    && $configuration->temperature_outdoor <= $configuration->temperature_indoor
                 ) {
                     $result->actionToExecute = false;
                     $result->messageWindows = '';
