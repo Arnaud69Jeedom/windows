@@ -4,6 +4,10 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 06/06/2022
+
+Ajout d'une condition : Eviter par exemple les actions la nuit
+
 # 04/06/2022
 
 DEBUG : Pas de message pour fermer si on vient juste d'ouvrir

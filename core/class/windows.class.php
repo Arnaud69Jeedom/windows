@@ -259,6 +259,7 @@ class windowsCmd extends cmd
         $isOK &= $this->getTargetTemperature($eqlogic, $configuration);
         $isOK &= $this->getNotify($eqlogic, $configuration);
         $isOK &= $this->getFrequency($eqlogic, $configuration);
+        $isOK &= $this->getCondition($eqlogic, $configuration);
         // CO2
         $isOK &= $this->getCo2($eqlogic, $configuration);
         if (isset($configuration->co2)) {
@@ -847,6 +848,19 @@ class windowsCmd extends cmd
         }
 
         return $isOK;
+    }
+
+    /**
+     * Récupérer la condition de traitement
+     */
+    private function getCondition($eqlogic, stdClass $configuration): bool
+    {
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $configuration->condition = $eqlogic->getConfiguration('condition');
+        
+        return true;
     }
 
     /*** Calcul sur Configuration ***/
@@ -1516,19 +1530,38 @@ class windowsCmd extends cmd
                     $result = $this->checkAction($configuration);
                     $this->updateCommands($result);
 
-                    // Limiter les actions toutes les 5 minutes
-                    $minutes = date('i');
-                    if ($configuration->isOpened
-                        && ($configuration->durationOpened !== 0)
-                        && ($result->durationOpened % $configuration->frequency) == 0) {
-                        $this->action($configuration, $result);
-                    } elseif (!$configuration->isOpened && ($minutes % $configuration->frequency == 0)) {
-                        // Pas ouvert, time % 300 ?
-                        // A TESTER
-                        log::add('windows', 'info', ' Action sur fenêtre fermée', __FILE__);
-                        $this->action($configuration, $result);
-                    } else {
-                        log::add('windows', 'info', ' pas action : ' . ($result->durationOpened % $configuration->frequency), __FILE__);
+                    // Evaluation de la condition
+                    log::add('windows', 'debug', '  frequency : '.$configuration->frequency);
+
+                    // Gestion de la condition
+                    // Si nok, on n'execute rien
+                    $conditionResult = true;
+                    $condition = $configuration->condition;
+                    log::add('windows', 'debug', '  condition : '.$condition);
+                    if ($condition != '')  {
+                        // Evaluation
+                        $conditionResult = jeedom::evaluateExpression($condition);
+                        log::add('windows', 'debug', '  condition result : '.($conditionResult ? "true" : "false"));
+                    }
+
+                    if ($conditionResult) {
+                        // Limiter les actions toutes les 5 minutes
+                        $minutes = date('i');
+                        if ($configuration->isOpened
+                            && ($configuration->durationOpened !== 0)
+                            && ($result->durationOpened % $configuration->frequency) == 0) {
+                            $this->action($configuration, $result);
+                        } elseif (!$configuration->isOpened && ($minutes % $configuration->frequency == 0)) {
+                            // Pas ouvert, time % 300 ?
+                            // A TESTER
+                            log::add('windows', 'info', ' Action sur fenêtre fermée', __FILE__);
+                            $this->action($configuration, $result);
+                        } else {
+                            log::add('windows', 'info', ' pas action : ' . ($result->durationOpened % $configuration->frequency), __FILE__);
+                        }
+                    }
+                    else {
+                        log::add('windows', 'info', '  pas action : condition');
                     }
                 } else {
                     log::add('windows', 'error', ' >>> Vérifier le paramétrage');

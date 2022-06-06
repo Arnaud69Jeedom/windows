@@ -432,13 +432,27 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <div class="col-lg-7">
                         <form class="form-horizontal">
                             <fieldset>
-                                <legend><i class="icon kiko-clock" aria-hidden="true"></i> {{Fréquence}}</legend>
+                                <legend><i class="icon kiko-clock" aria-hidden="true"></i> {{Paramétrage des actions}}</legend>
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">{{Fréquence des actions (min.)}}</label>
                                     5 minutes par défaut
                                     <div class="col-sm-2">
                                         <div class="input-group">
                                             <input type="text" class="eqLogicAttr form-control tooltips" placeholder="5" data-l1key="configuration" data-l2key="frequency" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Condition}}</label>
+                                    <div class="col-xs-11  col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="condition" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fas fa-list-alt"></i>
+                                                </a>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
