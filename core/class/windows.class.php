@@ -240,15 +240,17 @@ class windowsCmd extends cmd
     {
         $configuration = new stdClass();
 
+        // Paramètre équipement
+        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+
         // Paramètre global
         $isOK = windowsCmd::getTemperatureOutdoor($configuration);
-        $isOK &= windowsCmd::getTemperatureMaxi($configuration);
+        $isOK &= windowsCmd::getTemperatureMaxi($eqlogic, $configuration);
         $isOK &= windowsCmd::getTemperatureWinter($configuration);
         $isOK &= windowsCmd::getTemperatureSummer($configuration);
         $isOK &= windowsCmd::getPresence($configuration);
 
-        // Paramètre équipement
-        $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+        
         // Lecture et Analyse de la configuration        
         $isOK &= $this->getTemperatureIndoor($eqlogic, $configuration);
         $isOK &= $this->getDurationWinter($eqlogic, $configuration);
@@ -541,7 +543,7 @@ class windowsCmd extends cmd
     /**
      * Récupérer la température maximum
      */
-    private static function getTemperatureMaxi(stdClass $configuration): bool
+    private static function getTemperatureMaxi($eqlogic, stdClass $configuration): bool
     {
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -555,6 +557,7 @@ class windowsCmd extends cmd
                 log::add('windows', 'error', '  > Mauvaise temperature_maxi :' . $temperature_maxi, __FILE__);
                 return false;
             }
+            
             $temperature_maxi = $cmd->execCmd();
             if (!is_numeric($temperature_maxi)) {
                 log::add('windows', 'error', '  > Mauvaise temperature_maxi:' . $temperature_maxi, __FILE__);
@@ -562,6 +565,13 @@ class windowsCmd extends cmd
             } else {
                 $configuration->temperature_maxi = $temperature_maxi;
                 $isOK = true;
+
+                // Max Temp du jour
+                $cmdTempOutdoorId = config::byKey('temperature_outdoor', 'windows');
+                $maxTempDaily = scenarioExpression::maxBetween($cmdTempOutdoorId, 'today 00:00', 'today 23:59');
+                if ($maxTempDaily != '') {
+                    $configuration->temperature_maxi = max($configuration->temperature_maxi, $maxTempDaily);
+                }
             }
         } else {
             //log::add('windows', 'debug', '  > Pas de temperature_maxi', __FILE__);

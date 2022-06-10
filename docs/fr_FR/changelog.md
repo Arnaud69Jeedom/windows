@@ -4,6 +4,10 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 10/06/2022
+
+DEBUG : Recherche de la température maximum : max de la Température maxi et de la Température extérieure de la journée si elle est historisée. Permet de savoir que la journée a été chaude alors qu'en soirée, la température maxi donne le maxi de la nuit à venir
+
 # 06/06/2022
 
 Ajout d'une condition : Eviter par exemple les actions la nuit
