@@ -30,10 +30,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
         <legend><i class="fa fa-table"></i> {{Mes Equipements}}</legend>
         <!-- Champ de recherche -->
         <div class="input-group" style="margin-bottom:5px;">
-            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>
+            <input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
             <div class="input-group-btn">
-            <a id="bt_resetObjectSearch" class="btn" style="width:30px"><i class="fas fa-times"></i>
-            </a><a class="btn roundedRight hidden" id="bt_pluginDisplayAsTable" data-coreSupport="1" data-state="0"><i class="fas fa-grip-lines"></i></a>
+                <a id="bt_resetObjectSearch" class="btn" style="width:30px"><i class="fas fa-times"></i>
+                </a><a class="btn roundedRight hidden" id="bt_pluginDisplayAsTable" data-coreSupport="1" data-state="0"><i class="fas fa-grip-lines"></i></a>
             </div>
         </div>
         <!-- Liste des équipements du plugin -->
@@ -273,11 +273,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{ Température cible (°C)}}</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" data-l1key="configuration" data-l2key="target" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label class="col-sm-4 control-label">{{Seuil hiver (°C)}}</label>
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"  placeholder="0" data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="threshold_winter" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -287,7 +296,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     0 si non renseigné
                                     <div class="col-sm-2">
                                         <div class="input-group">
-                                            <input type="text" class="eqLogicAttr form-control tooltips"  placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="0" data-l1key="configuration" data-l2key="threshold_summer" data-concat="1" />
                                         </div>
                                     </div>
                                 </div>
@@ -305,11 +314,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <div class="row">
                     <div class="col-lg-7">
                         <form class="form-horizontal">
-                      
+
                             <fieldset>
                                 <legend><i class="icon kiko-cloud" aria-hidden="true"></i> {{Sonde de CO2}}</legend>
                                 <div>
-                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air  
+                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air. Dioxyde de carbone (CO2) 
                                 </div>
 
                                 <div class="form-group">
@@ -346,6 +355,49 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     </div>
                                 </div>
                             </fieldset>
+
+
+                            <fieldset>
+                                <legend><i class="icon kiko-cloud" aria-hidden="true"></i> {{Sonde de COV}}</legend>
+                                <div>
+                                    <u>Optionnel</u> : Utilisé pour surveiller la qualité de l'air. Composés Organiques Volatils (COV) 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{COV}}</label>
+                                    <div class="col-xs-11 col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cov" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fas fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Seuil maxi (ppm)}}</label>
+                                    450 ppm par défaut
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="450" data-l1key="configuration" data-l2key="threshold_maxi_cov" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Seuil normal (ppm)}}</label>
+                                    300 ppm par défaut
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="300" data-l1key="configuration" data-l2key="threshold_normal_cov" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
                         </form>
                     </div>
                 </div>
@@ -376,14 +428,41 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <!-- Onglet Action -->
             <div role="tabpanel" class="tab-pane" id="actiontab">
                 <br />
+                <div class="row">
+                    <div class="col-lg-7">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <legend><i class="icon kiko-clock" aria-hidden="true"></i> {{Paramétrage des actions}}</legend>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Fréquence des actions (min.)}}</label>
+                                    5 minutes par défaut
+                                    <div class="col-sm-2">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control tooltips" placeholder="5" data-l1key="configuration" data-l2key="frequency" data-concat="1" />
+                                        </div>
+                                    </div>
+                                </div>
 
-                <a class="btn btn-success addAction pull-right" id="bt_addActionEqLogic" data-type="failureActuator" style="position: relative;top: -7px;">
-                    <i class="fas fa-plus-circle"></i> {{Ajouter une action}}
-                </a>
-                <br />
-                <br />
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Condition}}</label>
+                                    <div class="col-xs-11  col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="condition" data-concat="1" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fas fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
 
-                <div class="alert-info bg-success">
+                <br />
+                <div class="alert-info">
                     A mettre dans <b>Titre</b> ou dans <b>Message</b> pour y récupérer la valeur</br>
                     <b>#name#</b> = Nom de l'objet</br>
                     <b>#message#</b> = Message à afficher</br>
@@ -391,6 +470,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <b>#temperature_indoor#</b> = température intérieure</br>
                     <b>#parent#</b> = nom de l'objet parent (la pièce par exemple)
                 </div>
+
+                <br />
+                <a class="btn btn-success addAction pull-right" id="bt_addActionEqLogic" data-type="failureActuator" style="position: relative;top: -7px;">
+                    <i class="fas fa-plus-circle"></i> {{Ajouter une action}}
+                </a>
+                <br />
+                <br />
+
                 <br />
 
                 <form class="form-horizontal">

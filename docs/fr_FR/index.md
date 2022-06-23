@@ -24,12 +24,23 @@ Source : Engie
 
 Mesurer la concentration de CO2 est donc un moyen pour mieux aérer les locaux en indiquant quand l'aération est nécessaire. C'est une mesure standard, utilisée actuellement dans certaines constructions modernes pour contrôler le fonctionnement des ventilations mécaniques (VMC). Une mesure, basée sur une réaction chimique,  a été utilisée dès le 19ème siècle pour lutter contre les épidémies respiratoires dans les habitats insalubres. La concentration en CO2 de l'air extérieur est d'environ 0,04%, usuellement noté 400 ppm (partie par millions). Le lien entre la qualité de l'air d'une pièce et la concentration en CO2 est donnée par les valeurs caractéristiques suivantes :
 
-**< 800 ppm** : correspond à une qualité d'air excellente selon la norme NF EN 13779 et c'est une recommandation du Haut Conseil de la Santé publique. Cela constitue donc une valeur "cible" à atteindre.
-**entre 800 et 1000 ppm** : correspond à une qualité d'air moyenne selon la norme NF EN 13779.
-**entre 1000 et 1500 ppm** : correspond à une qualité d'air modérée selon la norme NF EN 13779. Cela correspond à des valeurs trop élevées en contexte Covid-19.
-**> 1500 ppm** : correspond à une qualité d'air basse selon la norme NF EN 13779. Cela correspond à des valeurs beaucoup trop élevées en contexte Covid-19.
+- **< 800 ppm** : correspond à une qualité d'air excellente selon la norme NF EN 13779 et c'est une recommandation du Haut Conseil de la Santé publique. Cela constitue donc une valeur "cible" à atteindre.
+- **entre 800 et 1000 ppm** : correspond à une qualité d'air moyenne selon la norme NF EN 13779.
+- **entre 1000 et 1500 ppm** : correspond à une qualité d'air modérée selon la norme NF EN 13779. Cela correspond à des valeurs trop élevées en contexte Covid-19.
+- **> 1500 ppm** : correspond à une qualité d'air basse selon la norme NF EN 13779. Cela correspond à des valeurs beaucoup trop élevées en contexte Covid-19.
 
 Source : projetco2
+
+## COV
+Le terme COV correspond aux composés organiques volatils, des gaz à effet de serre provenant généralement de l'ameublement (peinture, colle, vernis), des produits d'entretien, ainsi que des transports et de l'industrie. Les plus connus sont les formaldéhydes, le benzène, et le toluène.
+
+Mesurés en ppb (partie par milliard), les COV sont considérés comme dangereux et peuvent altérer la santé à court terme (migraines) et à long terme : le formaldéhyde a été classé comme cancérogène par le Centre International de Recherche sur le Cancer.
+
+Voici les seuils de pollution COV :
+- **Très bon** : 0-150 ppb
+- **Bon** : 150-300 ppb
+- **Moyen** : 300-450 ppb
+- **Mauvais** : 450-600 ppb.
 
 # Règles retenues 
 
@@ -40,18 +51,22 @@ Les actions seront réalisées selon la saison.
 HIVER :
 - Ouvrir si temp. int < temp. ext.
 - Fermer sur durée et temp. int < consigne
-- Fermer si temp. int. <= temp. Mini. (consigne - seuil) quel que soit la durée
+- Fermer si temp. int. <= temp. Mini. (consigne - seuil) quelque soit la durée
 
 ETE :
 - Ouvrir température ext. < temp. int.
-- Fermer sur durée
+- Fermer sur durée et temp. int. >= temp. maxi (consigne + seuil) quelque soit la durée
 
 INTERMEDIAIRE : 
 - Fermer si temp. int. < temp. Mini. (consigne - seuil hiver) quelque soit la durée
 
-TOUTES SAISONS :
+Gestion CO2 :
 - Ouvrir si taux co2 >= seuil maxi co2
 - Laisser ouvert si taux co2 >= seuil normal co2
+
+Gestion COV :
+- Ouvrir si taux cov >= seuil maxi cov
+- Laisser ouvert si taux cov >= seuil normal cov
 
 # Configuration du plugin
 
@@ -123,8 +138,10 @@ Listes des sondes pour suivre la température de la pièce
 ### Calcul sur température : cette zone est optionnelle
    Le but est de garder la pièce dans une température acceptable. i.e : garder la pièce aux alentours de la température de consigne d'un thermostat
 - Consigne Thermostat : consigne du thermostat
+- Témpérature cible : température souhaitée. Remplacera la valeur de la consigne.
+  Cela est utile si vous n'avez pas de thermostat par exemple.
 - Seuil hiver : dépassement acceptable de la température de la pièce par rapport à la consigne
-- Seuil été : A VOIR
+- Seuil été : dépassement acceptable de la température de la pièce par rapport à la consigne
 
 ## AQI
 Listes des sondes pour suivre la qualité de l'air de la pièce
@@ -137,6 +154,11 @@ Listes des sondes pour suivre la qualité de l'air de la pièce
 - Seuil maxi : Seuil maximal (1000 ppm par défaut)
 - Seuil normal : Seuil haut normal  (800ppm par défaut)
 
+### Sonde de COV
+
+- COV : Commande pour le taux de COV intérieur
+- Seuil maxi : Seuil maximal (300 ppm par défaut)
+- Seuil normal : Seuil haut normal  (450 ppm par défaut)
 
 ## Ouvertures
 
@@ -166,6 +188,9 @@ Actuellement, il existe quelques variables qui peuvent être utilisées :
 	#temperature_indoor# = température intérieure
 	#parent# = nom de l'objet parent (la pièce par exemple) 
 
+- Fréquence des actions : Durée entre 2 lancements d'actions. (5 minutes par défaut)
+- Condition : Condition pour lancer les actions (uniqument le jour par exemple)
+
 ## Commandes
 
 Commandes créées pour voir des informations :
@@ -177,10 +202,3 @@ Commandes créées pour voir des informations :
 - Durée : temps d'aération dans la journée
 - Durée du jour : temps quotidien cumulé (nécessite que l'état de la fenêtre soit historisé)
 - Message : affiche le message lié à l'action
-
-
-## NOTE
-
-Le plugin a été testé principalement sur la saison hivernale.
-Il reste donc à peaufiné les périodes où la température s'adoucit (saison intermédiaire)
-Il n'a pas encore pu être mis à l'épreuve concernant la saison Eté.
