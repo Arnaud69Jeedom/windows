@@ -26,6 +26,9 @@ $("#table_cmd").sortable({
   forcePlaceholderSize: true
 });
 
+/******************************************************/
+// A SUPPRIMER pour v4.3+
+/******************************************************/
 /* Fonction permettant l'affichage des commandes dans l'équipement */
 function addCmdToTable(_cmd) {
   if (!isset(_cmd)) {
@@ -47,6 +50,11 @@ function addCmdToTable(_cmd) {
   tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span>';
   tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></span>';
   tr += '</td>';
+
+  tr+='<td>';
+  tr += '<span class="cmdAttr" data-l1key="htmlstate"></span>';
+  tr+='</td>';
+
   tr += '<td>';
   if (is_numeric(_cmd.id)) {
      tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fas fa-cogs"></i></a> ';
@@ -68,7 +76,9 @@ function addCmdToTable(_cmd) {
     }
   });
 }
-  
+/******************************************************/
+// A SUPPRIMER pour v4.3+
+/******************************************************/ 
 
 $(".eqLogic").delegate(".listCmdInfo", 'click', function () {
   var el = $(this).closest('.form-group').find('.eqLogicAttr');

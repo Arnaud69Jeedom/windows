@@ -305,6 +305,22 @@ class windowsCmd extends cmd
                 log::add('windows', 'error', ' Mauvaise temperature_indoor :' . $temperature_indoor, __FILE__);
                 return false;
             }
+
+            if (is_object($cmd) && $cmd->getIsHistorized() == 1) {
+                log::add('windows', 'debug', '  Calcul tendance int', __FILE__);
+                
+                $startDateTime = new DateTime('NOW');
+                $startTime = $startDateTime->format('Y-m-d H:i:s');
+                $endDateTime = $startDateTime->modify('-15 minutes');
+                $endTime  = $endDateTime->format('Y-m-d H:i:s');
+                //log::add('windows', 'debug', '  > startTime :' . $startTime, __FILE__);
+                //log::add('windows', 'debug', '  > endTime :' . $endTime, __FILE__);
+
+                $tendance = $cmd->getTendance($startTime, $endTime);
+                log::add('windows', 'debug', '  > tendance :' . $tendance, __FILE__);
+                $configuration->tendance_temperature_indoor = $tendance;
+            }
+
             $temperature_indoor = $cmd->execCmd();
             if (is_numeric($temperature_indoor)) {
                 $configuration->temperature_indoor = $temperature_indoor;
@@ -523,6 +539,20 @@ class windowsCmd extends cmd
                 log::add('windows', 'error', '  > Mauvaise temperature_outdoor :' . $temperature_outdoor, __FILE__);
                 return false;
             }
+
+            if (is_object($cmd) && $cmd->getIsHistorized() == 1) {
+                log::add('windows', 'debug', '  Calcul tendance ext', __FILE__);
+
+                $startDateTime = new DateTime('NOW');
+                $startTime = $startDateTime->format('Y-m-d H:i:s');
+                $endDatetime = $startDateTime->modify('-15 minutes');
+                $endTime  = $endDatetime->format('Y-m-d H:i:s');
+
+                $tendance = $cmd->getTendance($startTime, $endTime);
+                log::add('windows', 'debug', '  > tendance :' . $tendance, __FILE__);
+                $configuration->tendance_temperature_outdoor = $tendance;
+            }
+
             $temperature_outdoor = $cmd->execCmd();
             if (is_numeric($temperature_outdoor)) {
                 $configuration->temperature_outdoor = $temperature_outdoor;
