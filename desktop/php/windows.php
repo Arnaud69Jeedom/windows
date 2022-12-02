@@ -489,8 +489,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <div role="tabpanel" class="tab-pane" id="commandtab">
                 <br />
                 <div class="table-responsive">
-                    <table id="table_cmd" class="table table-bordered table-condensed">
+                    <!-- Pour v4.3+ -->
+                    <!-- <table id="table_cmd" class="table table-bordered table-condensed"></table> -->
                     <!-- A SUPPRIMER en v4.3+ -->
+                    <table id="table_cmd" class="table table-bordered table-condensed">
                     <thead>
                             <tr>
                                 <th>{{Nom}}</th>
@@ -501,8 +503,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         </thead>
                         <tbody>
                         </tbody>
-                        <!-- A SUPPRIMER en v4.3+ -->
                     </table>
+                    <!-- A SUPPRIMER en v4.3+ -->
                 </div>
             </div><!-- /.tabpanel #commandtab-->
         </div><!-- /.tab-content -->
