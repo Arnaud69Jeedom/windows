@@ -87,11 +87,7 @@ $(".eqLogic").delegate(".listCmdInfo", 'click', function () {
       type: 'info'
     }
   }, function (result) {
-    if (el.attr('data-concat') == 1) {
-      el.atCaret('insert', result.human);
-    } else {
-      el.value(result.human);
-    }
+    el.value(result.human);
   });
 });
 
@@ -119,7 +115,7 @@ function addConfWindows(_window) {
   if (!isset(_window)) {
     _window = {};
   }
-  console.log("addConfWindows", _window);
+  //console.log("addConfWindows", _window);
   var div = '<div class="confWindow">';
 
   div += '<div class="form-group">';
@@ -198,7 +194,7 @@ $(".eqLogic").delegate(".listCmdAction", 'click', function () {
         el.value(result.human);
         jeedom.cmd.displayActionOption(el.value(), '', function (html) {
           el.closest('.' + type).find('.actionOptions').html(html);
-          taAutosize();
+          jeedomUtils.taAutosize();
         });
     });
   });
@@ -212,7 +208,7 @@ $(".eqLogic").delegate(".listAction", 'click', function () {
     el.value(result.human);
     jeedom.cmd.displayActionOption(el.value(), '', function (html) {
       el.closest('.' + type).find('.actionOptions').html(html);
-      taAutosize();
+      jeedomUtils.taAutosize();
     });
   });
 });
@@ -226,18 +222,18 @@ function saveEqLogic(_eqLogic) {
   _eqLogic.configuration.window = $('#div_confWindows .confWindow').getValues('.expressionAttr');
   _eqLogic.configuration.action = $('#div_confActions .confAction').getValues('.expressionAttr');
 
-  console.log('saveEqLogic:', _eqLogic);
+  //console.log('saveEqLogic:', _eqLogic);
   return _eqLogic;
 }
 
 function printEqLogic(_eqLogic) {
-  console.log('printEqLogic:', _eqLogic);
+  //console.log('printEqLogic:', _eqLogic);
 
   $('#div_confWindows').empty();
   if (isset(_eqLogic.configuration)) {
     if (isset(_eqLogic.configuration.window)) {
       for (var i in _eqLogic.configuration.window) {
-        console.log("printEqLogic.addConfWindows", _eqLogic.configuration.window[i]);
+        //console.log("printEqLogic.addConfWindows", _eqLogic.configuration.window[i]);
         addConfWindows(_eqLogic.configuration.window[i]);
       }
     }
@@ -247,7 +243,7 @@ function printEqLogic(_eqLogic) {
   if (isset(_eqLogic.configuration)) {
     if (isset(_eqLogic.configuration.action)) {
       for (var i in _eqLogic.configuration.action) {
-        console.log("printEqLogic.addConfActions", _eqLogic.configuration.action[i]);
+        //console.log("printEqLogic.addConfActions", _eqLogic.configuration.action[i]);
         addConfActions(_eqLogic.configuration.action[i]);
       }
     }
