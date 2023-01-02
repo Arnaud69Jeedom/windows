@@ -190,6 +190,111 @@ class windows extends eqLogic
     {
     }
 
+    public function toHtml($_version = 'dashboard') {
+        // if ($this->getConfiguration('type') == 'device') {
+             return parent::toHtml($_version);
+        // }
+    
+        $replace = $this->preToHtml($_version);
+        if (!is_array($replace)) {
+            return $replace;
+        }
+        $version = jeedom::versionAlias($_version);
+
+		// $replace['#forecast#'] = '';
+		// if ($version != 'mobile' || $this->getConfiguration('fullMobileDisplay', 0) == 1) {
+		// 	if ($this->getConfiguration('modeImage', 0) == 1) {
+		// 		$forcast_template = getTemplate('core', $version, 'forecastIMG', 'weather');
+		// 	} else {
+		// 		$forcast_template = getTemplate('core', $version, 'forecast', 'weather');
+		// 	}
+		// 	for ($i = 0; $i < 5; $i++) {
+		// 		$replaceDay = array();
+		// 		$replaceDay['#day#'] = date_fr(date('l', strtotime('+' . $i . ' days')));
+				
+		// 		if ($i == 0) {
+		// 			$temperature_min = $this->getCmd(null, 'temperature_min');
+		// 		} else {
+		// 			$temperature_min = $this->getCmd(null, 'temperature_' . $i . '_min');
+		// 		}
+		// 		$replaceDay['#low_temperature#'] = is_object($temperature_min) ? $temperature_min->execCmd() : '';
+				
+		// 		if ($i == 0) {
+		// 			$temperature_max = $this->getCmd(null, 'temperature_max');
+		// 		} else {
+		// 			$temperature_max = $this->getCmd(null, 'temperature_' . $i . '_max');
+		// 		}
+		// 		$replaceDay['#hight_temperature#'] = is_object($temperature_max) ? $temperature_max->execCmd() : '';
+		// 		$replaceDay['#tempid#'] = is_object($temperature_max) ? $temperature_max->getId() : '';
+		// 		if ($i == 0) {
+		// 			$condition = $this->getCmd(null, 'condition_id');
+		// 		} else {
+		// 			$condition = $this->getCmd(null, 'condition_id_' . $i);
+		// 		}
+		// 		$replaceDay['#icone#'] = is_object($condition) ? self::getIconFromCondition($condition->execCmd()) : '';
+		// 		$replaceDay['#conditionid#'] = is_object($condition) ? $condition->getId() : '';
+		// 		$replace['#forecast#'] .= template_replace($replaceDay, $forcast_template);
+		// 	}
+		// }
+		// $temperature = $this->getCmd(null, 'temperature');
+		// $replace['#temperature#'] = is_object($temperature) ? $temperature->execCmd() : '';
+		// $replace['#tempid#'] = is_object($temperature) ? $temperature->getId() : '';
+		
+		// $humidity = $this->getCmd(null, 'humidity');
+		// $replace['#humidity#'] = is_object($humidity) ? $humidity->execCmd() : '';
+		
+		// $pressure = $this->getCmd(null, 'pressure');
+		// $replace['#pressure#'] = is_object($pressure) ? $pressure->execCmd() : '';
+		// $replace['#pressureid#'] = is_object($pressure) ? $pressure->getId() : '';
+		
+		// $wind_speed = $this->getCmd(null, 'wind_speed');
+		// $replace['#windspeed#'] = is_object($wind_speed) ? $wind_speed->execCmd() : '';
+		// $replace['#windid#'] = is_object($wind_speed) ? $wind_speed->getId() : '';
+		
+		// $sunrise = $this->getCmd(null, 'sunrise');
+		// $replace['#sunrise#'] = is_object($sunrise) ? $sunrise->execCmd() : '';
+		// $replace['#sunid#'] = is_object($sunrise) ? $sunrise->getId() : '';
+		// if (strlen($replace['#sunrise#']) == 3) {
+		// 	$replace['#sunrise#'] = substr($replace['#sunrise#'], 0, 1) . ':' . substr($replace['#sunrise#'], 1, 2);
+		// } else if (strlen($replace['#sunrise#']) == 4) {
+		// 	$replace['#sunrise#'] = substr($replace['#sunrise#'], 0, 2) . ':' . substr($replace['#sunrise#'], 2, 2);
+		// }
+		
+		// $sunset = $this->getCmd(null, 'sunset');
+		// $replace['#sunset#'] = is_object($sunset) ? $sunset->execCmd() : '';
+		// if (strlen($replace['#sunset#']) == 3) {
+		// 	$replace['#sunset#'] = substr($replace['#sunset#'], 0, 1) . ':' . substr($replace['#sunset#'], 1, 2);
+		// } else if (strlen($replace['#sunset#']) == 4) {
+		// 	$replace['#sunset#'] = substr($replace['#sunset#'], 0, 2) . ':' . substr($replace['#sunset#'], 2, 2);
+		// }
+		
+		// $wind_direction = $this->getCmd(null, 'wind_direction');
+		// $replace['#wind_direction#'] = is_object($wind_direction) ? $wind_direction->execCmd() : 0;
+		
+		// $refresh = $this->getCmd(null, 'refresh');
+		// $replace['#refresh_id#'] = is_object($refresh) ? $refresh->getId() : '';
+		
+		// $sunset_time = is_object($sunset) ? $sunset->execCmd() : null;
+		// $sunrise_time = is_object($sunrise) ? $sunrise->execCmd() : null;
+		// $condition_id = $this->getCmd(null, 'condition_id');
+		// if (is_object($condition_id)) {
+		// 	$replace['#icone#'] = self::getIconFromCondition($condition_id->execCmd(), $sunrise_time, $sunset_time);
+		// } else {
+		// 	$replace['#icone#'] = '';
+		// }
+		
+		// $condition = $this->getCmd(null, 'condition');
+		// if (is_object($condition)) {
+		// 	$replace['#condition#'] = $condition->execCmd();
+		// 	$replace['#conditionid#'] = $condition->getId();
+		// } else {
+		// 	$replace['#condition#'] = '';
+		// 	$replace['#collectDate#'] = '';
+		// }
+		
+		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'current', 'windows')));
+	}
+
     /*
      * Non obligatoire : permet de modifier l'affichage du widget (également utilisable par les commandes)
       public function toHtml($_version = 'dashboard') {
@@ -245,35 +350,49 @@ class windowsCmd extends cmd
 
         // Paramètre global
         $isOK = windowsCmd::getTemperatureOutdoor($configuration);
-        $isOK &= windowsCmd::getTemperatureMaxi($eqlogic, $configuration);
-        $isOK &= windowsCmd::getTemperatureWinter($configuration);
-        $isOK &= windowsCmd::getTemperatureSummer($configuration);
-        $isOK &= windowsCmd::getPresence($configuration);
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
 
-        
+        $isOK &= windowsCmd::getTemperatureMaxi($eqlogic, $configuration);
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
+
+        $isOK &= windowsCmd::getTemperatureWinter($configuration);
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
+
+        $isOK &= windowsCmd::getTemperatureSummer($configuration);
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
+
+        $isOK &= windowsCmd::getPresence($configuration);
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
+
         // Lecture et Analyse de la configuration        
         $isOK &= $this->getTemperatureIndoor($eqlogic, $configuration);
         $isOK &= $this->getDurationWinter($eqlogic, $configuration);
         $isOK &= $this->getDurationSummer($eqlogic, $configuration);
         $isOK &= $this->getThresholdWinter($eqlogic, $configuration);
         $isOK &= $this->getThresholdSummer($eqlogic, $configuration);
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
         $isOK &= $this->getConsigne($eqlogic, $configuration);
         $isOK &= $this->getTargetTemperature($eqlogic, $configuration);
         $isOK &= $this->getNotify($eqlogic, $configuration);
         $isOK &= $this->getFrequency($eqlogic, $configuration);
         $isOK &= $this->getCondition($eqlogic, $configuration);
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
+
         // CO2
         $isOK &= $this->getCo2($eqlogic, $configuration);
         if (isset($configuration->co2)) {
             $isOK &= $this->getThresholdMaxiCo2($eqlogic, $configuration);
             $isOK &= $this->getThresholdNormalCo2($eqlogic, $configuration);
         }
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
+
         // COV
         $isOK &= $this->getCov($eqlogic, $configuration);
         if (isset($configuration->cov)) {
             $isOK &= $this->getThresholdMaxiCov($eqlogic, $configuration);
             $isOK &= $this->getThresholdNormalCov($eqlogic, $configuration);
         }
+        log::add('windows', 'debug', ' getMyConfiguration :' . $isOK, __FILE__);
 
         if ($isOK == false) {
             return null;
@@ -282,7 +401,7 @@ class windowsCmd extends cmd
         // Recherche de la saison
         windowsCmd::setSeason($configuration);
         windowsCmd::setDuration($configuration);
-
+        
         return $configuration;
     }
 
@@ -358,7 +477,7 @@ class windowsCmd extends cmd
                 $isOK = true;
             }
         } else {
-            //log::add('windows', 'debug', '  > Pas de duration_winter : valeur par défaut = 0', __FILE__);
+            log::add('windows', 'debug', '  > Pas de duration_winter (optionnel) : valeur par défaut = 0', __FILE__);
             // Valeur par défaut
             $configuration->duration_winter = 0;
             $isOK = true;
@@ -386,7 +505,7 @@ class windowsCmd extends cmd
                 $isOK = true;
             }
         } else {
-            //log::add('windows', 'debug', '  > Pas de duration_summer : valeur par défaut = 0', __FILE__);
+            log::add('windows', 'debug', '  > Pas de duration_summer (optionnel) : valeur par défaut = 0', __FILE__);
             // Valeur par défaut
             $configuration->duration_summer = 0;
             $isOK = true;
@@ -407,7 +526,7 @@ class windowsCmd extends cmd
 
         $threshold_winter = $eqlogic->getConfiguration('threshold_winter');
         if ($threshold_winter == '') {
-            //log::add('windows', 'debug', '  > Pas de threshold_winter : valeur par défaut = 0', __FILE__);
+            log::add('windows', 'debug', '  > Pas de threshold_winter (optionnel) : valeur par défaut = 0', __FILE__);
             $configuration->threshold_winter = 0;
             $isOK = true;
         } else if (!is_numeric($threshold_winter)) {
@@ -432,7 +551,7 @@ class windowsCmd extends cmd
 
         $threshold_summer = $eqlogic->getConfiguration('threshold_summer');
         if ($threshold_summer == '') {
-            //log::add('windows', 'debug', '  > Pas de threshold_summer : valeur par défaut = 0', __FILE__);
+            log::add('windows', 'debug', '  > Pas de threshold_summer (optionnel) : valeur par défaut = 0', __FILE__);
             $configuration->threshold_summer = 0;
             $isOK = true;
         } else if (!is_numeric($threshold_summer)) {
@@ -472,7 +591,7 @@ class windowsCmd extends cmd
                 $isOK = true;
             }
         } else {
-            //log::add('windows', 'debug', '  > Pas de consigne', __FILE__);
+            log::add('windows', 'debug', '  > Pas de consigne (optionnel)', __FILE__);
             $isOK = true;
         }
         unset($cmd);
@@ -604,7 +723,8 @@ class windowsCmd extends cmd
                 }
             }
         } else {
-            //log::add('windows', 'debug', '  > Pas de temperature_maxi', __FILE__);
+            log::add('windows', 'debug', '  > Pas de temperature_maxi (optionnel)', __FILE__);
+            $isOK = true;
         }
         unset($cmd);
 
@@ -622,7 +742,7 @@ class windowsCmd extends cmd
 
         $temperature_winter = config::byKey('temperature_winter', 'windows');
         if ($temperature_winter == '') {
-            //log::add('windows', 'debug', '  > Pas de temperature_winter : valeur par défaut = 13', __FILE__);
+            log::add('windows', 'debug', '  > Pas de temperature_winter (optionnel): valeur par défaut = 13', __FILE__);
             $configuration->temperature_winter = 13;
             $isOK = true;
         } else if (!is_numeric($temperature_winter)) {
@@ -646,7 +766,7 @@ class windowsCmd extends cmd
 
         $temperature_summer = config::byKey('temperature_summer', 'windows');
         if ($temperature_summer == '') {
-            //log::add('windows', 'debug', '  > Pas de temperature_summer : valeur par défaut = 25', __FILE__);
+            log::add('windows', 'debug', '  > Pas de temperature_summer (optionnel) : valeur par défaut = 25', __FILE__);
             $configuration->temperature_summer = 25;
             $isOK = true;
         } else if (!is_numeric($temperature_summer)) {
@@ -686,7 +806,7 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            //log::add('windows', 'debug', '  > Pas de co2', __FILE__);
+            log::add('windows', 'debug', '  > Pas de co2 (optionnel)', __FILE__);
             $isOK = true;
         }
         unset($cmd);
@@ -771,7 +891,7 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            //log::add('windows', 'debug', '  > Pas de cov', __FILE__);
+            log::add('windows', 'debug', '  > Pas de cov (optionnel)', __FILE__);
             $isOK = true;
         }
         unset($cmd);
@@ -855,7 +975,7 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            //log::add('windows', 'debug', '  > Pas de presence : valeur par défaut = 1', __FILE__);
+            log::add('windows', 'debug', '  > Pas de presence (optionnel) : valeur par défaut = 1', __FILE__);
             // Valeur par défaut
             $configuration->presence = 1;
             $isOK = true;
@@ -877,7 +997,7 @@ class windowsCmd extends cmd
 
         $frequency = $eqlogic->getConfiguration('frequency');
         if ($frequency == '') {
-            //log::add('windows', 'debug', '  > Pas de frequency : valeur par défaut = 5', __FILE__);
+            log::add('windows', 'debug', '  > Pas de frequency (optionnel) : valeur par défaut = 5', __FILE__);
             $configuration->frequency = 5;
             $isOK = true;
         } else if (!is_numeric($frequency)) {
