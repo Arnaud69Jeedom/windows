@@ -489,17 +489,22 @@ $eqLogics = eqLogic::byType($plugin->getId());
             <div role="tabpanel" class="tab-pane" id="commandtab">
                 <br />
                 <div class="table-responsive">
+                    <!-- Pour v4.3+ -->
+                    <!-- <table id="table_cmd" class="table table-bordered table-condensed"></table> -->
+                    <!-- A SUPPRIMER en v4.3+ -->
                     <table id="table_cmd" class="table table-bordered table-condensed">
-                        <thead>
+                    <thead>
                             <tr>
                                 <th>{{Nom}}</th>
                                 <th>{{Options}}</th>
+                                <th>{{Etat}}</th>
                                 <th>{{Action}}</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
                     </table>
+                    <!-- A SUPPRIMER en v4.3+ -->
                 </div>
             </div><!-- /.tabpanel #commandtab-->
         </div><!-- /.tab-content -->

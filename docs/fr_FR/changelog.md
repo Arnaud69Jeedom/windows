@@ -4,6 +4,12 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+
+# 02/01/2023
+
+- Adaptation Jeedom v4.4
+- Debug : Pas d'erreur si manque la Température maxi
+
 # 10/06/2022
 
 DEBUG : Recherche de la température maximum : max de la Température maxi et de la Température extérieure de la journée si elle est historisée. Permet de savoir que la journée a été chaude alors qu'en soirée, la température maxi donne le maxi de la nuit à venir

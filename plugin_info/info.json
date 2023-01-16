@@ -6,7 +6,7 @@
     "fr_FR": "Plugin template pour la gestion des fenêtres : Température, CO2, COV"
   },
   "licence": "AGPL",
-  "require": "4.1",
+  "require": "4.2",
   "version": "1.0",
   "category": "wellness",
   "hasDependency": false,
