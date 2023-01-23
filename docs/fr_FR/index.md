@@ -1,4 +1,4 @@
-# Plugin template
+# Plugin Windows
 
 Plugin permettant de créer une gestion des ouvrants et de déclencher des actions (commande ou scénario).
 
