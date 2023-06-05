@@ -25,6 +25,8 @@ abstract class Seasons
     const interSeason = 3;
 }
 
+const TEMP_DELTA = 0.5;
+
 class windows extends eqLogic
 {
     /*     * *************************Attributs****************************** */
@@ -1272,7 +1274,7 @@ class windowsCmd extends cmd
         // Température
         // mais il fait plus frais dehors tout de même : il faut ouvrir
         if (!$configuration->isOpened
-            && $configuration->temperature_outdoor < $configuration->temperature_indoor
+            && $configuration->temperature_outdoor + TEMP_DELTA < $configuration->temperature_indoor
         ) {
             log::add('windows', 'debug', '    test été sur température');
 
