@@ -1194,8 +1194,8 @@ class windowsCmd extends cmd
             log::add('windows', 'debug', '    test hiver sur température');
 
             $result->actionToExecute = true;
-            $result->messageWindows = __('il faut ouvrir');
-            $result->reason = __('température');
+            $result->messageWindows = __('il faut ouvrir', __FILE__);
+            $result->reason = __('température', __FILE__);
             log::add('windows', 'info', '     > il faudra ouvrir sur température');
         }
 
@@ -1212,8 +1212,8 @@ class windowsCmd extends cmd
                 // Hiver et trop longtemps
                 if ($configuration->durationOpened >= $configuration->duration) {
                     $result->actionToExecute = true;
-                    $result->messageWindows =  __('il faut fermer');
-                    $result->reason = __('durée');
+                    $result->messageWindows =  __('il faut fermer', __FILE__);
+                    $result->reason = __('durée', __FILE__);
                     log::add('windows', 'info', '     > il faudra fermer sur durée');
                 }
             } else {
@@ -1249,8 +1249,8 @@ class windowsCmd extends cmd
                 if ($configuration->temperature_indoor <= $temp_mini
                    && $configuration->durationOpened > 0) {
                     $result->actionToExecute = true;
-                    $result->messageWindows = __('il faut fermer');
-                    $result->reason = __('température');
+                    $result->messageWindows = __('il faut fermer', __FILE__);
+                    $result->reason = __('température', __FILE__);
                     log::add('windows', 'info', '     > il faudra fermer sur température');
                 }
             }
@@ -1279,8 +1279,8 @@ class windowsCmd extends cmd
             log::add('windows', 'debug', '    test été sur température');
 
             $result->actionToExecute = true;
-            $result->messageWindows = __('il faut ouvrir');
-            $result->reason = __('température');
+            $result->messageWindows = __('il faut ouvrir', __FILE__);
+            $result->reason = __('température', __FILE__);
             log::add('windows', 'info', '     > il faudra ouvrir sur température');
         }
 
@@ -1297,8 +1297,8 @@ class windowsCmd extends cmd
                 // Eté et trop longtemps
                 if ($configuration->durationOpened >= $configuration->duration) {
                     $result->actionToExecute = true;
-                    $result->messageWindows = __('il faut fermer');
-                    $result->reason = __('durée');
+                    $result->messageWindows = __('il faut fermer', __FILE__);
+                    $result->reason = __('durée', __FILE__);
                     log::add('windows', 'info', '    il faudra fermer sur durée');
                 }
             } else {
@@ -1337,8 +1337,8 @@ class windowsCmd extends cmd
                     && $configuration->temperature_indoor >= $temp_maxi
                     && $configuration->temperature_indoor <= $configuration->temperature_outdoor) {
                     $result->actionToExecute = true;
-                    $result->messageWindows = __('il faut fermer');
-                    $result->reason = __('température');
+                    $result->messageWindows = __('il faut fermer', __FILE__);
+                    $result->reason = __('température', __FILE__);
                     log::add('windows', 'info', '     > il faudra fermer sur température');
                 }
             }
@@ -1372,8 +1372,8 @@ class windowsCmd extends cmd
             //     && $configuration->temperature_outdoor <= $temp_maxi
             //     && $configuration->temperature_outdoor >= $temp_mini) {
             //         $result->actionToExecute = true;
-            //         $result->messageWindows = __('il faut ouvrir');
-            //         $result->reason = __('température');
+            //         $result->messageWindows = __('il faut ouvrir', __FILE__);
+            //         $result->reason = __('température', __FILE__);
             //         log::add('windows', 'info', '     > il faudra ouvrir sur température');
             // }
 
@@ -1397,8 +1397,8 @@ class windowsCmd extends cmd
                 )
             ) {
                 $result->actionToExecute = true;
-                $result->messageWindows = __('il faut fermer');
-                $result->reason = __('température');
+                $result->messageWindows = __('il faut fermer', __FILE__);
+                $result->reason = __('température', __FILE__);
                 log::add('windows', 'info', '     > il faudra fermer sur température');
             }
         }
@@ -1425,8 +1425,8 @@ class windowsCmd extends cmd
                 && $configuration->co2 >= $configuration->threshold_maxi_co2
             ) {
                 $result->actionToExecute = true;
-                $result->messageWindows = __('il faut ouvrir');
-                $result->reason = __('co2');
+                $result->messageWindows = __('il faut ouvrir', __FILE__);
+                $result->reason = __('co2', __FILE__);
                 log::add('windows', 'info', '     > il faudra ouvrir sur co2');
             }
 
@@ -1467,8 +1467,8 @@ class windowsCmd extends cmd
                 && $configuration->cov >= $configuration->threshold_maxi_cov
             ) {
                 $result->actionToExecute = true;
-                $result->messageWindows = __('il faut ouvrir');
-                $result->reason = __('cov');
+                $result->messageWindows = __('il faut ouvrir', __FILE__);
+                $result->reason = __('cov', __FILE__);
                 log::add('windows', 'info', '     > il faudra ouvrir sur cov');
             }
 
