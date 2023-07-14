@@ -4,6 +4,10 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 14/07/2023 - BETA
+
+- DEBUG : Correction sur gestion des logs
+
 # 05/06/2023 - DEBUG
 
 - Gestion TEMP_DELTA sur ouverture fenêtre en été
