@@ -407,6 +407,27 @@ class windowsCmd extends cmd
         return $configuration;
     }
 
+    /**
+     * Obtient la tandance d'une commande 
+     */
+    private static function getTendanceByCmd($cmd, $name = '') {
+        if ($cmd == null) throw new ErrorException('cmd null');
+
+        $tendance = null;
+        if (is_object($cmd) && $cmd->getIsHistorized() == 1) {
+            log::add('windows', 'debug', '  Calcul tendance '.$name);
+
+            $startTime = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' -15 minutes'));
+            $endTime = date('Y-m-d H:i:s');
+            $tendance = $cmd->getTendance($startTime, $endTime);
+            log::add('windows', 'debug', '  > tendance :' . $tendance);
+        }
+        else {
+            log::add('windows', 'debug', '  > tendance '.$name.' non calculable');
+        }
+        return $tendance;
+    }
+
     /*** GetConfiguration ***/
     /**
      * Récupérer la valeur de la température intérieure
@@ -427,26 +448,16 @@ class windowsCmd extends cmd
                 return false;
             }
 
-            if (is_object($cmd) && $cmd->getIsHistorized() == 1) {
-                log::add('windows', 'debug', '  Calcul tendance int');
-                
-                $startDateTime = new DateTime('NOW');
-                $startTime = $startDateTime->format('Y-m-d H:i:s');
-                $endDateTime = $startDateTime->modify('-15 minutes');
-                $endTime  = $endDateTime->format('Y-m-d H:i:s');
-                //log::add('windows', 'debug', '  > startTime :' . $startTime);
-                //log::add('windows', 'debug', '  > endTime :' . $endTime);
-
-                $tendance = $cmd->getTendance($startTime, $endTime);
-                log::add('windows', 'debug', '  > tendance :' . $tendance);
-                $configuration->tendance_temperature_indoor = $tendance;
-            }
-
             $temperature_indoor = $cmd->execCmd();
             if (is_numeric($temperature_indoor)) {
                 $configuration->temperature_indoor = $temperature_indoor;
                 $configuration->temperature_unit = $cmd->getunite();
                 $isOK = true;
+
+                $tendance = windowsCmd::getTendanceByCmd($cmd, 'indoor');
+                if ($tendance != null) {
+                    $configuration->tendance_temperature_indoor = $tendance;
+                }
             } else {
                 log::add('windows', 'error', ' Mauvaise temperature_indoor :' . $temperature_indoor);
                 return false;
@@ -661,23 +672,15 @@ class windowsCmd extends cmd
                 return false;
             }
 
-            if (is_object($cmd) && $cmd->getIsHistorized() == 1) {
-                log::add('windows', 'debug', '  Calcul tendance ext');
-
-                $startDateTime = new DateTime('NOW');
-                $startTime = $startDateTime->format('Y-m-d H:i:s');
-                $endDatetime = $startDateTime->modify('-15 minutes');
-                $endTime  = $endDatetime->format('Y-m-d H:i:s');
-
-                $tendance = $cmd->getTendance($startTime, $endTime);
-                log::add('windows', 'debug', '  > tendance :' . $tendance);
-                $configuration->tendance_temperature_outdoor = $tendance;
-            }
-
             $temperature_outdoor = $cmd->execCmd();
             if (is_numeric($temperature_outdoor)) {
                 $configuration->temperature_outdoor = $temperature_outdoor;
                 $isOK = true;
+
+                $tendance = windowsCmd::getTendanceByCmd($cmd, 'outdoor');
+                if ($tendance != null) {
+                    $configuration->tendance_temperature_outdoor = $tendance;
+                }
             } else {
                 log::add('windows', 'error', '  > Mauvaise temperature_outdoor :' . $temperature_outdoor);
                 return false;
@@ -1274,7 +1277,7 @@ class windowsCmd extends cmd
         // Température
         // mais il fait plus frais dehors tout de même : il faut ouvrir
         if (!$configuration->isOpened
-            && $configuration->temperature_outdoor + TEMP_DELTA < $configuration->temperature_indoor
+            && $configuration->temperature_outdoor < $configuration->temperature_indoor
         ) {
             log::add('windows', 'debug', '    test été sur température');
 
@@ -1320,9 +1323,12 @@ class windowsCmd extends cmd
                 log::add('windows', 'debug', '    température maxi :'.$temp_maxi.', température:'.$configuration->temperature_indoor);
 
                 // Si durée longue mais tout de même frais dehors
+                // ou la température interieure chute
                 if (
                     $result->actionToExecute
-                    && $configuration->temperature_outdoor <= $configuration->temperature_indoor
+                    && (    $configuration->temperature_outdoor <= $configuration->temperature_indoor
+                        || ($configuration->tendance_temperature_indoor != null && $configuration->tendance_temperature_indoor < 0)
+                       )  
                 ) {
                     $result->actionToExecute = false;
                     $result->messageWindows = '';
@@ -1332,10 +1338,13 @@ class windowsCmd extends cmd
 
                 // Si température plus chaude que le maxi autorisé
                 // et plus chaud dehors que dedans
+                // et la température interieure monte
                 // et on ne vient pas d'ouvrir
                 if ($configuration->durationOpened > 0
                     && $configuration->temperature_indoor >= $temp_maxi
-                    && $configuration->temperature_indoor <= $configuration->temperature_outdoor) {
+                    && $configuration->temperature_indoor <= $configuration->temperature_outdoor
+                    && ($configuration->tendance_temperature_indoor != null && $configuration->tendance_temperature_indoor > 0)
+                 ) {
                     $result->actionToExecute = true;
                     $result->messageWindows = __('il faut fermer', __FILE__);
                     $result->reason = __('température', __FILE__);
