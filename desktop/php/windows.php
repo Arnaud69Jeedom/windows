@@ -209,6 +209,24 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <fieldset>
                                 <legend><i class="fas fa-thermometer-empty" aria-hidden="true"></i> {{Sonde de température}}</legend>
                                 <div class="form-group">
+                                    <label class="col-sm-4 control-label">{{Température extérieure}}</label>
+                                    <div class="col-xs-11 col-sm-6">
+                                        <div class="input-group">
+                                            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="temperature_outdoor" />
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-default listCmdInfo">
+                                                    <i class="fas fa-list-alt"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <u>Optionnel</u> : La température extérieure peut être paramétrée en global sur le plugin ou sur l'équpement.
+                                </div>
+                                <br />
+
+                                <div class="form-group">
                                     <label class="col-sm-4 control-label">{{Température intérieure}}</label>
                                     <div class="col-xs-11 col-sm-6">
                                         <div class="input-group">

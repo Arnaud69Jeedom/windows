@@ -351,23 +351,29 @@ class windowsCmd extends cmd
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
 
         // Paramètre global
-        $isOK = windowsCmd::getTemperatureOutdoor($configuration);
+        $isOK = windowsCmd::getGlobalTemperatureOutdoor($configuration);
         log::add('windows', 'debug', ' getMyConfiguration :' . $isOK);
 
-        $isOK &= windowsCmd::getTemperatureMaxi($eqlogic, $configuration);
+        $isOK &= windowsCmd::getGlobalTemperatureMaxi($eqlogic, $configuration);
         log::add('windows', 'debug', ' getMyConfiguration :' . $isOK);
 
-        $isOK &= windowsCmd::getTemperatureWinter($configuration);
+        $isOK &= windowsCmd::getGlobalTemperatureWinter($configuration);
         log::add('windows', 'debug', ' getMyConfiguration :' . $isOK);
 
-        $isOK &= windowsCmd::getTemperatureSummer($configuration);
+        $isOK &= windowsCmd::getGlobalTemperatureSummer($configuration);
         log::add('windows', 'debug', ' getMyConfiguration :' . $isOK);
 
-        $isOK &= windowsCmd::getPresence($configuration);
+        $isOK &= windowsCmd::getGlobalPresence($configuration);
         log::add('windows', 'debug', ' getMyConfiguration :' . $isOK);
 
         // Lecture et Analyse de la configuration        
         $isOK &= $this->getTemperatureIndoor($eqlogic, $configuration);
+        $isOK &= $this->getTemperatureOutdoor($eqlogic, $configuration);
+        if (!isset($configuration->temperature_outdoor)) {
+            log::add('windows', 'error', ' Pas de temperature_outdoor');
+            $isOK = false;
+        }
+
         $isOK &= $this->getDurationWinter($eqlogic, $configuration);
         $isOK &= $this->getDurationSummer($eqlogic, $configuration);
         $isOK &= $this->getThresholdWinter($eqlogic, $configuration);
@@ -434,6 +440,7 @@ class windowsCmd extends cmd
      */
     private function getTemperatureIndoor($eqlogic, $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -472,10 +479,54 @@ class windowsCmd extends cmd
     }
 
     /**
+     * Récupérer la valeur de la température extérieure
+     */
+    private function getTemperatureOutdoor($eqlogic, $configuration): bool
+    {
+        log::add('windows', 'debug', __FUNCTION__);
+        if ($eqlogic == null) throw new ErrorException('eqlogic null');
+        if ($configuration == null) throw new ErrorException('configuration null');
+
+        $isOK = false;
+
+        $temperature_outdoor = $eqlogic->getConfiguration('temperature_outdoor');
+        $temperature_outdoor = str_replace('#', '', $temperature_outdoor);
+        if ($temperature_outdoor != '') {
+            $cmd = cmd::byId($temperature_outdoor);
+            if ($cmd == null) {
+                log::add('windows', 'error', ' Mauvaise temperature_outdoor :' . $temperature_outdoor);
+                return false;
+            }
+
+            $temperature_outdoor = $cmd->execCmd();
+            if (is_numeric($temperature_outdoor)) {
+
+                $configuration->temperature_outdoor = $temperature_outdoor;
+                $configuration->temperature_unit = $cmd->getunite();
+                $isOK = true;
+
+                $tendance = windowsCmd::getTendanceByCmd($cmd, 'outdoor');
+                if ($tendance != null) {
+                    $configuration->tendance_temperature_outdoor = $tendance;
+                }
+            } else {
+                log::add('windows', 'error', ' Mauvaise temperature_outdoor :' . $temperature_outdoor);
+                return false;
+            }
+        } else {
+            log::add('windows', 'error', '  > Pas de temperature_outdoor (optionnel)');
+            $isOK = true;
+        }
+        unset($cmd);
+        return $isOK;
+    }
+
+    /**
      * Récupérer la valeur Durée pour hiver
      */
     private function getDurationWinter($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -504,6 +555,7 @@ class windowsCmd extends cmd
      */
     private function getDurationSummer($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -532,6 +584,7 @@ class windowsCmd extends cmd
      */
     private function getThresholdWinter($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -557,6 +610,7 @@ class windowsCmd extends cmd
      */
     private function getThresholdSummer($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -582,6 +636,7 @@ class windowsCmd extends cmd
      */
     private function getConsigne($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -617,6 +672,7 @@ class windowsCmd extends cmd
      */
     private function getTargetTemperature($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -646,6 +702,7 @@ class windowsCmd extends cmd
      */
     private function getNotify($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -657,8 +714,9 @@ class windowsCmd extends cmd
     /**
      * Récupérer la température extérieure
      */
-    private static function getTemperatureOutdoor(stdClass $configuration): bool
+    private static function getGlobalTemperatureOutdoor(stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($configuration == null) throw new ErrorException('configuration null');
 
         $isOK = true;
@@ -686,8 +744,8 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            log::add('windows', 'error', '  > Pas de temperature_outdoor');
-            return false;
+            log::add('windows', 'error', '  > Pas de temperature_outdoor (optionnel)');
+            $isOK = true;
         }
         unset($cmd);
 
@@ -697,8 +755,9 @@ class windowsCmd extends cmd
     /**
      * Récupérer la température maximum
      */
-    private static function getTemperatureMaxi($eqlogic, stdClass $configuration): bool
+    private static function getGlobalTemperatureMaxi($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($configuration == null) throw new ErrorException('configuration null');
 
         $isOK = false;
@@ -739,8 +798,9 @@ class windowsCmd extends cmd
     /**
      * Récupérer la température Hiver
      */
-    private static function getTemperatureWinter(stdClass $configuration): bool
+    private static function getGlobalTemperatureWinter(stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($configuration == null) throw new ErrorException('configuration null');
 
         $isOK = false;
@@ -763,8 +823,9 @@ class windowsCmd extends cmd
     /**
      * Récupérer la température été
      */
-    private static function getTemperatureSummer(stdClass $configuration): bool
+    private static function getGlobalTemperatureSummer(stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($configuration == null) throw new ErrorException('configuration null');
 
         $isOK = false;
@@ -789,6 +850,7 @@ class windowsCmd extends cmd
      */
     private static function getCo2($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -824,6 +886,7 @@ class windowsCmd extends cmd
      */
     private function getThresholdMaxiCo2($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -849,6 +912,7 @@ class windowsCmd extends cmd
      */
     private function getThresholdNormalCo2($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -874,6 +938,7 @@ class windowsCmd extends cmd
      */
     private static function getCov($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -909,6 +974,7 @@ class windowsCmd extends cmd
      */
     private function getThresholdMaxiCov($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -934,6 +1000,7 @@ class windowsCmd extends cmd
      */
     private function getThresholdNormalCov($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -957,8 +1024,9 @@ class windowsCmd extends cmd
     /**
      * Récupérer la Présence
      */
-    private static function getPresence(stdClass $configuration): bool
+    private static function getGlobalPresence(stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($configuration == null) throw new ErrorException('configuration null');
 
         $isOK = true;
@@ -995,6 +1063,7 @@ class windowsCmd extends cmd
      */
     private function getFrequency($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -1020,6 +1089,7 @@ class windowsCmd extends cmd
      */
     private function getCondition($eqlogic, stdClass $configuration): bool
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($eqlogic == null) throw new ErrorException('eqlogic null');
         if ($configuration == null) throw new ErrorException('configuration null');
 
@@ -1034,6 +1104,7 @@ class windowsCmd extends cmd
      */
     private static function setSeason(stdClass $configuration)
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($configuration == null) throw new ErrorException('configuration null');
 
         log::add('windows', 'debug', ' Recherche de la saison');
@@ -1082,6 +1153,7 @@ class windowsCmd extends cmd
      */
     private static function setDuration(stdClass $configuration)
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($configuration == null) throw new ErrorException('configuration null');
 
         log::add('windows', 'debug', ' Récupération de la durée selon la saison');
@@ -1098,6 +1170,7 @@ class windowsCmd extends cmd
      */
     private function getWindowsInformation(stdClass $configuration)
     {
+        log::add('windows', 'debug', __FUNCTION__);
         if ($configuration == null) throw new ErrorException('configuration null');
 
         $configuration->isOpened = false;

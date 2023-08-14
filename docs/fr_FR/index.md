@@ -76,7 +76,9 @@ La configuration est très simple, après téléchargement du plugin, il vous su
 
 
 Sonde de température
-- Température extérieure : Commande pour la température extérieure
+- Température extérieure : ce champ est optionnel
+    Commande pour la température extérieure
+    La température extérieure peut être paramétrée global ou sur l'équipement (pièce)
 
 Sonde de présence
 - Présence : ce champ est optionnel
@@ -125,6 +127,10 @@ Information pour la sonde de température et les règles à suivre :
 ### Sonde de température
 
 Listes des sondes pour suivre la température de la pièce
+
+- Température extérieure : ce champ est optionnel
+    Commande pour la température extérieure
+    La température extérieure peut être paramétrée global ou sur l'équipement (pièce)
 
 - Température intérieure : Commande pour la température intérieure
 
