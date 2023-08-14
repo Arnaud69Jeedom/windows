@@ -514,7 +514,7 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            log::add('windows', 'error', '  > Pas de temperature_outdoor (optionnel)');
+            log::add('windows', 'debug', '  > Pas de temperature_outdoor (optionnel)');
             $isOK = true;
         }
         unset($cmd);
