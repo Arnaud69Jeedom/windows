@@ -41,8 +41,12 @@ if (!isConnect()) {
         </div>
       </div>
     </div>
+    <div>
+        <u>Optionnel</u> : La température extérieure peut être paramétrée en global sur le plugin ou sur l'équpement.
+    </div>
   </fieldset>
 
+  <br/>
   <fieldset>
     <legend><i class="fas jeedom-mouvement"></i> {{Sonde de présence}} </legend>
     <div>

@@ -4,6 +4,27 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 14/08/2023 - STABLE
+
+ADD : Adaptation Jeedom v4.4
+ADD : Gestion de la température extérieure par équipement (pièce)
+ADD : Test sur la tendance de la température
+
+# 14/08/2023 - BETA
+
+ADD : Gestion de la température extérieure par équipement (pièce)
+
+# 15/07/2023 - BETA
+
+Test sur la tendance de la température
+
+# 14/07/2023 - BETA
+
+DEBUG : Correction sur gestion des logs
+
+# 05/06/2023 - DEBUG
+
+- Gestion TEMP_DELTA sur ouverture fenêtre en été
 
 # 02/01/2023
 
