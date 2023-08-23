@@ -26,6 +26,7 @@ abstract class Seasons
 }
 
 const TEMP_DELTA = 0.5;
+const THRESHOLD_TENDENCY = 0.3;
 
 class windows extends eqLogic
 {
@@ -427,6 +428,13 @@ class windowsCmd extends cmd
             $endTime = date('Y-m-d H:i:s');
             $tendance = $cmd->getTendance($startTime, $endTime);
             log::add('windows', 'debug', '  > tendance :' . $tendance);
+
+            // Gestion d'un seuil pour la tendance
+            if (abs($tendance <= THRESHOLD_TENDENCY)) {
+                $tendance = 0;
+            } else {
+                $tendance = round($tendance * 10) / 10;
+            }
         }
         else {
             log::add('windows', 'debug', '  > tendance '.$name.' non calculable');
@@ -462,7 +470,7 @@ class windowsCmd extends cmd
                 $isOK = true;
 
                 $tendance = windowsCmd::getTendanceByCmd($cmd, 'indoor');
-                if ($tendance != null) {
+                if ($tendance !== null) {
                     $configuration->tendance_temperature_indoor = $tendance;
                 }
             } else {
@@ -506,7 +514,7 @@ class windowsCmd extends cmd
                 $isOK = true;
 
                 $tendance = windowsCmd::getTendanceByCmd($cmd, 'outdoor');
-                if ($tendance != null) {
+                if ($tendance !== null) {
                     $configuration->tendance_temperature_outdoor = $tendance;
                 }
             } else {
@@ -736,7 +744,7 @@ class windowsCmd extends cmd
                 $isOK = true;
 
                 $tendance = windowsCmd::getTendanceByCmd($cmd, 'outdoor');
-                if ($tendance != null) {
+                if ($tendance !== null) {
                     $configuration->tendance_temperature_outdoor = $tendance;
                 }
             } else {
