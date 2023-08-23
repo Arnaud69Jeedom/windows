@@ -435,6 +435,7 @@ class windowsCmd extends cmd
             } else {
                 $tendance = round($tendance * 10) / 10;
             }
+            log::add('windows', 'debug', '  > tendance corrigée :' . $tendance);
         }
         else {
             log::add('windows', 'debug', '  > tendance '.$name.' non calculable');
