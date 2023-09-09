@@ -370,6 +370,8 @@ class windowsCmd extends cmd
         // Lecture et Analyse de la configuration        
         $isOK &= $this->getTemperatureIndoor($eqlogic, $configuration);
         $isOK &= $this->getTemperatureOutdoor($eqlogic, $configuration);
+        
+        // Message sur temperature_outdoor
         if (!isset($configuration->temperature_outdoor)) {
             log::add('windows', 'error', ' Pas de temperature_outdoor');
             $isOK = false;
@@ -753,7 +755,7 @@ class windowsCmd extends cmd
                 return false;
             }
         } else {
-            log::add('windows', 'error', '  > Pas de temperature_outdoor (optionnel)');
+            log::add('windows', 'debug', '  > Pas de temperature_outdoor (optionnel)');
             $isOK = true;
         }
         unset($cmd);

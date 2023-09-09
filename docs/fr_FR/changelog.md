@@ -4,6 +4,10 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 09/09/2023 - BETA
+
+DEBUG : Suppression d'un message d'erreur sur temperature_outdoor
+
 # 14/08/2023 - STABLE
 
 ADD : Adaptation Jeedom v4.4
